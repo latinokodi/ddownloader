@@ -1,5 +1,5 @@
 {
-  "generatedUtc": "2026-10-26T15:53:25.8518753Z",
+  "generatedUtc": "2026-10-26T18:02:12.7507817Z",
   "tooling": {
     "apksigner": "0.9",
     "zipalign": "C:\\Android\\Sdk\\build-tools\\35.0.0\\zipalign.exe: unknown option -- -",
@@ -20,7 +20,7 @@
       "check": "verify apk signature verifies",
       "result": "PASS",
       "detail": {
-        "apk": "F:\\PyApps\\ddandroid\\app\\build\\outputs\\apk\\verify\\app-verify.apk"
+        "apk": "F:\\PyApps\\ddandroid\\app\\build\\outputs\\apk\\verify\\DDownloader-1.0.7-8-verify.apk"
       }
     },
     {
@@ -29,7 +29,7 @@
       "detail": {
         "exit": 0,
         "tail": [
-          " 2855152 resources.arsc (OK)",
+          " 2871536 resources.arsc (OK)",
           "Verification succesful"
         ]
       }
@@ -121,23 +121,7 @@
       "detail": {}
     }
   ],
-  "sizes": {
-    "app-debug.apk": {
-      "bytes": 13599688,
-      "mb": 12.97,
-      "sha256": "d528ec5d53fa39d10d4375bdb291481798b39cb5368b042cec81e932491f71c7"
-    },
-    "app-release.apk": {
-      "bytes": 3051741,
-      "mb": 2.91,
-      "sha256": "8961ca98602df3884575f6e8f6ca533a409b3616ca3a6c4c0b0a996f9c55d51f"
-    },
-    "app-verify.apk": {
-      "bytes": 3302809,
-      "mb": 3.15,
-      "sha256": "a9aff10245f1e60f4937761c03321df368e706c44ab629a840ed20a15bf190ad"
-    }
-  },
+  "sizes": {},
   "passCount": 11,
   "failCount": 0
 }

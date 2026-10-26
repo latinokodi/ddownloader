@@ -5,19 +5,7 @@
   hardening invariants, and size accounting.
 
 .DESCRIPTION
-  Checks are independent oracles (SDK tools, not our own code)
-
-# Artifacts are named DDownloader-<version>-<code>-<variant>.apk, so resolve them by
-# pattern rather than a hard-coded file name.
-function Resolve-Artifact([string]$dir) {
-    $hit = Get-ChildItem $dir -Filter '*.apk' -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if (-not $hit) { throw "no APK found in $dir - build first" }
-    return $hit.FullName
-}
-if (-not $ReleaseApk) { $ReleaseApk = Resolve-Artifact 'app\build\outputs\apk\release' }
-if (-not $VerifyApk)  { $VerifyApk  = Resolve-Artifact 'app\build\outputs\apk\verify' }
-:
+  Checks are independent oracles (SDK tools, not our own code):
    1. apksigner verify --print-certs   (v1/v2/v3 signature validity + signer)
    2. zipalign -c -P 16 -v 4           (uncompressed .so aligned to 16 KB)
    3. every packaged .so: ELF PT_LOAD p_align >= 0x4000 (16 KB), 64-bit ABIs only
@@ -32,6 +20,18 @@ param(
     [string]$ReleaseApk = '',
     [string]$VerifyApk = ''
 )
+
+# Artifacts are named DDownloader-<version>-<code>-<variant>.apk, so resolve the newest
+# APK per variant instead of hard-coding a file name.
+function Resolve-Artifact([string]$dir) {
+    $hit = Get-ChildItem (Join-Path (Resolve-Path "$PSScriptRoot\..").Path $dir) -Filter '*.apk' -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (-not $hit) { throw "no APK found in $dir - build first" }
+    return $hit.FullName
+}
+if (-not $ReleaseApk) { $ReleaseApk = Resolve-Artifact 'app\build\outputs\apk\release' }
+if (-not $VerifyApk)  { $VerifyApk  = Resolve-Artifact 'app\build\outputs\apk\verify' }
+
 
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path "$PSScriptRoot\..").Path
@@ -48,8 +48,8 @@ function Add-Check([string]$name, [bool]$pass, $detail) {
     Write-Host ("[{0}] {1}" -f $(if ($pass) { 'PASS' } else { 'FAIL' }), $name)
 }
 
-$release = Join-Path $root $ReleaseApk
-$verify = Join-Path $root $VerifyApk
+$release = if ([System.IO.Path]::IsPathRooted($ReleaseApk)) { $ReleaseApk } else { Join-Path $root $ReleaseApk }
+$verify  = if ([System.IO.Path]::IsPathRooted($VerifyApk))  { $VerifyApk }  else { Join-Path $root $VerifyApk }
 if (-not (Test-Path $release)) { throw "missing release apk: $release" }
 
 # ── 1. signatures ──────────────────────────────────────────────────────────
