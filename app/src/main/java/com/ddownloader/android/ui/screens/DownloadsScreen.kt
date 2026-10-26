@@ -199,10 +199,10 @@ private fun TransferCard(
                 when {
                     state == TransferState.FAILED -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         GhostButton("Retry", icon = AppIcons.Refresh) { vm.retry(record.id) }
-                        GhostButton("Remove", icon = AppIcons.Delete) { vm.cancel(record.id) }
+                        GhostButton("Remove", icon = AppIcons.Delete) { vm.remove(record.id) }
                     }
                     state.isActive -> GhostButton("Stop", icon = AppIcons.Close) { vm.cancel(record.id) }
-                    else -> GhostButton("Remove", icon = AppIcons.Delete) { vm.cancel(record.id) }
+                    else -> GhostButton("Remove", icon = AppIcons.Delete) { vm.remove(record.id) }
                 }
             }
         }

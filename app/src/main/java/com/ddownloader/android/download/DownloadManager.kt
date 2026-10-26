@@ -154,6 +154,27 @@ class DownloadManager(
         db.deleteByState(TransferState.COMPLETED, TransferState.CANCELLED)
     }
 
+    /**
+     * Removes a transfer from the queue entirely.
+     *
+     * [cancel] marks a row CANCELLED but keeps it, so using it for the "Remove" button on a
+     * finished/failed row did nothing visible (the row stayed, only its state was re-set).
+     * This stops any live job, deletes the partial file and drops the row.
+     */
+    fun remove(id: String) {
+        cancelFlags[id]?.set(true)
+        jobs[id]?.cancel()
+        jobs.remove(id)
+        cancelFlags.remove(id)
+        val rec = db.byId(id)
+        if (rec != null) {
+            File(rec.partialPath).takeIf { it.exists() }?.delete()
+            db.delete(id)
+        }
+        _live.value = _live.value - id
+        publishActive()
+    }
+
     fun activeIds(): List<String> = jobs.keys.toList()
 
     /** Restart everything that was mid-flight when the process died. */

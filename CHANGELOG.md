@@ -7,6 +7,16 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-10-26
+
+### Fixed
+- **Remove did nothing on finished/failed transfers.** The button called `cancel()`, which only
+  marks a row CANCELLED and keeps it, so for a row that was already terminal nothing changed on
+  screen. Added `DownloadManager.remove()` (stops any live job, deletes the partial file, deletes
+  the row) and pointed every terminal-state Remove at it. Verified on device: the row disappears
+  and the queue returns to "No transfers yet".
+
+
 ## [1.2.1] - 2026-10-26
 
 ### Fixed

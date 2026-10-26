@@ -524,6 +524,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun pause(id: String) = locator.manager.pause(id)
     fun resume(id: String) = locator.manager.start(id)
     fun cancel(id: String) = locator.manager.cancel(id)
+    /** Deletes the row (and any partial file) — what the Remove button must do. */
+    fun remove(id: String) = locator.manager.remove(id)
     fun retry(id: String) = locator.manager.retry(id)
 
     fun clearCompleted() {
