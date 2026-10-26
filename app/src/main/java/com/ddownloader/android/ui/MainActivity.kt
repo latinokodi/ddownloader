@@ -99,7 +99,10 @@ class MainActivity : ComponentActivity() {
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             AppLog.i("Main", LogL10n.of("POST_NOTIFICATIONS granted=$granted", "POST_NOTIFICATIONS concedido=$granted"))
-            vm.toast(if (granted) "Notifications enabled" else "Notifications blocked — transfers still run")
+            val copy = com.ddownloader.android.ui.i18n.stringsFor(
+                com.ddownloader.android.ui.i18n.Language.fromTag(vm.settings.value.language),
+            )
+            vm.toast(if (granted) copy.notifEnabled else copy.notifBlocked)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -426,7 +429,7 @@ private fun BottomNav(
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(TdColor.Violet)
                                 .padding(horizontal = 4.dp)
-                                .semantics { contentDescription = "$pending unfinished downloads" },
+                                .semantics { contentDescription = str.pendingDownloadsDesc.format(pending) },
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(

@@ -7,6 +7,20 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-10-26
+
+### Fixed
+- **Remaining English in Settings**: the hardened/backup metrics ("Excluded (cloud + transfer)",
+  "Credentials auto-redacted", "HTTPS only • cleartext blocked", "AES-256-GCM • Android Keystore"),
+  the "HARDENED" pill, export/import toasts and the notification permission toasts. Also Discover's
+  empty state, the link dialog's "Done", the update dialog's "Contacting GitHub Releases…"/"Retry",
+  and the Keystore self-test / output-folder / language toasts.
+- **TMDB key validation now trims whitespace** before calling the API. A pasted key usually carries a
+  trailing newline and TMDB answers 401 for it, which looked like "key rejected" when the key was
+  fine. The failure message now names the reason (`HTTP 401` vs `no network`) instead of a blank
+  rejection.
+
+
 ## [1.4.0] - 2026-10-26
 
 ### Changed — the revamp and the translation are complete

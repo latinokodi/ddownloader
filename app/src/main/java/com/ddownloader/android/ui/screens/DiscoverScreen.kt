@@ -73,7 +73,7 @@ fun DiscoverScreen(vm: AppViewModel) {
             EmptyState(
                 icon = AppIcons.Explore,
                 title = str.tmdbNeeded,
-                body = "Add a free TMDB API key in Settings to browse curated rows here. " +
+                body = str.discoverNeedsTmdbBody + "" +
                     "Search and direct links keep working without it.",
             )
         }
@@ -133,7 +133,7 @@ fun DiscoverScreen(vm: AppViewModel) {
                             modifier = Modifier.weight(1f),
                         )
                         Spacer(Modifier.width(8.dp))
-                        GhostButton("Retry", icon = AppIcons.Refresh) {
+                        GhostButton(str.retryLabel, icon = AppIcons.Refresh) {
                             vm.loadShelves(vm.discoverKind)
                         }
                     }

@@ -87,8 +87,8 @@ fun SettingsScreen(vm: AppViewModel) {
     ) { uri ->
         if (uri != null) scope.launch {
             backup.exportTo(uri)
-                .onSuccess { vm.toast("Settings exported (credentials excluded)") }
-                .onFailure { vm.toast("Export failed: ${it.message}") }
+                .onSuccess { vm.toast(t.exportOk) }
+                .onFailure { vm.toast(t.exportFailed.format(it.message ?: "")) }
         }
     }
     val importPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -100,7 +100,7 @@ fun SettingsScreen(vm: AppViewModel) {
                             if (r.ignoredSecrets) " — re-link your accounts" else "",
                     )
                 }
-                .onFailure { vm.toast("Import failed: ${it.message}") }
+                .onFailure { vm.toast(t.importFailed.format(it.message ?: "")) }
         }
     }
 
@@ -181,13 +181,13 @@ fun SettingsScreen(vm: AppViewModel) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     SettingsSection(AppIcons.Key, t.privacy, TdColor.Mint)
                     Spacer(Modifier.weight(1f))
-                    StatusPill("HARDENED", TdColor.Mint, AppIcons.VerifiedUser)
+                    StatusPill(t.hardenedPill, TdColor.Mint, AppIcons.VerifiedUser)
                 }
                 Spacer(Modifier.height(10.dp))
-                MetricRow(t.destination, "HTTPS only • cleartext blocked")
-                MetricRow(t.accounts, "AES-256-GCM • Android Keystore")
-                MetricRow(t.backup, "Excluded (cloud + transfer)")
-                MetricRow(t.logs, "Credentials auto-redacted")
+                MetricRow(t.destination, t.metricHttps)
+                MetricRow(t.accounts, t.metricKeystore)
+                MetricRow(t.backup, t.metricBackup)
+                MetricRow(t.logs, t.metricRedacted)
             }
         }
 

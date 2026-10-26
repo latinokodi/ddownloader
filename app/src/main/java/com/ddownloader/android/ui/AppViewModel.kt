@@ -643,21 +643,26 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun saveTmdbKey(key: String) {
         viewModelScope.launch {
-            if (key.isBlank()) {
+            // Pasting a key often drags in a newline or spaces; TMDB answers 401 for those,
+            // which looks like "wrong key" when it is really "trailing whitespace".
+            val cleaned = key.filterNot { it.isWhitespace() }
+            if (cleaned.isBlank()) {
                 locator.settings.setTmdbApiKey("")
                 _tmdbKeyState.value = TmdbUi.Idle
                 toast(str.tmdbKeyCleared)
                 return@launch
             }
             _tmdbKeyState.value = TmdbUi.Checking
-            val valid = locator.tmdb.validate(key)
-            if (valid) {
-                locator.settings.setTmdbApiKey(key)
+            val code = withContext(Dispatchers.IO) { locator.tmdb.validateStatus(cleaned) }
+            if (code in 200..299) {
+                locator.settings.setTmdbApiKey(cleaned)
                 _tmdbKeyState.value = TmdbUi.Valid
                 toast(str.tmdbKeySaved)
             } else {
-                _tmdbKeyState.value = TmdbUi.Invalid("TMDB did not accept that key (check it at themoviedb.org → Settings → API)")
-                toast(str.tmdbKeyRejected)
+                val reason = if (code <= 0) str.tmdbKeyNoNetwork else "HTTP $code"
+                val message = str.tmdbKeyInvalid.format(reason)
+                _tmdbKeyState.value = TmdbUi.Invalid(message)
+                toast(message)
             }
         }
     }
@@ -669,7 +674,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun setOutputTree(uri: String) {
         viewModelScope.launch {
             locator.settings.setOutputTreeUri(uri)
-            toast(if (uri.isBlank()) "Using app storage" else "Output folder set")
+            toast(if (uri.isBlank()) str.outputAppStorage else str.outputFolderSet)
         }
     }
 
@@ -690,7 +695,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun setLanguage(tag: String) {
         viewModelScope.launch {
             locator.settings.setLanguage(tag)
-            toast(if (tag == "es") "Idioma: Español" else "Language: English")
+            toast(str.languageSwitched)
         }
     }
 
@@ -707,7 +712,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun runKeystoreSelfTest() {
         val ok = com.ddownloader.android.data.CryptoBox.selfTest()
-        toast(if (ok) "Keystore round-trip OK" else "Keystore self-test FAILED")
+        toast(if (ok) str.keystoreOk else str.keystoreFailed)
     }
 
     fun clearLogs() = AppLog.clear()

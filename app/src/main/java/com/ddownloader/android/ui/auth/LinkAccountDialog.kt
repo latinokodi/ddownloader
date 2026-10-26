@@ -167,7 +167,7 @@ fun LinkAccountDialog(vm: AppViewModel) {
                         color = TdColor.TextMid,
                     )
                     Spacer(Modifier.height(18.dp))
-                    GradientButton("Done", Modifier.fillMaxWidth()) { vm.cancelLink() }
+                    GradientButton(t.doneBtn, Modifier.fillMaxWidth()) { vm.cancelLink() }
                 }
 
                 is AppViewModel.LinkUi.Failed -> {

@@ -118,7 +118,7 @@ fun UpdateDialog(vm: AppViewModel) {
                         style = MaterialTheme.typography.bodySmall,
                         color = TdColor.Amber,
                     )
-                    else -> Text("Contacting GitHub Releases…", style = MaterialTheme.typography.bodySmall)
+                    else -> Text(str.contactingGithub, style = MaterialTheme.typography.bodySmall)
                 }
             }
         },
@@ -130,7 +130,7 @@ fun UpdateDialog(vm: AppViewModel) {
                 is AppViewModel.UpdateUi.Ready -> GradientButton(str.installLabel, icon = null) {
                     vm.installUpdate()
                 }
-                is AppViewModel.UpdateUi.Error -> GradientButton("Retry", icon = null) {
+                is AppViewModel.UpdateUi.Error -> GradientButton(str.retryLabel, icon = null) {
                     vm.checkForUpdate(manual = true)
                 }
                 else -> Unit

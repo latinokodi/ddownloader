@@ -64,6 +64,16 @@ class TmdbApi(private val settings: SettingsRepository) {
         }.getOrDefault(false)
     }
 
+    /** Same call, but returns the HTTP status so the UI can tell "wrong key" (401) from
+     *  "network down" (-1). Pasting often drags in a newline, which TMDB rejects with 401. */
+    suspend fun validateStatus(key: String): Int = withContext(Dispatchers.IO) {
+        runCatching {
+            val res = Web.get("https://api.themoviedb.org/3/configuration?api_key=$key")
+            AppLog.i(TAG, "tmdb key validation: HTTP ${res.code}")
+            res.code
+        }.getOrDefault(-1)
+    }
+
     suspend fun search(query: String, kind: String = "multi"): List<Item> {
         val o = get("/search/$kind", "&query=${java.net.URLEncoder.encode(query, "UTF-8")}&include_adult=false")
             ?: return emptyList()
