@@ -7,6 +7,13 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-10-26
+
+### Changed
+- Version published specifically to exercise the in-app updater end to end (download, SHA-256 and
+  signer verification, installer hand-off). No functional change.
+
+
 ## [1.2.2] - 2026-10-26
 
 ### Fixed
