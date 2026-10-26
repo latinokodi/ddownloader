@@ -342,7 +342,7 @@ fun SettingsScreen(vm: AppViewModel) {
                     AppViewModel.UpdateUi.Idle -> t.upToDate
                 }
                 MetricRow(
-                    "Status",
+                    t.statusLabel,
                     status,
                     if (upd is AppViewModel.UpdateUi.Error) TdColor.Amber else TdColor.TextHi,
                 )
