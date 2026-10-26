@@ -7,6 +7,17 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.5.2] - 2026-10-26
+
+### Added
+- The verify variant skips onboarding (`BuildConfig.VERIFY_HARNESS`), so UI journeys can reach the
+  real screens on a clean device without provider credentials. This is what allowed the Graphite
+  redesign to be verified on an AVD while the tablet emulator was closed.
+
+### Fixed
+- Version bump / rebuild of the 1.5.x line so the published APK matches the verified build.
+
+
 ## [1.5.0] - 2026-10-26
 
 ### Changed — design system rebuilt ("Graphite")

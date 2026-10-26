@@ -182,7 +182,9 @@ private fun AppRootContent(
     vm: AppViewModel,
     settings: com.ddownloader.android.data.SettingsRepository.Settings,
 ) {
-    if (!settings.onboardingCompleted) {
+    // Verification harness runs journeys against a clean device; onboarding is skipped there so
+    // journeys can reach the real screens without provider credentials.
+    if (!settings.onboardingCompleted && !BuildConfig.VERIFY_HARNESS) {
         // The assistant needs the same snackbar plumbing as the main UI: without it every
         // toast raised during setup (bad TMDB key, link errors, "resuming N downloads")
         // was silently dropped and buttons looked dead.
@@ -482,4 +484,3 @@ private fun BottomNav(
         }
     }
 }
-
