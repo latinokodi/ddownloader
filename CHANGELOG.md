@@ -7,6 +7,22 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-10-26
+
+### Changed — "Studio" layout, a structural rebuild
+- **Navigation moved to a persistent left rail** (212 dp): brand, live status, the five
+  destinations with a 2 dp amber keyline on the current one, the queue badge, and the app version.
+  The bottom bar and the top bar are gone — the rail carries identity, navigation and state.
+- **Near-black warm palette** with a single amber accent (#F5A524) and lime for success. No
+  gradients, no glows, no borders around every surface: flat panels, hairlines and spacing.
+- **Oversized type**: 44/36/28/22/20 sp headings with tight tracking, mono eyebrows at 10.5 sp with
+  1.1 sp tracking.
+- **Near-square geometry**: 3–10 dp radii (was 8–16), square chips, filled inputs without a resting
+  border, text-only secondary buttons.
+- Content column capped and left-aligned in the remaining pane (`ContentPane`), ready for the
+  two-pane split.
+
+
 ## [1.5.2] - 2026-10-26
 
 ### Added

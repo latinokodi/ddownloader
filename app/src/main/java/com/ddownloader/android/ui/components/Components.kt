@@ -88,15 +88,14 @@ fun TdBackground(content: @Composable BoxScope.() -> Unit) {
 fun GlassCard(
     modifier: Modifier = Modifier,
     borderColor: Color = TdColor.Line,
-    shape: RoundedCornerShape = RoundedCornerShape(14.dp),
-    padding: Dp = 16.dp,
+    shape: RoundedCornerShape = RoundedCornerShape(8.dp),
+    padding: Dp = 18.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(
         modifier = modifier,
         shape = shape,
-        color = TdColor.Ink2,
-        border = BorderStroke(1.dp, borderColor),
+        color = TdColor.Ink1,
     ) {
         Column(Modifier.padding(padding), content = content)
     }
@@ -122,9 +121,9 @@ fun StatusPill(
 ) {
     Row(
         modifier = Modifier
-            .clip(RoundedCornerShape(6.dp))
-            .background(if (filled) tint else tint.copy(alpha = 0.12f))
-            .padding(horizontal = 8.dp, vertical = 4.dp),
+            .clip(RoundedCornerShape(3.dp))
+            .background(if (filled) tint else tint.copy(alpha = 0.14f))
+            .padding(horizontal = 7.dp, vertical = 3.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
@@ -324,8 +323,8 @@ fun GradientButton(
     val gradients = LocalTdGradients.current
     Box(
         modifier = modifier
-            .height(42.dp)
-            .clip(RoundedCornerShape(10.dp))
+            .height(44.dp)
+            .clip(RoundedCornerShape(8.dp))
             .background(if (enabled) gradients.brandButton else Brush.linearGradient(listOf(TdColor.Ink3, TdColor.Ink3)))
             .clickable(enabled = enabled, onClick = onClick),
         contentAlignment = Alignment.Center,
@@ -338,13 +337,13 @@ fun GradientButton(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = if (enabled) Color.White else TdColor.TextLow,
-                    modifier = Modifier.size(19.dp),
+                    tint = if (enabled) TdColor.Ink0 else TdColor.TextLow,
+                    modifier = Modifier.size(18.dp),
                 )
             }
             Text(
                 text = text,
-                color = if (enabled) Color.White else TdColor.TextLow,
+                color = if (enabled) TdColor.Ink0 else TdColor.TextLow,
                 style = androidx.compose.material3.MaterialTheme.typography.labelLarge,
             )
         }
@@ -361,12 +360,10 @@ fun GhostButton(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
-            .background(Color.Transparent)
-            .border(1.dp, TdColor.Line, RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(6.dp))
             .clickable(enabled = enabled, onClick = onClick)
-            .heightIn(min = 40.dp)
-            .padding(horizontal = 13.dp, vertical = 8.dp),
+            .heightIn(min = 38.dp)
+            .padding(horizontal = 10.dp, vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
@@ -381,7 +378,7 @@ fun GhostButton(
         Text(
             text = text,
             color = if (enabled) TdColor.TextMid else TdColor.TextLow,
-            style = androidx.compose.material3.MaterialTheme.typography.labelMedium,
+            style = androidx.compose.material3.MaterialTheme.typography.labelLarge,
         )
     }
 }
@@ -406,7 +403,7 @@ fun TdTextField(
             { Text(it, color = TdColor.TextLow, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium) }
         },
         singleLine = true,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(8.dp),
         visualTransformation = if (secret) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         trailingIcon = trailing,
@@ -414,12 +411,12 @@ fun TdTextField(
             focusedTextColor = TdColor.TextHi,
             unfocusedTextColor = TdColor.TextHi,
             focusedBorderColor = TdColor.Primary,
-            unfocusedBorderColor = TdColor.Line,
+            unfocusedBorderColor = Color.Transparent,
             focusedLabelColor = TdColor.Primary,
             unfocusedLabelColor = TdColor.TextLow,
             cursorColor = TdColor.Primary,
-            focusedContainerColor = TdColor.Ink1,
-            unfocusedContainerColor = TdColor.Ink1,
+            focusedContainerColor = TdColor.Ink2,
+            unfocusedContainerColor = TdColor.Ink2,
         ),
     )
 }

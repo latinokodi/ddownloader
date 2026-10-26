@@ -25,6 +25,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -239,16 +241,24 @@ private fun AppRootContent(
                 )
             },
         ) { inner ->
-            Column(
+            // Studio layout: persistent left rail, content in the remaining pane. No bottom bar,
+            // no top chrome — the rail carries identity, navigation and state.
+            Row(
                 Modifier
                     .fillMaxSize()
                     .padding(inner)
                     .statusBarsPadding()
             ) {
-                TopBar(
+                NavRail(
+                    selected = if (showLogs) null else tab,
+                    pending = pendingCount,
+                    active = active,
                     hasDebrid = settings.hasAnyDebrid,
-                    activeDownloads = active,
-                    onLogs = { showLogs = !showLogs },
+                    onSelect = {
+                        showLogs = false
+                        tab = it
+                    },
+                    onLogs = { showLogs = true },
                 )
                 Box(Modifier.weight(1f)) {
                     AnimatedContent(
@@ -262,29 +272,22 @@ private fun AppRootContent(
                         label = "screen",
                     ) { target ->
                         if (target == null) {
-                            LogsScreen(vm)
+                            ContentPane { LogsScreen(vm) }
                         } else {
                             when (target) {
-                                Tab.SEARCH -> SearchScreen(vm) {
-                                    showLogs = false
-                                    tab = Tab.DOWNLOADS
+                                Tab.SEARCH -> ContentPane {
+                                    SearchScreen(vm) {
+                                        showLogs = false
+                                        tab = Tab.DOWNLOADS
+                                    }
                                 }
-                                Tab.DISCOVER -> DiscoverScreen(vm)
-                                Tab.DOWNLOADS -> DownloadsScreen(vm)
-                                Tab.SETTINGS -> SettingsScreen(vm)
+                                Tab.DISCOVER -> ContentPane { DiscoverScreen(vm) }
+                                Tab.DOWNLOADS -> ContentPane { DownloadsScreen(vm) }
+                                Tab.SETTINGS -> ContentPane { SettingsScreen(vm) }
                             }
                         }
                     }
                 }
-                BottomNav(
-                    pending = pendingCount,
-                    selectedTab = if (showLogs) null else tab,
-                    onSelect = {
-                        showLogs = false
-                        tab = it
-                    },
-                    onLogs = { showLogs = true },
-                )
             }
         }
     }
@@ -481,6 +484,163 @@ private fun BottomNav(
             }
             Spacer(Modifier.height(3.dp))
             Text(str.logs, style = MaterialTheme.typography.labelSmall, color = TdColor.TextLow)
+        }
+    }
+}
+
+
+/** Persistent left navigation rail: brand, status, destinations, log console. */
+@Composable
+private fun NavRail(
+    selected: Tab?,
+    pending: Int,
+    active: Int,
+    hasDebrid: Boolean,
+    onSelect: (Tab) -> Unit,
+    onLogs: () -> Unit,
+) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
+    Column(
+        Modifier
+            .width(212.dp)
+            .fillMaxHeight()
+            .background(TdColor.Ink1)
+            .padding(vertical = 18.dp),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Icon(
+                AppIcons.Shield,
+                contentDescription = null,
+                tint = TdColor.Primary,
+                modifier = Modifier.size(20.dp),
+            )
+            Text(
+                "DDOWNLOADER",
+                style = MaterialTheme.typography.labelSmall,
+                color = TdColor.TextHi,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+        Spacer(Modifier.height(6.dp))
+        Row(
+            Modifier.padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Box(
+                Modifier
+                    .size(5.dp)
+                    .clip(RoundedCornerShape(1.dp))
+                    .background(if (active > 0) TdColor.Primary else if (hasDebrid) TdColor.Mint else TdColor.TextLow),
+            )
+            Text(
+                when {
+                    active > 0 -> "${active} ${str.tileRunning}"
+                    hasDebrid -> str.statLinked
+                    else -> str.statNone
+                },
+                style = MaterialTheme.typography.labelSmall,
+                color = TdColor.TextLow,
+            )
+        }
+
+        Spacer(Modifier.height(26.dp))
+
+        RailItem(AppIcons.Search, str.search, selected == Tab.SEARCH, pending = 0) { onSelect(Tab.SEARCH) }
+        RailItem(AppIcons.Explore, str.discover, selected == Tab.DISCOVER, pending = 0) { onSelect(Tab.DISCOVER) }
+        RailItem(AppIcons.Download, str.downloads, selected == Tab.DOWNLOADS, pending = pending) { onSelect(Tab.DOWNLOADS) }
+        RailItem(AppIcons.Settings, str.settings, selected == Tab.SETTINGS, pending = 0) { onSelect(Tab.SETTINGS) }
+
+        Spacer(Modifier.weight(1f))
+
+        RailItem(AppIcons.Terminal, str.logs, selected == null, pending = 0, onClick = onLogs)
+        Spacer(Modifier.height(10.dp))
+        Text(
+            "v${BuildConfig.VERSION_NAME}",
+            style = MaterialTheme.typography.labelSmall,
+            color = TdColor.TextLow,
+            modifier = Modifier.padding(horizontal = 20.dp),
+        )
+    }
+}
+
+@Composable
+private fun RailItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    active: Boolean,
+    pending: Int,
+    onClick: () -> Unit,
+) {
+    val interaction = androidx.compose.runtime.remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(44.dp)
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
+    ) {
+        // 2 dp amber keyline marks the current destination; no pill, no background plate.
+        if (active) {
+            Box(
+                Modifier
+                    .padding(vertical = 8.dp)
+                    .width(2.dp)
+                    .fillMaxHeight()
+                    .background(TdColor.Primary),
+            )
+        }
+        Row(
+            Modifier
+                .fillMaxSize()
+                .padding(start = 19.dp, end = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(11.dp),
+        ) {
+            Icon(
+                icon,
+                contentDescription = null,
+                tint = if (active) TdColor.Primary else TdColor.TextLow,
+                modifier = Modifier.size(16.dp),
+            )
+            Text(
+                label,
+                style = MaterialTheme.typography.titleSmall,
+                color = if (active) TdColor.TextHi else TdColor.TextMid,
+                modifier = Modifier.weight(1f),
+            )
+            if (pending > 0) {
+                Text(
+                    "$pending",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TdColor.Ink0,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(2.dp))
+                        .background(TdColor.Primary)
+                        .padding(horizontal = 5.dp, vertical = 1.dp),
+                )
+            }
+        }
+    }
+}
+
+
+/**
+ * Content column of the studio layout: left-aligned, capped at 1040 dp.
+ * A phone layout stretched across a 1920 px window was the main thing that read as unfinished.
+ */
+@Composable
+private fun ContentPane(content: @Composable () -> Unit) {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
+        Box(
+            Modifier
+                .widthIn(max = 1040.dp)
+                .fillMaxHeight(),
+        ) {
+            content()
         }
     }
 }

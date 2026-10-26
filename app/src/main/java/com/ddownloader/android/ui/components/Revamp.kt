@@ -53,28 +53,18 @@ import com.ddownloader.android.ui.theme.shimmerBrush
 fun AuroraCard(
     modifier: Modifier = Modifier,
     accent: Color = TdColor.Primary,
-    contentPadding: androidx.compose.ui.unit.Dp = 16.dp,
+    contentPadding: androidx.compose.ui.unit.Dp = 18.dp,
     content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit,
 ) {
-    // Flat graphite surface with a hairline border and a 2 dp accent keyline on top: the accent
-    // identifies the card's domain without tinting the whole area.
-    Box(
+    // Studio panel: a flat raised surface, no border and no accent keyline. The accent parameter is
+    // kept for call-site compatibility; sections identify themselves with type, not colour bands.
+    androidx.compose.foundation.layout.Column(
         modifier
             .clip(RoundedCornerShape(CardRadius))
-            .background(TdColor.Ink2)
-            .border(BorderStroke(1.dp, TdColor.Line), RoundedCornerShape(CardRadius)),
-    ) {
-        androidx.compose.foundation.layout.Box(
-            androidx.compose.ui.Modifier
-                .fillMaxWidth()
-                .height(2.dp)
-                .background(Brush.horizontalGradient(listOf(accent.copy(alpha = 0.85f), accent.copy(alpha = 0.05f)))),
-        )
-        androidx.compose.foundation.layout.Column(
-            Modifier.padding(contentPadding).padding(top = 2.dp),
-            content = content,
-        )
-    }
+            .background(TdColor.Ink1)
+            .padding(contentPadding),
+        content = content,
+    )
 }
 
 /** Same card, but it reacts to touch: scales down and lifts its accent. */

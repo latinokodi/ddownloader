@@ -56,7 +56,7 @@ fun HomeHero(
         Spacer(Modifier.height(6.dp))
         Text(
             str.search,
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.displayMedium,
             color = TdColor.TextHi,
         )
         Spacer(Modifier.height(3.dp))
@@ -66,34 +66,7 @@ fun HomeHero(
             color = TdColor.TextMid,
         )
 
-        Spacer(Modifier.height(14.dp))
-
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Shortcut(
-                icon = AppIcons.CloudDownload,
-                label = str.tilePaste,
-                value = null,
-                modifier = Modifier.weight(1f),
-                onClick = onPaste,
-            )
-            Shortcut(
-                icon = AppIcons.Download,
-                label = str.tileTransfers,
-                value = if (active + queued > 0) "${active + queued}" else null,
-                accent = if (active > 0) TdColor.Primary else TdColor.TextMid,
-                modifier = Modifier.weight(1f),
-                onClick = onOpenDownloads,
-            )
-            Shortcut(
-                icon = AppIcons.Explore,
-                label = str.discover,
-                value = null,
-                modifier = Modifier.weight(1f),
-                onClick = onOpenDiscover,
-            )
-        }
-
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(18.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
