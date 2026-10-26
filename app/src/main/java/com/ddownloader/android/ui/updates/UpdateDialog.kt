@@ -14,6 +14,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,7 +32,8 @@ import com.ddownloader.android.ui.theme.TdColor
  */
 @Composable
 fun UpdateDialog(vm: AppViewModel) {
-    val state = vm.updateState.value
+    val stateFlow = vm.updateState.collectAsStateWithLifecycle()
+    val state = stateFlow.value
     if (state is AppViewModel.UpdateUi.Idle) return
 
     AlertDialog(
@@ -145,7 +148,8 @@ fun UpdateDialog(vm: AppViewModel) {
 /** Compact banner used at the top of the app when an update is pending. */
 @Composable
 fun UpdateBanner(vm: AppViewModel) {
-    val state = vm.updateState.value
+    val stateFlow = vm.updateState.collectAsStateWithLifecycle()
+    val state = stateFlow.value
     val release = (state as? AppViewModel.UpdateUi.Available)?.release ?: return
     Row(
         Modifier

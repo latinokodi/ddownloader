@@ -1,0 +1,116 @@
+{
+  "journey": "onboarding-smoke",
+  "package": "com.ddownloader.android",
+  "serial": "127.0.0.1:16416",
+  "versionName": "1.0.1",
+  "runId": "20261026T160131Z",
+  "steps": [
+    {
+      "step": "1",
+      "action": "launch",
+      "text": null,
+      "note": "assistant starts on the welcome page",
+      "result": "FAIL",
+      "detail": "post-assertion 'SETUP 1/4' not present"
+    },
+    {
+      "step": "2",
+      "action": "assert_text",
+      "text": "HTTPS only",
+      "note": "welcome page makes the transport guarantee visible",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "step": "3",
+      "action": "tap_text",
+      "text": "Continue",
+      "note": "debrid token authorization page",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "step": "4",
+      "action": "assert_text",
+      "text": "TorBox API token",
+      "note": null,
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "step": "5",
+      "action": "assert_text",
+      "text": "Real-Debrid API token",
+      "note": null,
+      "result": "FAIL",
+      "detail": "expected text 'Real-Debrid API token' not present"
+    },
+    {
+      "step": "6",
+      "action": "tap_text",
+      "text": "Continue",
+      "note": "optional TMDB key page",
+      "result": "FAIL",
+      "detail": "post-assertion 'SETUP 3/4' not present"
+    },
+    {
+      "step": "7",
+      "action": "assert_text",
+      "text": "TMDB API key",
+      "note": null,
+      "result": "FAIL",
+      "detail": "expected text 'TMDB API key' not present"
+    },
+    {
+      "step": "8",
+      "action": "tap_text",
+      "text": "Continue",
+      "note": "download folder page",
+      "result": "FAIL",
+      "detail": "post-assertion 'SETUP 4/4' not present"
+    },
+    {
+      "step": "9",
+      "action": "assert_text",
+      "text": "Choose folder",
+      "note": null,
+      "result": "FAIL",
+      "detail": "expected text 'Choose folder' not present"
+    },
+    {
+      "step": "10",
+      "action": "assert_text",
+      "text": "Start using DDownloader",
+      "note": null,
+      "result": "FAIL",
+      "detail": "expected text 'Start using DDownloader' not present"
+    },
+    {
+      "step": "11",
+      "action": "tap_text",
+      "text": "Start using DDownloader",
+      "note": "finishing drops into the main UI",
+      "result": "FAIL",
+      "detail": "node 'Start using DDownloader' not found"
+    },
+    {
+      "step": "12",
+      "action": "assert_text",
+      "text": "Downloads",
+      "note": null,
+      "result": "FAIL",
+      "detail": "expected text 'Downloads' not present"
+    },
+    {
+      "step": "13",
+      "action": "assert_text",
+      "text": "Settings",
+      "note": null,
+      "result": "FAIL",
+      "detail": "expected text 'Settings' not present"
+    }
+  ],
+  "passCount": 3,
+  "failCount": 10,
+  "verdict": "FAIL"
+}

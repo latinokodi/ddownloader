@@ -3,7 +3,7 @@
   "package": "com.ddownloader.android",
   "serial": "127.0.0.1:16416",
   "versionName": "1.0.1",
-  "runId": "20261026T155745Z",
+  "runId": "20261026T160131Z",
   "steps": [
     {
       "step": "1",
@@ -18,24 +18,24 @@
       "action": "assert_text",
       "text": "HTTPS only",
       "note": "welcome page makes the transport guarantee visible",
-      "result": "FAIL",
-      "detail": "expected text 'HTTPS only' not present"
+      "result": "PASS",
+      "detail": ""
     },
     {
       "step": "3",
       "action": "tap_text",
       "text": "Continue",
       "note": "debrid token authorization page",
-      "result": "FAIL",
-      "detail": "node 'Continue' not found"
+      "result": "PASS",
+      "detail": ""
     },
     {
       "step": "4",
       "action": "assert_text",
       "text": "TorBox API token",
       "note": null,
-      "result": "FAIL",
-      "detail": "expected text 'TorBox API token' not present"
+      "result": "PASS",
+      "detail": ""
     },
     {
       "step": "5",
@@ -51,7 +51,7 @@
       "text": "Continue",
       "note": "optional TMDB key page",
       "result": "FAIL",
-      "detail": "node 'Continue' not found"
+      "detail": "post-assertion 'SETUP 3/4' not present"
     },
     {
       "step": "7",
@@ -67,7 +67,7 @@
       "text": "Continue",
       "note": "download folder page",
       "result": "FAIL",
-      "detail": "node 'Continue' not found"
+      "detail": "post-assertion 'SETUP 4/4' not present"
     },
     {
       "step": "9",
@@ -110,7 +110,7 @@
       "detail": "expected text 'Settings' not present"
     }
   ],
-  "passCount": 0,
-  "failCount": 13,
+  "passCount": 3,
+  "failCount": 10,
   "verdict": "FAIL"
 }

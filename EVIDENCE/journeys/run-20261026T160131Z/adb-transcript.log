@@ -1,0 +1,184 @@
+journey: onboarding-smoke  package=com.ddownloader.android  serial=127.0.0.1:16416
+adb shell dumpsys package com.ddownloader.android | grep versionName ->     versionName=1.0.1
+installed version: 1.0.1
+adb shell am force-stop com.ddownloader.android -> 
+adb shell pm clear com.ddownloader.android -> Success
+adb shell pm grant com.ddownloader.android android.permission.POST_NOTIFICATIONS -> 
+app data cleared (notification permission granted)
+adb shell am start -n com.ddownloader.android/com.ddownloader.android.ui.MainActivity -> Starting: Intent { cmp=com.ddownloader.android/.ui.MainActivity }
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 2.9 MB/s (5341 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.6 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.3 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.5 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.9 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.1 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.4 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.1 MB/s (5341 bytes in 0.001s)
+  step 1   launch           FAIL (post-assertion 'SETUP 1/4' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.5 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.7 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.5 MB/s (5341 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.4 MB/s (6735 bytes in 0.001s)
+  step 2   assert_text      PASS 
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.2 MB/s (6735 bytes in 0.001s)
+adb shell input tap 984 1003 -> 
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.7 MB/s (8836 bytes in 0.001s)
+  step 3   tap_text         PASS 
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.2 MB/s (8836 bytes in 0.002s)
+  step 4   assert_text      PASS 
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.0 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.1 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.5 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.7 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.4 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.6 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.1 MB/s (8836 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.3 MB/s (6735 bytes in 0.001s)
+  step 5   assert_text      FAIL (expected text 'Real-Debrid API token' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.8 MB/s (6735 bytes in 0.001s)
+adb shell input tap 984 1003 -> 
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.3 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.5 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.0 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.4 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.7 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.0 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.2 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 7.1 MB/s (8836 bytes in 0.001s)
+  step 6   tap_text         FAIL (post-assertion 'SETUP 3/4' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.9 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.2 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.9 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.8 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.0 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.3 MB/s (8836 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.0 MB/s (8836 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.5 MB/s (8836 bytes in 0.001s)
+  step 7   assert_text      FAIL (expected text 'TMDB API key' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.6 MB/s (8836 bytes in 0.001s)
+adb shell input tap 984 1003 -> 
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.3 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.2 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.8 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.7 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.7 MB/s (7482 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.5 MB/s (7482 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 2.6 MB/s (7482 bytes in 0.003s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.6 MB/s (7482 bytes in 0.002s)
+  step 8   tap_text         FAIL (post-assertion 'SETUP 4/4' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 2.3 MB/s (7482 bytes in 0.003s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.6 MB/s (7482 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 2.3 MB/s (7482 bytes in 0.003s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 0.5 MB/s (7482 bytes in 0.014s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 0.6 MB/s (7482 bytes in 0.012s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 1.4 MB/s (7482 bytes in 0.005s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 2.4 MB/s (7482 bytes in 0.003s)
+  step 9   assert_text      FAIL (expected text 'Choose folder' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 1.8 MB/s (7482 bytes in 0.004s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.4 MB/s (7482 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 0.2 MB/s (7482 bytes in 0.032s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.3 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.2 MB/s (7482 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 2.4 MB/s (7482 bytes in 0.003s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 1.2 MB/s (7482 bytes in 0.006s)
+  step 10  assert_text      FAIL (expected text 'Start using DDownloader' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.3 MB/s (7482 bytes in 0.002s)
+  step 11  tap_text         FAIL (node 'Start using DDownloader' not found)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.7 MB/s (7482 bytes in 0.002s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 5.6 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.0 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 6.7 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.8 MB/s (7482 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.9 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.8 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.1 MB/s (4450 bytes in 0.001s)
+  step 12  assert_text      FAIL (expected text 'Downloads' not present)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.2 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.3 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.0 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.8 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 4.0 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.6 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 2.9 MB/s (4450 bytes in 0.001s)
+adb shell uiautomator dump /sdcard/_journey.xml >/dev/null 2>&1 -> 
+adb pull /sdcard/_journey.xml F:\PyApps\ddandroid\EVIDENCE\journeys\run-20261026T160131Z\ui.xml -> /sdcard/_journey.xml: 1 file pulled, 0 skipped. 3.2 MB/s (4450 bytes in 0.001s)
+  step 13  assert_text      FAIL (expected text 'Settings' not present)

@@ -154,7 +154,12 @@ private fun AppRoot(vm: AppViewModel) {
     // folder before showing the main UI.
     val settings by vm.settings.collectAsStateWithLifecycle()
     if (!settings.onboardingCompleted) {
-        TdBackground { OnboardingScreen(vm) }
+        TdBackground {
+            // Composed here as well: a new release should be announced even while the
+            // assistant is still on screen.
+            UpdateDialog(vm)
+            OnboardingScreen(vm)
+        }
         return
     }
 
