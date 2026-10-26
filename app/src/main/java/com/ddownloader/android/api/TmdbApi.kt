@@ -27,13 +27,24 @@ class TmdbApi(private val settings: SettingsRepository) {
 
     private suspend fun key(): String = settings.current().tmdbApiKey
 
-    private suspend fun get(path: String, extra: String = ""): JsonObject? {
+    /**
+     * Every TMDB request goes through here, on Dispatchers.IO.
+     *
+     * Web.get() is a blocking OkHttp call; running it on the caller's dispatcher (Main,
+     * from viewModelScope) threw NetworkOnMainThreadException, which this function's
+     * runCatching turned into `null` — Discover then showed "TMDB returned no titles".
+     * The hop to IO is what makes Discover/Search actually work.
+     */
+    private suspend fun get(path: String, extra: String = ""): JsonObject? = withContext(Dispatchers.IO) {
         val k = key()
-        if (k.isBlank()) return null
-        return runCatching {
+        if (k.isBlank()) {
+            AppLog.w(TAG, "$path skipped: no TMDB key stored")
+            return@withContext null
+        }
+        runCatching {
             val sep = if (path.contains('?')) "&" else "?"
             val res = Web.get("https://api.themoviedb.org/3$path${sep}api_key=$k&language=es-ES$extra")
-            if (res.code !in 200..299) error("HTTP ${res.code}")
+            if (res.code !in 200..299) error("HTTP ${res.code}: ${res.body.take(160)}")
             Web.json.parseToJsonElement(res.body).jsonObject
         }.onFailure { AppLog.w(TAG, "$path failed: ${it.message}") }.getOrNull()
     }

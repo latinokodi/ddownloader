@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -324,7 +326,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 val type = if (item.mediaType == "tv" || item.mediaType == "series") "series" else "movie"
                 // Series need season/episode; default to S01E01 when the caller has
                 // no episode context (the Downloads flow re-resolves per episode).
-                val result = locator.comet.streams(type, imdb, if (type == "series") 1 else null, if (type == "series") 1 else null)
+                // Web.get() blocks; keep it off the main thread like the TMDB calls.
+                val result = withContext(Dispatchers.IO) {
+                    locator.comet.streams(type, imdb, if (type == "series") 1 else null, if (type == "series") 1 else null)
+                }
                 result.onSuccess { streams = it }
                     .onFailure { streamsError = it.message ?: "Comet request failed" }
                 if (streams.isEmpty() && streamsError == null) {

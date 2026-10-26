@@ -7,6 +7,19 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.0.9] - 2026-10-26
+
+### Fixed
+- **Discover and Search return results.** TMDB calls were made with blocking OkHttp on the
+  caller's dispatcher (Main, from `viewModelScope`), throwing `NetworkOnMainThreadException`,
+  which the surrounding `runCatching` converted into `null` → an empty list → "TMDB returned no
+  titles". `TmdbApi.get()` (search, trending, resolveTitle, imdbId) now runs on
+  `Dispatchers.IO`, logs the failing path with the HTTP status instead of a null message, and
+  logs explicitly when no key is stored.
+- Comet stream requests are dispatched off the main thread as well.
+- Discover surfaces the real failure reason instead of a generic "check the API key".
+
+
 ## [1.0.8] - 2026-10-26
 
 ### Fixed
