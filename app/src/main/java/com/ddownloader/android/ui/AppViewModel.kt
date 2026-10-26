@@ -80,8 +80,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         data class Starting(val provider: DeviceAuth.Provider) : LinkUi
         data class Waiting(
             val prompt: DeviceAuth.Prompt,
-            val status: String,
-            val startedAt: Long,
+            val secondsLeft: Int,
         ) : LinkUi
         data class Linked(val provider: DeviceAuth.Provider, val account: String) : LinkUi
         data class Failed(val provider: DeviceAuth.Provider, val message: String) : LinkUi
@@ -105,14 +104,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 return@launch
             }
             val started = System.currentTimeMillis()
-            _linkState.value = LinkUi.Waiting(prompt, "Waiting for you to authorize…", started)
+            _linkState.value = LinkUi.Waiting(prompt, prompt.expiresInSeconds)
             val deadline = started + prompt.expiresInSeconds * 1000L
             while (System.currentTimeMillis() < deadline) {
                 delay(prompt.intervalSeconds * 1000L)
                 when (val outcome = locator.deviceAuth.poll(prompt)) {
                     is DeviceAuth.Outcome.Pending -> {
-                        val left = ((deadline - System.currentTimeMillis()) / 1000).coerceAtLeast(0)
-                        _linkState.value = LinkUi.Waiting(prompt, "Waiting for you to authorize… (${left}s)", started)
+                        val left = ((deadline - System.currentTimeMillis()) / 1000).coerceAtLeast(0).toInt()
+                        _linkState.value = LinkUi.Waiting(prompt, left)
                     }
                     is DeviceAuth.Outcome.Linked -> {
                         // Persist the credential (encrypted) and the refresh material.

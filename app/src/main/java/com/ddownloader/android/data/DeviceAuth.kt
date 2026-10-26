@@ -91,7 +91,10 @@ class DeviceAuth(private val settings: SettingsRepository) {
             provider = Provider.TORBOX,
             deviceCode = d.str("device_code") ?: error("no device_code"),
             userCode = d.str("code") ?: error("no code"),
-            verificationUrl = d.str("verification_url") ?: "https://torbox.app/oauth/device",
+            // The API hands back the page that accepts the code, e.g.
+            // https://torbox.app/oauth/device?app=DDownloader (the app name prefills the page).
+            // tor.box/link is the same page behind a shortlink, used only as a fallback.
+            verificationUrl = d.str("verification_url")?.takeIf { it.isNotBlank() } ?: TORBOX_SHORTLINK,
             expiresInSeconds = d.str("expires_in")?.toIntOrNull() ?: 600,
             intervalSeconds = d.str("interval")?.toIntOrNull()?.coerceIn(2, 30) ?: 5,
         )
@@ -197,6 +200,8 @@ class DeviceAuth(private val settings: SettingsRepository) {
     companion object {
         private const val TAG = "DeviceAuth"
         private const val TORBOX = "https://api.torbox.app/v1"
+        /** Shortlink that redirects to https://torbox.app/oauth/device. */
+        internal const val TORBOX_SHORTLINK = "https://tor.box/link"
         private const val RD = "https://api.real-debrid.com/oauth/v2"
         /** Public client id used by open-source Real-Debrid integrations (device flow). */
         internal const val RD_CLIENT_ID = "X245A4XAIBGVM"

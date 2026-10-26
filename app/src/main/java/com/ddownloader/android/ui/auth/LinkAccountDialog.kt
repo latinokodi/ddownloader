@@ -146,7 +146,7 @@ fun LinkAccountDialog(vm: AppViewModel) {
                         )
                         Spacer(Modifier.width(10.dp))
                         Text(
-                            state.status,
+                            "${t.linkWaiting} (${state.secondsLeft}s)",
                             style = MaterialTheme.typography.bodySmall,
                             color = TdColor.TextMid,
                         )

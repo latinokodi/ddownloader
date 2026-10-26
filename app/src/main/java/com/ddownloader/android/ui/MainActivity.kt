@@ -395,13 +395,13 @@ private fun BottomNav(
             ) {
                 Icon(
                     AppIcons.Terminal,
-                    contentDescription = "Logs",
+                    contentDescription = str.logs,
                     tint = TdColor.TextLow,
                     modifier = Modifier.size(22.dp),
                 )
             }
             Spacer(Modifier.height(3.dp))
-            Text("Logs", style = MaterialTheme.typography.labelSmall, color = TdColor.TextLow)
+            Text(str.logs, style = MaterialTheme.typography.labelSmall, color = TdColor.TextLow)
         }
     }
 }
