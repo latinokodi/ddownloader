@@ -77,8 +77,8 @@ jobs:
         with:
           name: apks
           path: |
-            app/build/outputs/apk/debug/app-debug.apk
-            app/build/outputs/apk/verify/app-verify.apk
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/verify/*.apk
           if-no-files-found: error
 
       - name: Dependency vulnerability scan (OSV)

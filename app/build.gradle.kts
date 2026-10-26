@@ -16,6 +16,10 @@ val keystoreProps = Properties().apply {
     if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
 }
 
+// Version and artifact naming live in one place.
+val appVersionCode = 8
+val appVersionName = "1.0.7"
+
 android {
     namespace = "com.ddownloader.android"
     compileSdk = 35
@@ -24,8 +28,8 @@ android {
         applicationId = "com.ddownloader.android"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.0.6"
+        versionCode = appVersionCode
+        versionName = appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -196,5 +200,23 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         xml.required.set(true)
         sarif.required.set(false)
         txt.required.set(false)
+    }
+}
+
+/**
+ * Name the artifacts after the app instead of Gradle's default `app-release.apk`:
+ *   DDownloader-<version>-<code>-release.apk / -debug.apk / -verify.apk
+ * The version inside the file name is what a user sees when they download it, so it
+ * has to match the release they are installing.
+ */
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            // Public VariantOutput has no file-name setter in AGP 8.x; the internal impl
+            // exposes it as a Property. This only affects the artifact's file name.
+            (output as? com.android.build.api.variant.impl.VariantOutputImpl)
+                ?.outputFileName
+                ?.set("DDownloader-$appVersionName-$appVersionCode-${variant.name}.apk")
+        }
     }
 }

@@ -8,9 +8,9 @@ the Android emulator AVD `dd35` (API 35, x86_64).
 
 | artifact | size | contents |
 |---|---|---|
-| `app-release.apk` (R8 + resource shrink) | **2.84 MB** | dex + Compose + 8 bundled OFL font files |
-| `app-verify.apk` (same, + test harness) | **3.09 MB** | adds `tddl://` filter + fixture-host exception |
-| `app-debug.apk` | 12.97 MB | unminified, debug symbols |
+| `DDownloader-1.0.7-8-release.apk` (R8 + resource shrink) | **2.93 MB** | dex + Compose + 8 bundled OFL font files |
+| `DDownloader-1.0.7-8-verify.apk` (same, + test harness) | **3.15 MB** | adds `tddl://` filter + fixture-host exception |
+| `DDownloader-1.0.7-8-debug.apk` | ~13 MB | unminified, debug symbols |
 | Installed footprint | ≈ 8–9 MB | APK + extracted dex/oat on device |
 
 Breakdown of the release APK (from `aapt2 dump badging` + zip listing): native libs ≈ 40 KB

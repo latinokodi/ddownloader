@@ -38,7 +38,7 @@ back to the debug key, which would break the update chain for existing installs.
 ## 3. Verify the artifact before publishing
 
 ```powershell
-$apk = 'app\build\outputs\apk\release\app-release.apk'
+$apk = 'app\build\outputs\apk\release\DDownloader-<version>-<code>-release.apk'
 & C:\Android\Sdk\build-tools\35.0.0\apksigner.bat verify --print-certs $apk
 & C:\Android\Sdk\build-tools\35.0.0\zipalign.exe -c -P 16 -v 4 $apk
 Get-FileHash $apk -Algorithm SHA256
@@ -59,8 +59,8 @@ signer silently breaks every existing install's update path.
 
 ```powershell
 # sha256 sidecar lets the updater verify the download
-(Get-FileHash $apk -Algorithm SHA256).Hash.ToLower() | Set-Content app-release.apk.sha256
-gh release create v1.0.1 $apk app-release.apk.sha256 `
+(Get-FileHash $apk -Algorithm SHA256).Hash.ToLower() | Set-Content "$apk.sha256"
+gh release create v1.0.7 $apk "$apk.sha256" `
   --repo latinokodi/ddownloader `
   --title "DDownloader v1.0.1" --notes-file CHANGELOG-snippet.md
 ```

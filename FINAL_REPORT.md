@@ -25,7 +25,7 @@ cd F:\PyApps\ddandroid
 .\gradlew.bat :app:lintRelease              # 0 errors
 .\gradlew.bat :app:detekt                   # 0 errors
 
-C:\Android\Sdk\platform-tools\adb.exe install -r -t app\build\outputs\apk\debug\app-debug.apk
+C:\Android\Sdk\platform-tools\adb.exe install -r -t app\build\outputs\apk\debug\DDownloader-<version>-<code>-debug.apk
 C:\Android\Sdk\platform-tools\adb.exe shell am start -n com.ddownloader.android.debug/com.ddownloader.android.ui.MainActivity
 ```
 

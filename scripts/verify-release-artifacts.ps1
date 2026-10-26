@@ -5,7 +5,19 @@
   hardening invariants, and size accounting.
 
 .DESCRIPTION
-  Checks are independent oracles (SDK tools, not our own code):
+  Checks are independent oracles (SDK tools, not our own code)
+
+# Artifacts are named DDownloader-<version>-<code>-<variant>.apk, so resolve them by
+# pattern rather than a hard-coded file name.
+function Resolve-Artifact([string]$dir) {
+    $hit = Get-ChildItem $dir -Filter '*.apk' -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (-not $hit) { throw "no APK found in $dir - build first" }
+    return $hit.FullName
+}
+if (-not $ReleaseApk) { $ReleaseApk = Resolve-Artifact 'app\build\outputs\apk\release' }
+if (-not $VerifyApk)  { $VerifyApk  = Resolve-Artifact 'app\build\outputs\apk\verify' }
+:
    1. apksigner verify --print-certs   (v1/v2/v3 signature validity + signer)
    2. zipalign -c -P 16 -v 4           (uncompressed .so aligned to 16 KB)
    3. every packaged .so: ELF PT_LOAD p_align >= 0x4000 (16 KB), 64-bit ABIs only
@@ -17,8 +29,8 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$ReleaseApk = 'app\build\outputs\apk\release\app-release.apk',
-    [string]$VerifyApk = 'app\build\outputs\apk\verify\app-verify.apk'
+    [string]$ReleaseApk = '',
+    [string]$VerifyApk = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -152,7 +164,7 @@ Add-Check 'verify DOES expose the tddl harness' ($dvText -match 'tddl') @{}
 
 # ── 5. sizes + digests ────────────────────────────────────────────────────
 $sizes = [ordered]@{}
-foreach ($p in @('app\build\outputs\apk\debug\app-debug.apk', 'app\build\outputs\apk\release\app-release.apk', 'app\build\outputs\apk\verify\app-verify.apk')) {
+foreach ($p in @((Get-ChildItem 'app\build\outputs\apk\debug' -Filter '*.apk' | Select-Object -First 1 -ExpandProperty FullName), $ReleaseApk, 'app\build\outputs\apk\verify\app-verify.apk')) {
     $full = Join-Path $root $p
     if (Test-Path $full) {
         $sizes[[IO.Path]::GetFileName($p)] = [ordered]@{

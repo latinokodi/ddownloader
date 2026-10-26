@@ -481,7 +481,7 @@ advertises `throttle_param`); device `http://10.0.2.2:8787/health` → 200. Emul
 
 Supersedes the §16 status note (that one described the stale debug APK).
 
-Build: `F:\PyApps\ddandroid\app\build\outputs\apk\verify\app-verify.apk`, 9 528 564 bytes,
+Build: `F:\PyApps\ddandroid\app\build\outputs\apk\verify\DDownloader-<version>-<code>-verify.apk`, 9 528 564 bytes,
 sha256 `340fe00ab6e48873a162b7f723a822792462eb85934f2a8bece8ec42106be5b6`.
 Package `pro.tordownloader.android.verify`, versionName 1.0.0, installed with `adb install -r -t`.
 

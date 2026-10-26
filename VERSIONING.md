@@ -30,6 +30,6 @@ in-place update preserve data and pass the updater's signature check.
 1. Edit `app/build.gradle.kts`: `versionCode` and `versionName`.
 2. Add the entry to `CHANGELOG.md` under a new `## [x.y.z] - YYYY-MM-DD`.
 3. Tag the release commit `vx.y.z` **after** the APK is verified (`RELEASING.md`).
-4. Publish the GitHub Release with `app-release.apk` **and** `app-release.apk.sha256`.
+4. Publish the GitHub Release with `DDownloader-<version>-<code>-release.apk` **and** its `.sha256` sidecar.
    The in-app updater only offers a build it can verify: the SHA-256 is optional, the
    signer match is mandatory.

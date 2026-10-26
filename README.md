@@ -20,7 +20,7 @@ cd F:\PyApps\ddandroid
 
 # debug build + install + launch
 .\gradlew.bat :app:assembleDebug
-C:\Android\Sdk\platform-tools\adb.exe install -r -t app\build\outputs\apk\debug\app-debug.apk
+C:\Android\Sdk\platform-tools\adb.exe install -r -t app\build\outputs\apk\debug\DDownloader-<version>-<code>-debug.apk
 C:\Android\Sdk\platform-tools\adb.exe shell am start -n com.ddownloader.android.debug/com.ddownloader.android.ui.MainActivity
 
 # R8-minified, release-signed APK (2.84 MB)
