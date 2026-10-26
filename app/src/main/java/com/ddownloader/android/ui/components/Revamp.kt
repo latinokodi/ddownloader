@@ -53,7 +53,8 @@ import com.ddownloader.android.ui.theme.shimmerBrush
 fun AuroraCard(
     modifier: Modifier = Modifier,
     accent: Color = TdColor.Cyan,
-    content: @Composable () -> Unit,
+    contentPadding: androidx.compose.ui.unit.Dp = 16.dp,
+    content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit,
 ) {
     Box(
         modifier
@@ -77,7 +78,12 @@ fun AuroraCard(
                 RoundedCornerShape(CardRadius),
             ),
     ) {
-        content()
+        // ColumnScope + padding mirror the old GlassCard contract: callers stack children
+        // inside the card, so dropping the scope silently destroyed every replaced screen.
+        androidx.compose.foundation.layout.Column(
+            Modifier.padding(contentPadding),
+            content = content,
+        )
     }
 }
 

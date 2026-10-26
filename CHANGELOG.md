@@ -7,6 +7,16 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-26
+
+### Fixed
+- **Settings (and every other migrated screen) rendered broken in 1.2.0**: `AuroraCard` replaced
+  `GlassCard` but did not provide the `ColumnScope` + 16 dp padding that `GlassCard` had, so its
+  children fell out of layout and overlapped. `AuroraCard` now takes a `contentPadding` and hosts a
+  `Column`, restoring the old contract; Transfers passes `contentPadding = 0.dp` because it lays
+  out its own padded column. Screenshot-verified on device.
+
+
 ## [1.2.0] - 2026-10-26
 
 ### Changed — visual system revamp

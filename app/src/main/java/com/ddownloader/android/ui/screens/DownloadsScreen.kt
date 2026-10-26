@@ -130,7 +130,7 @@ private fun TransferCard(
     }
     val accent = stateColor(state)
 
-    AuroraCard(accent = accent) {
+    AuroraCard(accent = accent, contentPadding = 0.dp) {
         Column(Modifier.fillMaxWidth().padding(14.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AnimatedRing(percent = percent, accent = accent)
