@@ -41,7 +41,7 @@ import com.ddownloader.android.data.SettingsBackup
 import com.ddownloader.android.ui.AppViewModel
 import com.ddownloader.android.ui.components.DividerLine
 import com.ddownloader.android.ui.components.GhostButton
-import com.ddownloader.android.ui.components.GlassCard
+import com.ddownloader.android.ui.components.AuroraCard
 import com.ddownloader.android.ui.components.MetricRow
 import com.ddownloader.android.ui.components.SectionLabel
 import com.ddownloader.android.ui.components.StatusPill
@@ -110,7 +110,7 @@ fun SettingsScreen(vm: AppViewModel) {
     ) {
         // ── Language ───────────────────────────────────────────────────────
         item {
-            GlassCard {
+            AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     SectionLabel(t.language)
                     Spacer(Modifier.weight(1f))
@@ -138,7 +138,7 @@ fun SettingsScreen(vm: AppViewModel) {
 
         // ── Debrid accounts ────────────────────────────────────────────────
         item {
-            GlassCard {
+            AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     SectionLabel(t.accounts)
                     Spacer(Modifier.weight(1f))
@@ -177,7 +177,7 @@ fun SettingsScreen(vm: AppViewModel) {
 
         // ── Privacy & security ─────────────────────────────────────────────
         item {
-            GlassCard {
+            AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     SectionLabel(t.privacy)
                     Spacer(Modifier.weight(1f))
@@ -193,7 +193,7 @@ fun SettingsScreen(vm: AppViewModel) {
 
         // ── Metadata ───────────────────────────────────────────────────────
         item {
-            GlassCard {
+            AuroraCard {
                 SectionLabel(t.metadata)
                 Spacer(Modifier.height(6.dp))
                 Text(t.tmdbHint, style = MaterialTheme.typography.bodySmall, color = TdColor.TextLow)
@@ -219,7 +219,7 @@ fun SettingsScreen(vm: AppViewModel) {
 
         // ── Storage ────────────────────────────────────────────────────────
         item {
-            GlassCard {
+            AuroraCard {
                 SectionLabel(t.storage)
                 Spacer(Modifier.height(10.dp))
                 MetricRow(
@@ -292,7 +292,7 @@ fun SettingsScreen(vm: AppViewModel) {
 
         // ── Backup & restore ───────────────────────────────────────────────
         item {
-            GlassCard {
+            AuroraCard {
                 SectionLabel(t.backup)
                 Spacer(Modifier.height(6.dp))
                 Text(t.backupHint, style = MaterialTheme.typography.bodySmall, color = TdColor.TextLow)
@@ -310,7 +310,7 @@ fun SettingsScreen(vm: AppViewModel) {
 
         // ── Updates ────────────────────────────────────────────────────────
         item {
-            GlassCard {
+            AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     SectionLabel(t.updates)
                     Spacer(Modifier.weight(1f))

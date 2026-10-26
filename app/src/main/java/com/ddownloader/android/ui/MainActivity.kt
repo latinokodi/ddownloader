@@ -13,12 +13,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -82,6 +87,7 @@ import com.ddownloader.android.ui.updates.UpdateDialog
 import com.ddownloader.android.ui.screens.SearchScreen
 import com.ddownloader.android.ui.screens.SettingsScreen
 import com.ddownloader.android.ui.theme.LocalTdGradients
+import com.ddownloader.android.ui.theme.Motion
 import com.ddownloader.android.ui.theme.TdColor
 import com.ddownloader.android.ui.theme.TdTheme
 
@@ -241,7 +247,12 @@ private fun AppRootContent(
                 Box(Modifier.weight(1f)) {
                     AnimatedContent(
                         targetState = if (showLogs) null else tab,
-                        transitionSpec = { fadeIn(tween(180)) togetherWith fadeOut(tween(120)) },
+                        transitionSpec = {
+                            (slideInHorizontally(
+                                animationSpec = tween(Motion.MEDIUM, easing = Motion.emphasized),
+                            ) { it / 14 } + fadeIn(tween(Motion.MEDIUM)))
+                                .togetherWith(fadeOut(tween(Motion.FAST)))
+                        },
                         label = "screen",
                     ) { target ->
                         if (target == null) {
@@ -373,7 +384,15 @@ private fun BottomNav(
                 Box(
                     Modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .then(if (activeTab) Modifier.background(gradients.brandSoft) else Modifier)
+                        .then(
+                            Modifier.background(
+                                animateColorAsState(
+                                    targetValue = if (activeTab) TdColor.Cyan.copy(alpha = 0.14f) else Color.Transparent,
+                                    animationSpec = tween(Motion.MEDIUM),
+                                    label = "nav-pill",
+                                ).value,
+                            ),
+                        )
                         .padding(horizontal = 16.dp, vertical = 4.dp),
                 ) {
                     Icon(
@@ -386,10 +405,20 @@ private fun BottomNav(
                     )
                     // Live count of unfinished transfers: goes up when something is
                     // queued and down as transfers reach a terminal state.
-                    if (t == Tab.DOWNLOADS && pending > 0) {
+                    val badgeScale by animateFloatAsState(
+                        targetValue = if (t == Tab.DOWNLOADS && pending > 0) 1f else 0f,
+                        animationSpec = spring(dampingRatio = 0.45f, stiffness = 700f),
+                        label = "badge-scale",
+                    )
+                    if (badgeScale > 0.01f) {
                         Box(
                             Modifier
                                 .align(Alignment.TopEnd)
+                                .graphicsLayer {
+                                    scaleX = badgeScale
+                                    scaleY = badgeScale
+                                    alpha = badgeScale
+                                }
                                 .offset(x = 10.dp, y = (-6).dp)
                                 .defaultMinSize(minWidth = 16.dp, minHeight = 16.dp)
                                 .clip(RoundedCornerShape(8.dp))

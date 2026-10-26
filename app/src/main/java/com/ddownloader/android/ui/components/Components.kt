@@ -61,12 +61,19 @@ import androidx.compose.ui.unit.sp
 import com.ddownloader.android.ui.icons.AppIcons
 import com.ddownloader.android.ui.theme.LocalTdGradients
 import com.ddownloader.android.ui.theme.TdColor
+import com.ddownloader.android.ui.theme.aurora
 import com.ddownloader.android.ui.theme.TdGradients
 
 /** App background: obsidian plane with a soft violet glow behind the header. */
 @Composable
 fun TdBackground(content: @Composable BoxScope.() -> Unit) {
-    Box(Modifier.fillMaxSize().background(TdColor.Ink0)) {
+    // Ambient aurora behind every screen; disabled when the system asks for reduced motion.
+    val still = rememberReduceMotion()
+    Box(
+        Modifier
+            .fillMaxSize()
+            .aurora(intensity = 0.9f, enabled = !still),
+    ) {
         Box(
             Modifier
                 .fillMaxWidth()

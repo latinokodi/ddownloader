@@ -2,6 +2,7 @@ package com.ddownloader.android.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,6 +47,7 @@ import com.ddownloader.android.ui.components.EmptyState
 import com.ddownloader.android.ui.components.GhostButton
 import com.ddownloader.android.ui.icons.AppIcons
 import com.ddownloader.android.ui.theme.TdColor
+import com.ddownloader.android.ui.theme.pressEffect
 
 /**
  * Discover — a shelf-based catalogue.
@@ -222,11 +224,13 @@ private fun ShelfRow(shelf: AppViewModel.Shelf, onOpen: (TmdbApi.Item) -> Unit) 
 /** Poster with a rating badge and a two-line caption. */
 @Composable
 private fun PosterCard(item: TmdbApi.Item, onClick: () -> Unit) {
+    val interaction = androidx.compose.runtime.remember { MutableInteractionSource() }
     Column(
         Modifier
             .width(128.dp)
+            .pressEffect(interaction)
             .clip(RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick),
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
     ) {
         Box(
             Modifier
@@ -311,12 +315,9 @@ private fun SkeletonShelf() {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             repeat(4) {
-                Box(
-                    Modifier
-                        .width(128.dp)
-                        .aspectRatio(2f / 3f)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(TdColor.Ink2),
+                com.ddownloader.android.ui.components.ShimmerBlock(
+                    modifier = Modifier.width(128.dp).aspectRatio(2f / 3f),
+                    radius = 16.dp,
                 )
             }
         }

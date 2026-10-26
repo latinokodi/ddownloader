@@ -46,7 +46,7 @@ import com.ddownloader.android.data.DeviceAuth
 import com.ddownloader.android.ui.i18n.LocalStrings
 import com.ddownloader.android.ui.AppViewModel
 import com.ddownloader.android.ui.components.GhostButton
-import com.ddownloader.android.ui.components.GlassCard
+import com.ddownloader.android.ui.components.AuroraCard
 import com.ddownloader.android.ui.components.GradientButton
 import com.ddownloader.android.ui.components.SectionLabel
 import com.ddownloader.android.ui.components.StatusPill
@@ -236,7 +236,7 @@ private fun WelcomePage() {
             color = TdColor.TextMid,
         )
         Spacer(Modifier.height(22.dp))
-        GlassCard {
+        AuroraCard {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(AppIcons.Shield, contentDescription = null, tint = TdColor.Cyan, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(10.dp))
@@ -267,7 +267,7 @@ private fun DebridPage(
             t.debridTitle,
             t.debridBody,
         )
-        GlassCard {
+        AuroraCard {
             ProviderLinkRow(
                 provider = DeviceAuth.Provider.TORBOX,
                 state = torboxState,
@@ -321,7 +321,7 @@ private fun TmdbPage(vm: AppViewModel, tmdb: String, onTmdb: (String) -> Unit) {
             t.tmdbTitle,
             t.tmdbBody,
         )
-        GlassCard {
+        AuroraCard {
             SectionLabel(t.metadataLabel)
             Spacer(Modifier.height(8.dp))
             TdTextField(
@@ -374,7 +374,7 @@ private fun FolderPage(outputTreeUri: String, onChoose: () -> Unit, onReset: () 
             "Pick a folder once and Android remembers the permission. Without a choice, files land " +
                 "in this app's own Download folder.",
         )
-        GlassCard {
+        AuroraCard {
             SectionLabel("Destination")
             Spacer(Modifier.height(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {

@@ -2,6 +2,7 @@ package com.ddownloader.android.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +46,7 @@ import com.ddownloader.android.api.TmdbApi
 import com.ddownloader.android.api.tmdbPoster
 import com.ddownloader.android.ui.AppViewModel
 import com.ddownloader.android.ui.components.GhostButton
-import com.ddownloader.android.ui.components.GlassCard
+import com.ddownloader.android.ui.components.AuroraCard
 import com.ddownloader.android.ui.components.GradientButton
 import com.ddownloader.android.ui.components.SectionLabel
 import com.ddownloader.android.ui.components.StatusPill
@@ -53,6 +54,7 @@ import com.ddownloader.android.ui.components.TdTextField
 import com.ddownloader.android.ui.components.SessionHero
 import com.ddownloader.android.ui.icons.AppIcons
 import com.ddownloader.android.ui.theme.TdColor
+import com.ddownloader.android.ui.theme.pressEffect
 
 /**
  * "Search" = resolve a title to a torrent, or queue a link directly.
@@ -90,7 +92,7 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
         }
 
         item(span = { GridItemSpan(maxLineSpan) }) {
-            GlassCard {
+            AuroraCard {
                 SectionLabel("Find something")
                 Spacer(Modifier.height(10.dp))
                 TdTextField(
@@ -139,7 +141,7 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
         }
 
         item(span = { GridItemSpan(maxLineSpan) }) {
-            GlassCard {
+            AuroraCard {
                 SectionLabel("Paste a link")
                 Spacer(Modifier.height(10.dp))
                 TdTextField(
@@ -306,7 +308,13 @@ private fun TitleRow(item: TmdbApi.Item, onClick: () -> Unit) {
  */
 @Composable
 private fun ResultCard(item: TmdbApi.Item, onClick: () -> Unit) {
-    Column(Modifier.clickable(onClick = onClick)) {
+    val interaction = androidx.compose.runtime.remember { MutableInteractionSource() }
+    Column(
+        Modifier
+            .pressEffect(interaction)
+            .clip(RoundedCornerShape(14.dp))
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
+    ) {
         Box(
             Modifier
                 .fillMaxWidth()

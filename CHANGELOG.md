@@ -7,6 +7,29 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-26
+
+### Changed — visual system revamp
+- **Motion system** (`ui/theme/Motion.kt`): one set of durations (140/260/420 ms), two easings, a
+  scale-on-press modifier, a shimmer brush and an animated aurora backdrop. Every animation in the
+  app now comes from here instead of ad-hoc values, and all of it honours the system
+  "remove animations" setting.
+- **Aurora backdrop** behind every screen: three slow, offset radial gradients in the brand hues.
+  Replaces the flat near-black fill.
+- **Cards unified**: one `AuroraCard` (gradient hairline border + near-black fill + one accent) is
+  now the only surface in the app — Discover, Search, Settings, Onboarding and Transfers.
+- **Transfers screen rebuilt** as a control room: four stat tiles (active/queued/done/failed),
+  animated progress ring per transfer, provider + state pills, a 3 dp progress rail, done/total,
+  live speed and ETA, and context-sensitive actions (Stop / Retry + Remove / Remove). Cards
+  animate when the list reorders.
+- **Logs rebuilt** as a terminal: animated filter chips, monospace rows with a level stripe
+  (colour *and* letter, so it survives colour-blindness), Copy-all and Clear.
+- **Screen transitions** slide+fade on the emphasized easing; the bottom-nav selection pill
+  animates its tint instead of snapping, and the Downloads badge springs in and out.
+- Poster cards (Discover and Search results) now scale on press with no ripple.
+- Discover skeletons use a moving shimmer instead of flat placeholders.
+
+
 ## [1.1.3] - 2026-10-26
 
 ### Changed
