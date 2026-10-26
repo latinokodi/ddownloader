@@ -30,9 +30,10 @@ class SettingsRepository(private val context: Context) {
         // Secrets — decrypted in memory only.
         val torboxToken: String = "",
         val realdebridToken: String = "",
-        val realdebridRefreshToken: String = "",
+        /** Per-user OAuth material from the device flow, needed to refresh. */
         val realdebridClientId: String = "",
         val realdebridClientSecret: String = "",
+        val realdebridRefreshToken: String = "",
         val tmdbApiKey: String = "",
         // Destination: a persisted SAF tree URI (scoped storage). Empty → app-private dir.
         val outputTreeUri: String = "",
@@ -77,9 +78,9 @@ class SettingsRepository(private val context: Context) {
             Settings(
                 torboxToken = CryptoBox.decrypt(p[K.torbox]).orEmpty(),
                 realdebridToken = CryptoBox.decrypt(p[K.rdToken]).orEmpty(),
-                realdebridRefreshToken = CryptoBox.decrypt(p[K.rdRefresh]).orEmpty(),
                 realdebridClientId = CryptoBox.decrypt(p[K.rdClientId]).orEmpty(),
                 realdebridClientSecret = CryptoBox.decrypt(p[K.rdClientSecret]).orEmpty(),
+                realdebridRefreshToken = CryptoBox.decrypt(p[K.rdRefresh]).orEmpty(),
                 tmdbApiKey = CryptoBox.decrypt(p[K.tmdb]).orEmpty(),
                 outputTreeUri = p[K.treeUri].orEmpty(),
                 moviesSubfolder = p[K.moviesDir] ?: "Movies",
@@ -103,6 +104,11 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setTorboxToken(token: String) = put { it[K.torbox] = CryptoBox.encrypt(token.trim()) }
     suspend fun setRealDebridToken(token: String) = put { it[K.rdToken] = CryptoBox.encrypt(token.trim()) }
+    suspend fun setRealDebridOauth(clientId: String, clientSecret: String, refreshToken: String) = put {
+        it[K.rdClientId] = CryptoBox.encrypt(clientId.trim())
+        it[K.rdClientSecret] = CryptoBox.encrypt(clientSecret.trim())
+        it[K.rdRefresh] = CryptoBox.encrypt(refreshToken.trim())
+    }
     suspend fun setRealDebridCredentials(clientId: String, clientSecret: String, refresh: String) = put {
         it[K.rdClientId] = CryptoBox.encrypt(clientId)
         it[K.rdClientSecret] = CryptoBox.encrypt(clientSecret)

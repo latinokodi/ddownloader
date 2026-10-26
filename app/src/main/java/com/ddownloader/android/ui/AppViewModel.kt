@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,6 +17,7 @@ import com.ddownloader.android.api.TmdbApi
 import com.ddownloader.android.core.AppLog
 import com.ddownloader.android.BuildConfig
 import com.ddownloader.android.data.AccountAuth
+import com.ddownloader.android.data.DeviceAuth
 import com.ddownloader.android.data.UpdateChecker
 import com.ddownloader.android.data.UpdateInstaller
 import com.ddownloader.android.data.ServiceLocator
@@ -69,6 +72,95 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun consumeMessage() {
         message = null
+    }
+
+    // ── Debrid account linking (URL + code device flow) ───────────────────
+    sealed interface LinkUi {
+        data object Idle : LinkUi
+        data class Starting(val provider: DeviceAuth.Provider) : LinkUi
+        data class Waiting(
+            val prompt: DeviceAuth.Prompt,
+            val status: String,
+            val startedAt: Long,
+        ) : LinkUi
+        data class Linked(val provider: DeviceAuth.Provider, val account: String) : LinkUi
+        data class Failed(val provider: DeviceAuth.Provider, val message: String) : LinkUi
+    }
+
+    private val _linkState = MutableStateFlow<LinkUi>(LinkUi.Idle)
+    val linkState: StateFlow<LinkUi> = _linkState.asStateFlow()
+    private var linkJob: Job? = null
+
+    /**
+     * Starts the provider's device authorization: fetch a code, show it, and poll until
+     * the user authorizes. The credential that comes back is stored encrypted; the UI
+     * never sees it.
+     */
+    fun linkAccount(provider: DeviceAuth.Provider) {
+        linkJob?.cancel()
+        linkJob = viewModelScope.launch {
+            _linkState.value = LinkUi.Starting(provider)
+            val prompt = locator.deviceAuth.start(provider).getOrElse { e ->
+                _linkState.value = LinkUi.Failed(provider, e.message ?: "could not start pairing")
+                return@launch
+            }
+            val started = System.currentTimeMillis()
+            _linkState.value = LinkUi.Waiting(prompt, "Waiting for you to authorize…", started)
+            val deadline = started + prompt.expiresInSeconds * 1000L
+            while (System.currentTimeMillis() < deadline) {
+                delay(prompt.intervalSeconds * 1000L)
+                when (val outcome = locator.deviceAuth.poll(prompt)) {
+                    is DeviceAuth.Outcome.Pending -> {
+                        val left = ((deadline - System.currentTimeMillis()) / 1000).coerceAtLeast(0)
+                        _linkState.value = LinkUi.Waiting(prompt, "Waiting for you to authorize… (${left}s)", started)
+                    }
+                    is DeviceAuth.Outcome.Linked -> {
+                        // Persist the credential (encrypted) and the refresh material.
+                        when (outcome.provider) {
+                            DeviceAuth.Provider.TORBOX -> locator.settings.setTorboxToken(outcome.token)
+                            DeviceAuth.Provider.REALDEBRID -> {
+                                locator.settings.setRealDebridToken(outcome.token)
+                                if (outcome.clientId != null && outcome.clientSecret != null) {
+                                    locator.settings.setRealDebridOauth(
+                                        outcome.clientId,
+                                        outcome.clientSecret,
+                                        outcome.refreshToken.orEmpty(),
+                                    )
+                                }
+                            }
+                        }
+                        locator.settings.setOnboardingCompleted(
+                            locator.settings.current().onboardingCompleted,
+                        )
+                        _linkState.value = LinkUi.Linked(outcome.provider, outcome.account)
+                        locator.accounts.refresh()
+                        return@launch
+                    }
+                    is DeviceAuth.Outcome.Failed -> {
+                        _linkState.value = LinkUi.Failed(provider, outcome.reason)
+                        return@launch
+                    }
+                }
+            }
+            _linkState.value = LinkUi.Failed(provider, "The code expired before the account was authorized.")
+        }
+    }
+
+    fun cancelLink() {
+        linkJob?.cancel()
+        linkJob = null
+        _linkState.value = LinkUi.Idle
+    }
+
+    fun unlink(provider: DeviceAuth.Provider) {
+        viewModelScope.launch {
+            when (provider) {
+                DeviceAuth.Provider.TORBOX -> locator.settings.setTorboxToken("")
+                DeviceAuth.Provider.REALDEBRID -> locator.settings.setRealDebridToken("")
+            }
+            locator.accounts.refresh()
+            toast("${provider.label} unlinked")
+        }
     }
 
     // ── Self-update ───────────────────────────────────────────────────────
@@ -443,6 +535,27 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             locator.settings.setOutputTreeUri(uri)
             toast(if (uri.isBlank()) "Using app storage" else "Output folder set")
+        }
+    }
+
+
+    fun setSubfolders(movies: String, series: String) {
+        viewModelScope.launch {
+            locator.settings.setMoviesSubfolder(movies)
+            locator.settings.setSeriesSubfolder(series)
+            toast("Folders saved")
+        }
+    }
+
+    fun setUnmeteredOnly(v: Boolean) {
+        viewModelScope.launch { locator.settings.setUnmeteredOnly(v) }
+    }
+
+    /** Language is stored, and the root of the UI re-reads it through LocalStrings. */
+    fun setLanguage(tag: String) {
+        viewModelScope.launch {
+            locator.settings.setLanguage(tag)
+            toast(if (tag == "es") "Idioma: Español" else "Language: English")
         }
     }
 

@@ -7,6 +7,24 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-10-26
+
+### Changed
+- **Debrid accounts are now added by URL + code** (device authorization), not by pasting an
+  API token. The app requests a code, shows the provider's verification URL and the code, and
+  polls until the user authorizes; the credential is stored encrypted and never displayed.
+  - TorBox: `GET /v1/api/user/auth/device/start` → `POST /v1/api/user/auth/device/token`
+  - Real-Debrid: `device/code` → `device/credentials` → `token` (device grant, per-user
+    client credentials kept for refresh)
+- **English / Spanish language toggle** in Settings (persisted, applied instantly through a
+  composition-local `Strings` layer covering navigation, the assistant, Settings and the
+  linking dialog).
+
+### Fixed
+- TorBox device-authorization path was built with a doubled `/api` segment, which the API
+  answered with HTTP 404 (caught by running the flow on a device, not by review).
+
+
 ## [1.0.1] - 2026-10-26
 
 ### Added

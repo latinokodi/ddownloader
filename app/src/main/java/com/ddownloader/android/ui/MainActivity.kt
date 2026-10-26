@@ -71,6 +71,11 @@ import com.ddownloader.android.ui.screens.DiscoverScreen
 import com.ddownloader.android.ui.screens.DownloadsScreen
 import com.ddownloader.android.ui.screens.LogsScreen
 import com.ddownloader.android.ui.onboarding.OnboardingScreen
+import androidx.compose.runtime.CompositionLocalProvider
+import com.ddownloader.android.ui.auth.LinkAccountDialog
+import com.ddownloader.android.ui.i18n.Language
+import com.ddownloader.android.ui.i18n.LocalStrings
+import com.ddownloader.android.ui.i18n.stringsFor
 import com.ddownloader.android.ui.updates.UpdateDialog
 import com.ddownloader.android.ui.screens.SearchScreen
 import com.ddownloader.android.ui.screens.SettingsScreen
@@ -153,11 +158,24 @@ private fun AppRoot(vm: AppViewModel) {
     // First run: guide the user through debrid token auth, TMDB and the download
     // folder before showing the main UI.
     val settings by vm.settings.collectAsStateWithLifecycle()
+    // The whole UI reads its copy from LocalStrings; switching language re-composes here.
+    val strings = stringsFor(Language.fromTag(settings.language))
+    CompositionLocalProvider(LocalStrings provides strings) {
+        AppRootContent(vm, settings)
+    }
+}
+
+@Composable
+private fun AppRootContent(
+    vm: AppViewModel,
+    settings: com.ddownloader.android.data.SettingsRepository.Settings,
+) {
     if (!settings.onboardingCompleted) {
         TdBackground {
             // Composed here as well: a new release should be announced even while the
             // assistant is still on screen.
             UpdateDialog(vm)
+            LinkAccountDialog(vm)
             OnboardingScreen(vm)
         }
         return
@@ -180,6 +198,7 @@ private fun AppRoot(vm: AppViewModel) {
 
     TdBackground {
         UpdateDialog(vm)
+        LinkAccountDialog(vm)
         Scaffold(
             containerColor = Color.Transparent,
             snackbarHost = {
@@ -304,6 +323,7 @@ private fun BottomNav(
     onLogs: () -> Unit,
 ) {
     val gradients = LocalTdGradients.current
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     Row(
         Modifier
             .fillMaxWidth()
@@ -346,7 +366,12 @@ private fun BottomNav(
                 }
                 Spacer(Modifier.height(3.dp))
                 Text(
-                    text = t.label,
+                    text = when (t) {
+                            Tab.SEARCH -> str.search
+                            Tab.DISCOVER -> str.discover
+                            Tab.DOWNLOADS -> str.downloads
+                            Tab.SETTINGS -> str.settings
+                        },
                     style = MaterialTheme.typography.labelSmall,
                     color = if (activeTab) TdColor.TextHi else TdColor.TextLow,
                     maxLines = 1,

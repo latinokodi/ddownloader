@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import com.ddownloader.android.data.AccountAuth
+import com.ddownloader.android.data.DeviceAuth
+import com.ddownloader.android.ui.i18n.LocalStrings
 import com.ddownloader.android.ui.AppViewModel
 import com.ddownloader.android.ui.components.GhostButton
 import com.ddownloader.android.ui.components.GlassCard
@@ -68,12 +70,11 @@ fun OnboardingScreen(vm: AppViewModel) {
     val settings by vm.settings.collectAsStateWithLifecycle()
     val torboxState by vm.torboxAccount.collectAsStateWithLifecycle()
     val rdState by vm.realDebridAccount.collectAsStateWithLifecycle()
+    val t = LocalStrings.current
     val pager = rememberPagerState(pageCount = { 4 })
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var torbox by remember { mutableStateOf("") }
-    var realdebrid by remember { mutableStateOf("") }
     var tmdb by remember { mutableStateOf("") }
 
     val treePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
@@ -100,12 +101,12 @@ fun OnboardingScreen(vm: AppViewModel) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                "SETUP ${pager.currentPage + 1}/4",
+                "${t.setup} ${pager.currentPage + 1}/4",
                 style = MaterialTheme.typography.labelSmall,
                 color = TdColor.TextLow,
             )
             Spacer(Modifier.weight(1f))
-            GhostButton("Skip", icon = AppIcons.Close) { vm.completeOnboarding() }
+            GhostButton(t.skip, icon = AppIcons.Close) { vm.completeOnboarding() }
         }
 
         HorizontalPager(
@@ -117,10 +118,6 @@ fun OnboardingScreen(vm: AppViewModel) {
                 0 -> WelcomePage()
                 1 -> DebridPage(
                     vm = vm,
-                    torbox = torbox,
-                    onTorbox = { torbox = it },
-                    realdebrid = realdebrid,
-                    onRealDebrid = { realdebrid = it },
                     torboxState = torboxState,
                     rdState = rdState,
                 )
@@ -152,7 +149,7 @@ fun OnboardingScreen(vm: AppViewModel) {
         }
 
         GradientButton(
-            text = if (pager.currentPage == 3) "Start using DDownloader" else "Continue",
+            text = if (pager.currentPage == 3) t.startUsing else t.continueLabel,
             icon = if (pager.currentPage == 3) AppIcons.CheckCircle else AppIcons.PlayArrow,
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -176,6 +173,7 @@ private fun PageHeader(title: String, subtitle: String) {
 
 @Composable
 private fun WelcomePage() {
+    val t = LocalStrings.current
     val gradients = LocalTdGradients.current
     Column(Modifier.fillMaxWidth().padding(top = 26.dp)) {
         Box(
@@ -192,8 +190,7 @@ private fun WelcomePage() {
         Text("DOWNLOADER", style = MaterialTheme.typography.displayLarge, color = TdColor.Cyan, letterSpacing = (-1).sp)
         Spacer(Modifier.height(16.dp))
         Text(
-            "TorBox + Real-Debrid client with resumable downloads, Jellyfin-ready folders and a " +
-                "foreground service that keeps transfers alive.",
+            t.welcomeBody,
             style = MaterialTheme.typography.bodyLarge,
             color = TdColor.TextMid,
         )
@@ -203,7 +200,7 @@ private fun WelcomePage() {
                 Icon(AppIcons.Shield, contentDescription = null, tint = TdColor.Cyan, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(10.dp))
                 Text(
-                    "Your tokens stay encrypted on the device, and every request is HTTPS only.",
+                    t.welcomeNote,
                     style = MaterialTheme.typography.bodySmall,
                     color = TdColor.TextMid,
                 )
@@ -220,62 +217,57 @@ private fun WelcomePage() {
 @Composable
 private fun DebridPage(
     vm: AppViewModel,
-    torbox: String,
-    onTorbox: (String) -> Unit,
-    realdebrid: String,
-    onRealDebrid: (String) -> Unit,
     torboxState: AccountAuth.AccountState,
     rdState: AccountAuth.AccountState,
 ) {
+    val t = LocalStrings.current
     Column(Modifier.fillMaxWidth().padding(top = 20.dp)) {
         PageHeader(
-            "Authorize\nyour debrid",
-            "Paste an API token. This is how the app authorizes \u2014 there is no OAuth login. " +
-                "One provider is enough; both is fine.",
+            t.debridTitle,
+            t.debridBody,
         )
         GlassCard {
-            SectionLabel("TorBox")
-            Spacer(Modifier.height(8.dp))
-            TdTextField(
-                value = torbox,
-                onValueChange = onTorbox,
-                label = "TorBox API token",
-                placeholder = "Settings \u2192 API \u2192 token",
-                secret = true,
+            ProviderLinkRow(
+                provider = DeviceAuth.Provider.TORBOX,
+                state = torboxState,
+                onLink = { vm.linkAccount(DeviceAuth.Provider.TORBOX) },
+                onUnlink = { vm.unlink(DeviceAuth.Provider.TORBOX) },
             )
-            Spacer(Modifier.height(10.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                GhostButton("Authorize", icon = AppIcons.CheckCircle) { vm.saveTorboxToken(torbox.trim()) }
-                if (torbox.isNotEmpty()) GhostButton("Clear", icon = AppIcons.Delete) {
-                    onTorbox("")
-                    vm.saveTorboxToken("")
-                }
-            }
-            Spacer(Modifier.height(10.dp))
-            TokenState(state = torboxState, hint = "torbox.app \u2192 Settings \u2192 API")
-        }
-        Spacer(Modifier.height(14.dp))
-        GlassCard {
-            SectionLabel("Real-Debrid")
-            Spacer(Modifier.height(8.dp))
-            TdTextField(
-                value = realdebrid,
-                onValueChange = onRealDebrid,
-                label = "Real-Debrid API token",
-                placeholder = "real-debrid.com/devices \u2192 private token",
-                secret = true,
+            Spacer(Modifier.height(14.dp))
+            ProviderLinkRow(
+                provider = DeviceAuth.Provider.REALDEBRID,
+                state = rdState,
+                onLink = { vm.linkAccount(DeviceAuth.Provider.REALDEBRID) },
+                onUnlink = { vm.unlink(DeviceAuth.Provider.REALDEBRID) },
             )
-            Spacer(Modifier.height(10.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                GhostButton("Authorize", icon = AppIcons.CheckCircle) { vm.saveRealDebridToken(realdebrid.trim()) }
-                if (realdebrid.isNotEmpty()) GhostButton("Clear", icon = AppIcons.Delete) {
-                    onRealDebrid("")
-                    vm.saveRealDebridToken("")
-                }
-            }
-            Spacer(Modifier.height(10.dp))
-            TokenState(state = rdState, hint = "real-debrid.com/devices")
+            Spacer(Modifier.height(12.dp))
+            Text(
+                t.debridNote,
+                style = MaterialTheme.typography.bodySmall,
+                color = TdColor.TextLow,
+            )
         }
+    }
+}
+
+/** Provider row for the assistant. */
+@Composable
+private fun ProviderLinkRow(
+    provider: DeviceAuth.Provider,
+    state: AccountAuth.AccountState,
+    onLink: () -> Unit,
+    onUnlink: () -> Unit,
+) {
+    val linked = state is AccountAuth.AccountState.Authorized
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.weight(1f)) {
+            Text(provider.label, style = MaterialTheme.typography.titleSmall, color = TdColor.TextHi)
+            Spacer(Modifier.height(4.dp))
+            TokenState(state = state, hint = provider.accountHint)
+        }
+        Spacer(Modifier.width(8.dp))
+        if (linked) GhostButton("Unlink", icon = AppIcons.Delete, onClick = onUnlink)
+        else GhostButton("Link", icon = AppIcons.Link, onClick = onLink)
     }
 }
 

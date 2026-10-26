@@ -45,6 +45,9 @@ object ServiceLocator {
     lateinit var accounts: AccountAuth
         private set
 
+    lateinit var deviceAuth: DeviceAuth
+        private set
+
     lateinit var updateChecker: UpdateChecker
         private set
 
@@ -61,6 +64,7 @@ object ServiceLocator {
         comet = CometApi()
         tmdb = TmdbApi(settings)
         accounts = AccountAuth(settings, torbox, realdebrid)
+        deviceAuth = DeviceAuth(settings)
         updateChecker = UpdateChecker()
         updateInstaller = UpdateInstaller(app)
         manager = DownloadManager(app, settings, db).apply {
