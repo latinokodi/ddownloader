@@ -36,14 +36,14 @@ class TorBoxApi(private val settings: SettingsRepository) {
     }
 
     /** GET /user/auth/device/start — device-code flow, step 1. */
-    fun deviceStart(): Result<JsonObject> = runCatching {
+    suspend fun deviceStart(): Result<JsonObject> = runCatching {
         val res = Web.get(api("/user/auth/device/start"))
         if (res.code !in 200..299) error("HTTP ${res.code}")
         Web.json.parseToJsonElement(res.body).jsonObject
     }.onFailure { AppLog.w(TAG, "device start failed: ${it.message}") }
 
     /** POST /user/auth/device/token — step 2; returns the access token. */
-    fun deviceToken(deviceCode: String): Result<String> = runCatching {
+    suspend fun deviceToken(deviceCode: String): Result<String> = runCatching {
         val res = Web.postJson(
             api("/user/auth/device/token"),
             """{"device_code":"$deviceCode"}""",
@@ -59,7 +59,7 @@ class TorBoxApi(private val settings: SettingsRepository) {
     }
 
     /** GET /user/me */
-    fun userInfo(): Result<JsonObject> = runCatching {
+    suspend fun userInfo(): Result<JsonObject> = runCatching {
         val res = Web.get(api("/user/me"), headers = auth())
         if (res.code !in 200..299) error("HTTP ${res.code}")
         (Web.json.parseToJsonElement(res.body).jsonObject["data"] as? JsonObject)
@@ -67,7 +67,7 @@ class TorBoxApi(private val settings: SettingsRepository) {
     }
 
     /** GET /torrents/mylist */
-    fun listTorrents(): Result<List<Torrent>> = runCatching {
+    suspend fun listTorrents(): Result<List<Torrent>> = runCatching {
         val res = Web.get(api("/torrents/mylist", mapOf("bypass_cache" to "true")), headers = auth())
         if (res.code !in 200..299) error("HTTP ${res.code}")
         val root = Web.json.parseToJsonElement(res.body).jsonObject
@@ -90,7 +90,7 @@ class TorBoxApi(private val settings: SettingsRepository) {
     }
 
     /** POST /torrents/createtorrent (multipart magnet) */
-    fun addMagnet(magnet: String): Result<String> = runCatching {
+    suspend fun addMagnet(magnet: String): Result<String> = runCatching {
         // seed=0 + allow_zip=false: never seed (no P2P from this app) and never ask
         // TorBox to zip the payload (parity with electron/torbox.ts:93,117).
         val res = Web.postMultipartFields(
@@ -106,7 +106,7 @@ class TorBoxApi(private val settings: SettingsRepository) {
     }
 
     /** GET /torrents/requestdl → signed direct URL. */
-    fun requestDownloadLink(torrentId: String, fileId: String): Result<String> = runCatching {
+    suspend fun requestDownloadLink(torrentId: String, fileId: String): Result<String> = runCatching {
         val res = Web.get(
             api(
                 "/torrents/requestdl",
@@ -120,7 +120,7 @@ class TorBoxApi(private val settings: SettingsRepository) {
             ?: error("no url")
     }.map { (it as kotlinx.serialization.json.JsonPrimitive).content }
 
-    fun deleteTorrent(torrentId: String): Result<Unit> = runCatching {
+    suspend fun deleteTorrent(torrentId: String): Result<Unit> = runCatching {
         val res = Web.postJson(api("/torrents/controltorrent"), """{"torrent_id":"$torrentId","operation":"Delete"}""", auth())
         if (res.code !in 200..299) error("HTTP ${res.code}")
     }

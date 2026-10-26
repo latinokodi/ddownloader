@@ -39,7 +39,7 @@ class CometApi {
 
     private val base: String get() = BuildConfig.COMET_BASE.trimEnd('/')
 
-    fun manifest(): Result<JsonObject> = runCatching {
+    suspend fun manifest(): Result<JsonObject> = runCatching {
         val res = Web.get("$base/manifest.json")
         if (res.code !in 200..299) error("HTTP ${res.code}")
         Web.json.parseToJsonElement(res.body).jsonObject
@@ -50,7 +50,7 @@ class CometApi {
      * Series require `tt123:season:episode`; the ids are validated before
      * interpolation so a caller cannot inject a path segment.
      */
-    fun streams(type: String, imdbId: String, season: Int? = null, episode: Int? = null): Result<List<Stream>> = runCatching {
+    suspend fun streams(type: String, imdbId: String, season: Int? = null, episode: Int? = null): Result<List<Stream>> = runCatching {
         require(type == "movie" || type == "series") { "type must be movie|series" }
         require(Regex("^tt\\d{5,10}$").matches(imdbId)) { "invalid imdb id" }
         val id = if (type == "series") {

@@ -106,7 +106,7 @@ class DeviceAuth(private val settings: SettingsRepository) {
         )
     }.onFailure { AppLog.e(TAG, "torbox device start failed: ${it.message}", it) }
 
-    private fun pollTorBox(prompt: Prompt): Outcome {
+    private suspend fun pollTorBox(prompt: Prompt): Outcome {
         val body = """{"device_code":"${prompt.deviceCode}"}"""
         val res = try {
             Web.postJson("$TORBOX/api/user/auth/device/token", body, mapOf("User-Agent" to "DDownloader"))
@@ -217,7 +217,7 @@ class DeviceAuth(private val settings: SettingsRepository) {
         )
     }.onFailure { AppLog.e(TAG, "real-debrid device start failed: ${it.message}", it) }
 
-    private fun pollRealDebrid(prompt: Prompt): Outcome {
+    private suspend fun pollRealDebrid(prompt: Prompt): Outcome {
         // Step 2: the user authorized? Then we get per-user client credentials.
         val credRes = try {
             Net.get(

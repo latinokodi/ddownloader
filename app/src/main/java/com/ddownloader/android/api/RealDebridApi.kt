@@ -28,19 +28,19 @@ class RealDebridApi(private val settings: SettingsRepository) {
 
     private fun auth(): Map<String, String> = mapOf("Authorization" to "Bearer ${token()}")
 
-    fun deviceCode(clientId: String): Result<JsonObject> = runCatching {
+    suspend fun deviceCode(clientId: String): Result<JsonObject> = runCatching {
         val res = Web.get("$OAUTH/device/code?client_id=$clientId&new_credentials=yes")
         if (res.code !in 200..299) error("HTTP ${res.code}")
         Web.json.parseToJsonElement(res.body).jsonObject
     }
 
-    fun credentials(clientId: String, code: String): Result<JsonObject> = runCatching {
+    suspend fun credentials(clientId: String, code: String): Result<JsonObject> = runCatching {
         val res = Web.get("$OAUTH/device/credentials?client_id=$clientId&code=$code")
         if (res.code !in 200..299) error("HTTP ${res.code}")
         Web.json.parseToJsonElement(res.body).jsonObject
     }
 
-    fun token(clientId: String, clientSecret: String, code: String): Result<JsonObject> = runCatching {
+    suspend fun token(clientId: String, clientSecret: String, code: String): Result<JsonObject> = runCatching {
         val res = Web.postForm(
             "$OAUTH/token",
             mapOf(
@@ -54,26 +54,26 @@ class RealDebridApi(private val settings: SettingsRepository) {
         Web.json.parseToJsonElement(res.body).jsonObject
     }
 
-    fun user(): Result<JsonObject> = runCatching {
+    suspend fun user(): Result<JsonObject> = runCatching {
         val res = Web.get("$REST/user", headers = auth())
         if (res.code !in 200..299) error("HTTP ${res.code}")
         Web.json.parseToJsonElement(res.body).jsonObject
     }
 
-    fun listTorrents(): Result<List<JsonObject>> = runCatching {
+    suspend fun listTorrents(): Result<List<JsonObject>> = runCatching {
         val res = Web.get("$REST/torrents", headers = auth())
         if (res.code !in 200..299) error("HTTP ${res.code}")
         (Web.json.parseToJsonElement(res.body) as? kotlinx.serialization.json.JsonArray)
             ?.mapNotNull { it as? JsonObject } ?: emptyList()
     }
 
-    fun addMagnet(magnet: String): Result<String> = runCatching {
+    suspend fun addMagnet(magnet: String): Result<String> = runCatching {
         val res = Web.postForm("$REST/torrents/addMagnet", mapOf("magnet" to magnet), auth())
         if (res.code !in 200..299) error("HTTP ${res.code}")
         Web.json.parseToJsonElement(res.body).jsonObject.str("id") ?: error("no id")
     }
 
-    fun torrentInfo(id: String): Result<TorrentInfo> = runCatching {
+    suspend fun torrentInfo(id: String): Result<TorrentInfo> = runCatching {
         val res = Web.get("$REST/torrents/info/$id", headers = auth())
         if (res.code !in 200..299) error("HTTP ${res.code}")
         val o = Web.json.parseToJsonElement(res.body).jsonObject
@@ -97,17 +97,17 @@ class RealDebridApi(private val settings: SettingsRepository) {
         )
     }
 
-    fun selectAllFiles(id: String, fileIds: List<String>): Result<Unit> = runCatching {
+    suspend fun selectAllFiles(id: String, fileIds: List<String>): Result<Unit> = runCatching {
         val res = Web.postForm("$REST/torrents/selectFiles/$id", mapOf("files" to fileIds.joinToString(",")), auth())
         if (res.code !in 200..299 && res.code != 204) error("HTTP ${res.code}")
     }
 
-    fun deleteTorrent(id: String): Result<Unit> = runCatching {
+    suspend fun deleteTorrent(id: String): Result<Unit> = runCatching {
         val res = Web.formDelete("$REST/torrents/delete/$id", auth())
         if (res.code !in 200..299 && res.code != 204) error("HTTP ${res.code}")
     }
 
-    fun unrestrict(link: String): Result<Unrestricted> = runCatching {
+    suspend fun unrestrict(link: String): Result<Unrestricted> = runCatching {
         val res = Web.postForm("$REST/unrestrict/link", mapOf("link" to link), auth())
         if (res.code !in 200..299) error("HTTP ${res.code}: ${res.body.take(160)}")
         val o = Web.json.parseToJsonElement(res.body).jsonObject

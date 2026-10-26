@@ -7,6 +7,23 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.0.10] - 2026-10-26
+
+### Changed
+- **HTTP layer owns its dispatcher.** Every `Web` helper (`get`, `postJson`, `postForm`,
+  `formDelete`, `postMultipartFields`) is now `suspend` and hops to `Dispatchers.IO` itself, and
+  the service clients (`TorBoxApi`, `RealDebridApi`, `CometApi`) are `suspend` accordingly. The
+  recurring `NetworkOnMainThreadException`-swallowed-by-`runCatching` bug cannot be reintroduced:
+  the compiler now rejects calling these outside a coroutine.
+  This is what caused "Could not add magnet: null" (and earlier the empty Discover/Search and
+  the dead TMDB validate button).
+- `Web` also throws an explicit `IOException` if a request is ever executed on the main thread,
+  so the failure mode is a readable message instead of `null`.
+
+### Fixed
+- Empty Downloads state no longer mentions the Tor network.
+
+
 ## [1.0.9] - 2026-10-26
 
 ### Fixed
