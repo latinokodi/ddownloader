@@ -7,6 +7,19 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.1.3] - 2026-10-26
+
+### Changed
+- **Search results are a poster grid**, not a list: adaptive columns (132 dp minimum, so ~8 on a
+  landscape tablet and ~3-4 on a phone), 2:3 artwork, rating badge and a "year · type" caption.
+  The hero, search card and paste-link card still span the full width.
+
+### Added
+- **Live badge on the Downloads tab**: the count is every transfer that has not reached a terminal
+  state, so it goes up as downloads are queued and down as they complete or fail. It carries a
+  content description ("N unfinished downloads") for screen readers, and caps at 99+.
+
+
 ## [1.1.2] - 2026-10-26
 
 ### Fixed

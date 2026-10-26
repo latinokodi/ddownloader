@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -200,6 +202,9 @@ private fun AppRootContent(
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val active by vm.activeCount.collectAsStateWithLifecycle()
+    // Badge count: every transfer that has not reached a terminal state yet.
+    val allRecords by vm.records.collectAsStateWithLifecycle()
+    val pendingCount = allRecords.count { it.state.isActive }
     
 
     LaunchedEffect(vm.message) {
@@ -255,6 +260,7 @@ private fun AppRootContent(
                     }
                 }
                 BottomNav(
+                    pending = pendingCount,
                     selectedTab = if (showLogs) null else tab,
                     onSelect = {
                         showLogs = false
@@ -333,6 +339,7 @@ private fun TopBar(
 @Composable
 private fun BottomNav(
     selectedTab: Tab?,
+    pending: Int,
     onSelect: (Tab) -> Unit,
     onLogs: () -> Unit,
 ) {
@@ -377,6 +384,28 @@ private fun BottomNav(
                         tint = if (activeTab) TdColor.Cyan else TdColor.TextLow,
                         modifier = Modifier.size(22.dp),
                     )
+                    // Live count of unfinished transfers: goes up when something is
+                    // queued and down as transfers reach a terminal state.
+                    if (t == Tab.DOWNLOADS && pending > 0) {
+                        Box(
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .offset(x = 10.dp, y = (-6).dp)
+                                .defaultMinSize(minWidth = 16.dp, minHeight = 16.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(TdColor.Violet)
+                                .padding(horizontal = 4.dp)
+                                .semantics { contentDescription = "$pending unfinished downloads" },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                if (pending > 99) "99+" else "$pending",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = TdColor.TextHi,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                    }
                 }
                 Spacer(Modifier.height(3.dp))
                 Text(

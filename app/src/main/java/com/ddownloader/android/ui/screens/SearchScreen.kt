@@ -13,7 +13,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
+import com.ddownloader.android.api.tmdbPoster
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,7 +36,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -62,14 +69,17 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
     val settings by vm.settings.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    LazyColumn(
-        Modifier.fillMaxSize(),
+    LazyVerticalGrid(
+        // Adaptive, not fixed: in landscape a fixed 3 makes each poster fill a third of
+        // the screen. 132dp keeps ~5-6 columns on a phone and scales up on tablets.
+        columns = GridCells.Adaptive(minSize = 132.dp),
+        modifier = Modifier.fillMaxSize(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
             start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp,
         ),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        item {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             SessionHero(
                 activeTransfers = active,
                 queuedTransfers = records.count { it.state == com.ddownloader.android.data.db.TransferState.QUEUED },
@@ -79,7 +89,7 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
             )
         }
 
-        item {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             GlassCard {
                 SectionLabel("Find something")
                 Spacer(Modifier.height(10.dp))
@@ -122,13 +132,13 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
         }
 
         if (vm.searchResults.isNotEmpty()) {
-            item { SectionLabel("Results", Modifier.padding(start = 4.dp)) }
+            item(span = { GridItemSpan(maxLineSpan) }) { SectionLabel("Results", Modifier.padding(start = 4.dp)) }
             items(vm.searchResults, key = { "${it.mediaType}-${it.id}" }) { item ->
-                TitleRow(item) { vm.openItem(item) }
+                ResultCard(item) { vm.openItem(item) }
             }
         }
 
-        item {
+        item(span = { GridItemSpan(maxLineSpan) }) {
             GlassCard {
                 SectionLabel("Paste a link")
                 Spacer(Modifier.height(10.dp))
@@ -286,5 +296,64 @@ private fun TitleRow(item: TmdbApi.Item, onClick: () -> Unit) {
             }
         }
         Icon(AppIcons.PlayArrow, contentDescription = null, tint = TdColor.TextLow, modifier = Modifier.size(20.dp))
+    }
+}
+
+
+/**
+ * A search result as a poster card, so results read like a catalogue instead of a list.
+ * Same visual language as the Discover shelves: 2:3 artwork, rating badge, two-line title.
+ */
+@Composable
+private fun ResultCard(item: TmdbApi.Item, onClick: () -> Unit) {
+    Column(Modifier.clickable(onClick = onClick)) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(2f / 3f)
+                .clip(RoundedCornerShape(14.dp))
+                .background(TdColor.Ink3),
+        ) {
+            AsyncImage(
+                model = tmdbPoster(item.posterPath, "w342"),
+                contentDescription = item.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+            if (item.voteAverage > 0) {
+                Row(
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(6.dp)
+                        .clip(RoundedCornerShape(9.dp))
+                        .background(TdColor.Ink0.copy(alpha = 0.72f))
+                        .padding(horizontal = 6.dp, vertical = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Box(Modifier.size(4.dp).clip(RoundedCornerShape(2.dp)).background(TdColor.Mint))
+                    Spacer(Modifier.width(4.dp))
+                    Text(
+                        String.format(java.util.Locale.US, "%.1f", item.voteAverage),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TdColor.TextHi,
+                    )
+                }
+            }
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            item.title,
+            style = MaterialTheme.typography.bodySmall,
+            color = TdColor.TextHi,
+            fontWeight = FontWeight.Medium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(
+            listOfNotNull(item.year?.toString(), item.mediaType.replaceFirstChar { it.uppercase() })
+                .joinToString(" · "),
+            style = MaterialTheme.typography.labelSmall,
+            color = TdColor.TextLow,
+        )
     }
 }
