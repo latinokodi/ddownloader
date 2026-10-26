@@ -1,5 +1,6 @@
 package com.ddownloader.android.ui
 
+import com.ddownloader.android.core.LogL10n
 import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,17 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private val str get() = com.ddownloader.android.ui.i18n.stringsFor(
         com.ddownloader.android.ui.i18n.Language.fromTag(settings.value.language),
     )
+
+    init {
+        // Log lines are written outside the composition, so they follow the setting through
+        // LogL10n rather than LocalStrings.
+        viewModelScope.launch {
+            settings.collect {
+                com.ddownloader.android.core.LogL10n.language =
+                    com.ddownloader.android.ui.i18n.Language.fromTag(it.language)
+            }
+        }
+    }
 
     val records: StateFlow<List<DownloadRecord>> = locator.db.records
     val live: StateFlow<Map<String, DownloadManager.Live>> = locator.manager.live
@@ -307,7 +319,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     if (items.isEmpty()) searchError = "No results for \"$q\"."
                 }
             } catch (t: Throwable) {
-                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
+                AppLog.e("Pipeline", LogL10n.of("addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", "addMagnet falló: ${t.javaClass.simpleName}: ${t.message}"), t)
                 searchError = t.message ?: "Search failed"
             } finally {
                 searching = false
@@ -333,7 +345,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     shelvesError = "TMDB returned no titles. Check your API key in Settings."
                 }
             } catch (t: Throwable) {
-                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
+                AppLog.e("Pipeline", LogL10n.of("addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", "addMagnet falló: ${t.javaClass.simpleName}: ${t.message}"), t)
                 shelvesError = t.message ?: "Discover failed"
             } finally {
                 shelvesLoading = false
@@ -350,7 +362,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 discoverItems = items
                 if (items.isEmpty()) discoverError = "TMDB returned no titles (check the API key)."
             } catch (t: Throwable) {
-                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
+                AppLog.e("Pipeline", LogL10n.of("addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", "addMagnet falló: ${t.javaClass.simpleName}: ${t.message}"), t)
                 discoverError = t.message ?: "Discover failed"
             } finally {
                 discoverLoading = false
@@ -396,7 +408,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Queue a Comet stream. Debrid is required to turn an infoHash into bytes. */
     fun downloadStream(stream: CometApi.Stream) {
-        AppLog.i("Pipeline", "downloadStream tapped: name=${stream.name} size=${stream.videoSize}")
+        AppLog.i("Pipeline", LogL10n.of("downloadStream tapped: name=${stream.name} size=${stream.videoSize}", "downloadStream pulsado: name=${stream.name} size=${stream.videoSize}"))
         val magnet = stream.magnet()
         if (magnet == null) {
             toast(str.noInfoHash)
@@ -406,7 +418,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             toast(str.noDebrid)
             return
         }
-        AppLog.i("Pipeline", "magnet built (${magnet.length} chars) — handing to the debrid flow")
+        AppLog.i("Pipeline", LogL10n.of("magnet built (${magnet.length} chars) — handing to the debrid flow", "magnet creado (${magnet.length} caracteres) — pasando al flujo debrid"))
         toast(str.magnetResolved)
         addMagnet(magnet, estimatedSize = stream.videoSize ?: 0L, name = stream.displayName())
         closeStreamSheet()
@@ -446,7 +458,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun addMagnet(magnet: String, estimatedSize: Long = 0L, name: String = "magnet") {
-        AppLog.i("Pipeline", "addMagnet: start (hasDebrid=${settings.value.hasAnyDebrid}, torbox=${settings.value.hasTorBox})")
+        AppLog.i("Pipeline", LogL10n.of("addMagnet: start (hasDebrid=${settings.value.hasAnyDebrid}, torbox=${settings.value.hasTorBox})", "addMagnet: inicio (hasDebrid=${settings.value.hasAnyDebrid}, torbox=${settings.value.hasTorBox})"))
         if (!settings.value.hasAnyDebrid) {
             toast(str.noDebrid)
             return
@@ -456,7 +468,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 if (settings.value.hasTorBox) {
                     val id = locator.torbox.addMagnet(magnet).getOrThrow()
-                    AppLog.i("Pipeline", "torbox createtorrent accepted, id=$id")
+                    AppLog.i("Pipeline", LogL10n.of("torbox createtorrent accepted, id=$id", "torbox aceptó createtorrent, id=$id"))
                     // TorBox needs a few seconds to fetch metadata. Polling beats giving up:
                     // the old single-shot lookup told the user "file list not ready yet".
                     var files: List<TorBoxApi.TorrentFile> = emptyList()
@@ -467,13 +479,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                         if (t != null && !t.files.isNullOrEmpty()) {
                             files = t.files
                             torrentId = t.id
-                            AppLog.i("Pipeline", "torbox files ready after ${attempt * 3}s: ${files.size} file(s)")
+                            AppLog.i("Pipeline", LogL10n.of("torbox files ready after ${attempt * 3}s: ${files.size} file(s)", "archivos de torbox listos tras ${attempt * 3}s: ${files.size} archivo(s)"))
                             break
                         }
                         delay(3000)
                     }
                     if (files.isEmpty()) {
-                        AppLog.w("Pipeline", "torbox never listed files for id=$id")
+                        AppLog.w("Pipeline", LogL10n.of("torbox never listed files for id=$id", "torbox nunca listó archivos para id=$id"))
                         toast(str.magnetNoFiles.format(id))
                         return@launch
                     }
@@ -497,7 +509,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                             )
                         )
                     }
-                    AppLog.i("Pipeline", "enqueued ${videos.size} file(s) from torrent $torrentId")
+                    AppLog.i("Pipeline", LogL10n.of("enqueued ${videos.size} file(s) from torrent $torrentId", "encolados ${videos.size} archivo(s) del torrent $torrentId"))
                     DownloadService.start(getApplication())
                     toast(
                         if (videos.size == 1) "Queued 1 file from TorBox"
@@ -519,7 +531,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     toast(str.queuedFromRd)
                 }
             } catch (t: Throwable) {
-                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
+                AppLog.e("Pipeline", LogL10n.of("addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", "addMagnet falló: ${t.javaClass.simpleName}: ${t.message}"), t)
                 toast(str.couldNotAddMagnet.format(t.message ?: ""))
             } finally {
                 busy = false

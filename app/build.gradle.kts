@@ -17,8 +17,8 @@ val keystoreProps = Properties().apply {
 }
 
 // Version and artifact naming live in one place.
-val appVersionCode = 22
-val appVersionName = "1.3.3"
+val appVersionCode = 23
+val appVersionName = "1.4.0"
 
 android {
     namespace = "com.ddownloader.android"

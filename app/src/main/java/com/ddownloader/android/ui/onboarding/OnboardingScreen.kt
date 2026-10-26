@@ -130,6 +130,8 @@ fun OnboardingScreen(vm: AppViewModel) {
             }
         }
 
+        OnboardingSteps(current = pager.currentPage, total = 4, progress = pager.currentPageOffsetFraction)
+        Spacer(Modifier.height(14.dp))
         HorizontalPager(
             state = pager,
             modifier = Modifier.weight(1f),
@@ -463,5 +465,49 @@ private fun RequirementDot(number: String, done: Boolean) {
             style = MaterialTheme.typography.labelSmall,
             color = if (done) TdColor.Ink0 else TdColor.TextMid,
         )
+    }
+}
+
+
+/** Four segments that fill as you advance; the fraction animates with the pager drag. */
+@Composable
+private fun OnboardingSteps(current: Int, total: Int, progress: Float) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 22.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        repeat(total) { index ->
+            val fill = when {
+                index < current -> 1f
+                index == current -> (1f - kotlin.math.abs(progress)).coerceIn(0.08f, 1f)
+                else -> 0.08f
+            }
+            val animated by androidx.compose.animation.core.animateFloatAsState(
+                targetValue = fill,
+                animationSpec = androidx.compose.animation.core.tween(220),
+                label = "step-$index",
+            )
+            Box(
+                Modifier
+                    .weight(1f)
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(TdColor.Line),
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxWidth(fraction = animated)
+                        .height(4.dp)
+                        .clip(RoundedCornerShape(2.dp))
+                        .background(
+                            androidx.compose.ui.graphics.Brush.horizontalGradient(
+                                listOf(TdColor.Cyan, TdColor.Violet),
+                            ),
+                        ),
+                )
+            }
+        }
     }
 }

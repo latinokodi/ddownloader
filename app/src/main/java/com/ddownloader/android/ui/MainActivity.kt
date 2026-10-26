@@ -1,5 +1,6 @@
 package com.ddownloader.android.ui
 
+import com.ddownloader.android.core.LogL10n
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -97,7 +98,7 @@ class MainActivity : ComponentActivity() {
 
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            AppLog.i("Main", "POST_NOTIFICATIONS granted=$granted")
+            AppLog.i("Main", LogL10n.of("POST_NOTIFICATIONS granted=$granted", "POST_NOTIFICATIONS concedido=$granted"))
             vm.toast(if (granted) "Notifications enabled" else "Notifications blocked — transfers still run")
         }
 
@@ -149,7 +150,7 @@ class MainActivity : ComponentActivity() {
         if (url.isBlank()) return
         val name = uri.getQueryParameter("name")
         val expected = uri.getQueryParameter("expected")?.toLongOrNull() ?: 0L
-        AppLog.i("Main", "test intent: enqueue ${AppLog.redact(url)} name=$name expected=$expected")
+        AppLog.i("Main", LogL10n.of("test intent: enqueue ${AppLog.redact(url)} name=$name expected=$expected", "intent de prueba: encolar ${AppLog.redact(url)} name=$name expected=$expected"))
         vm.addUrl(url, name, expected)
     }
 }

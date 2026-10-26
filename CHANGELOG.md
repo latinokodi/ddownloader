@@ -7,6 +7,19 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-26
+
+### Changed — the revamp and the translation are complete
+- **Settings sections** now carry a tinted icon tile and label (`SettingsSection`) instead of seven
+  flat uppercase captions, so the screen scans as grouped settings rather than paragraphs.
+- **Onboarding** gained a four-segment gradient progress bar that fills as you advance and tracks
+  the drag while paging.
+- **The log stream is localized.** Diagnostics are written where the event happens (HTTP redirects,
+  the download manager, the service locator), so they cannot read `LocalStrings`; a new `LogL10n`
+  holds the active language and every log template is now a translated pair. This closes the last
+  English text visible in the Spanish UI.
+
+
 ## [1.3.3] - 2026-10-26
 
 ### Fixed

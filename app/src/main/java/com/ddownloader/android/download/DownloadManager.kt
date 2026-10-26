@@ -1,5 +1,6 @@
 package com.ddownloader.android.download
 
+import com.ddownloader.android.core.LogL10n
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -140,7 +141,7 @@ class DownloadManager(
                 (r.expectedSize <= 0 || r.bytesDone < r.expectedSize)
         }
         if (candidates.isEmpty()) return 0
-        AppLog.i(TAG, "connectivity restored — retrying ${candidates.size} interrupted transfer(s)")
+        AppLog.i(TAG, LogL10n.of("connectivity restored — retrying ${candidates.size} interrupted transfer(s)", "conectividad restaurada — reintentando ${candidates.size} transferencia(s) interrumpida(s)"))
         candidates.forEach { retry(it.id) }
         return candidates.size
     }

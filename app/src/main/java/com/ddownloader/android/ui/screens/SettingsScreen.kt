@@ -43,7 +43,7 @@ import com.ddownloader.android.ui.components.DividerLine
 import com.ddownloader.android.ui.components.GhostButton
 import com.ddownloader.android.ui.components.AuroraCard
 import com.ddownloader.android.ui.components.MetricRow
-import com.ddownloader.android.ui.components.SectionLabel
+import com.ddownloader.android.ui.components.SettingsSection
 import com.ddownloader.android.ui.components.StatusPill
 import com.ddownloader.android.ui.components.TdTextField
 import com.ddownloader.android.ui.components.ToggleRow
@@ -112,7 +112,7 @@ fun SettingsScreen(vm: AppViewModel) {
         item {
             AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    SectionLabel(t.language)
+                    SettingsSection(AppIcons.Bolt, t.language, TdColor.Cyan)
                     Spacer(Modifier.weight(1f))
                     StatusPill(if (settings.language == "es") "ES" else "EN", TdColor.Cyan, AppIcons.History)
                 }
@@ -140,7 +140,7 @@ fun SettingsScreen(vm: AppViewModel) {
         item {
             AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    SectionLabel(t.accounts)
+                    SettingsSection(AppIcons.Shield, t.accounts, TdColor.Violet)
                     Spacer(Modifier.weight(1f))
                     GhostButton(t.recheck, icon = AppIcons.Refresh) { vm.checkAccounts() }
                 }
@@ -179,7 +179,7 @@ fun SettingsScreen(vm: AppViewModel) {
         item {
             AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    SectionLabel(t.privacy)
+                    SettingsSection(AppIcons.Key, t.privacy, TdColor.Mint)
                     Spacer(Modifier.weight(1f))
                     StatusPill("HARDENED", TdColor.Mint, AppIcons.VerifiedUser)
                 }
@@ -194,7 +194,7 @@ fun SettingsScreen(vm: AppViewModel) {
         // ── Metadata ───────────────────────────────────────────────────────
         item {
             AuroraCard {
-                SectionLabel(t.metadata)
+                SettingsSection(AppIcons.Search, t.metadata, TdColor.Cyan)
                 Spacer(Modifier.height(6.dp))
                 Text(t.tmdbHint, style = MaterialTheme.typography.bodySmall, color = TdColor.TextLow)
                 Spacer(Modifier.height(10.dp))
@@ -220,7 +220,7 @@ fun SettingsScreen(vm: AppViewModel) {
         // ── Storage ────────────────────────────────────────────────────────
         item {
             AuroraCard {
-                SectionLabel(t.storage)
+                SettingsSection(AppIcons.Download, t.storage, TdColor.Mint)
                 Spacer(Modifier.height(10.dp))
                 MetricRow(
                     t.destination,
@@ -293,7 +293,7 @@ fun SettingsScreen(vm: AppViewModel) {
         // ── Backup & restore ───────────────────────────────────────────────
         item {
             AuroraCard {
-                SectionLabel(t.backup)
+                SettingsSection(AppIcons.CloudDownload, t.backup, TdColor.Violet)
                 Spacer(Modifier.height(6.dp))
                 Text(t.backupHint, style = MaterialTheme.typography.bodySmall, color = TdColor.TextLow)
                 Spacer(Modifier.height(10.dp))
@@ -312,7 +312,7 @@ fun SettingsScreen(vm: AppViewModel) {
         item {
             AuroraCard {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    SectionLabel(t.updates)
+                    SettingsSection(AppIcons.Refresh, t.updates, TdColor.Amber)
                     Spacer(Modifier.weight(1f))
                     StatusPill("v${BuildConfig.VERSION_NAME}", TdColor.TextMid, AppIcons.History)
                 }

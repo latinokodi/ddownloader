@@ -243,3 +243,41 @@ fun AnimatedCount(value: Int, color: Color, style: androidx.compose.ui.text.Text
     val animated by animateIntAsState(targetValue = value, animationSpec = tween(Motion.MEDIUM), label = "count")
     Text("$animated", style = style, color = color, fontWeight = FontWeight.Bold)
 }
+
+
+/**
+ * Section heading inside a settings card: a tinted icon tile plus an uppercase label.
+ * Seven flat labels in a row made the screen read as a list of paragraphs.
+ */
+@Composable
+fun SettingsSection(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    accent: androidx.compose.ui.graphics.Color = TdColor.TextLow,
+) {
+    androidx.compose.foundation.layout.Row(
+        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(10.dp),
+    ) {
+        androidx.compose.foundation.layout.Box(
+            androidx.compose.ui.Modifier
+                .size(26.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(accent.copy(alpha = 0.14f)),
+            contentAlignment = androidx.compose.ui.Alignment.Center,
+        ) {
+            androidx.compose.material3.Icon(
+                icon,
+                contentDescription = null,
+                tint = accent,
+                modifier = androidx.compose.ui.Modifier.size(15.dp),
+            )
+        }
+        Text(
+            title.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            color = TdColor.TextMid,
+            fontWeight = FontWeight.SemiBold,
+        )
+    }
+}

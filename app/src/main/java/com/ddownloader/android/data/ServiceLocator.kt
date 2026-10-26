@@ -1,5 +1,6 @@
 package com.ddownloader.android.data
 
+import com.ddownloader.android.core.LogL10n
 import android.app.Application
 import com.ddownloader.android.api.CometApi
 import com.ddownloader.android.api.RealDebridApi
@@ -87,7 +88,7 @@ object ServiceLocator {
         com.ddownloader.android.download.NetworkMonitor.start(app)
         // Nothing should keep a partial alive once its queue row is gone.
         runCatching { com.ddownloader.android.storage.Storage.pruneOrphans(app, db.records.value.map { it.id }) }
-        AppLog.i("DI", "initialised (db=${db.records.value.size} records)")
+        AppLog.i("DI", LogL10n.of("initialised (db=${db.records.value.size} records)", "inicializado (bd=${db.records.value.size} registros)"))
     }
 
     /**

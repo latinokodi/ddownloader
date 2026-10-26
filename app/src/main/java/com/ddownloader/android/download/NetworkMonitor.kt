@@ -1,5 +1,6 @@
 package com.ddownloader.android.download
 
+import com.ddownloader.android.core.LogL10n
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -30,7 +31,7 @@ object NetworkMonitor {
         runCatching {
             cm.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    AppLog.i(TAG, "network available — re-arming interrupted transfers")
+                    AppLog.i(TAG, LogL10n.of("network available — re-arming interrupted transfers", "red disponible — rearmando transferencias interrumpidas"))
                     val retried = ServiceLocator.manager.retryNetworkFailures()
                     if (retried > 0) {
                         runCatching { DownloadService.start(context) }

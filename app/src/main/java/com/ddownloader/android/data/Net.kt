@@ -1,5 +1,6 @@
 package com.ddownloader.android.data
 
+import com.ddownloader.android.core.LogL10n
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -117,7 +118,7 @@ object Net {
             if (!allowedHost(next.host)) {
                 throw IOException("Refusing redirect to non-allowlisted host ${next.host}")
             }
-            AppLog.d("Net", "redirect ${req.url.host} → ${next.host} (${resp.code})")
+            AppLog.d("Net", LogL10n.of("redirect ${req.url.host} → ${next.host} (${resp.code})", "redirección ${req.url.host} → ${next.host} (${resp.code})"))
             req = req.newBuilder().url(next).build()
         }
     }
