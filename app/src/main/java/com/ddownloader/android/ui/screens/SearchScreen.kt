@@ -41,12 +41,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import coil.compose.AsyncImage
 import com.ddownloader.android.api.TmdbApi
 import com.ddownloader.android.api.tmdbPoster
 import com.ddownloader.android.ui.AppViewModel
 import com.ddownloader.android.ui.components.GhostButton
 import com.ddownloader.android.ui.components.AuroraCard
+import com.ddownloader.android.ui.components.HomeHero
 import com.ddownloader.android.ui.components.GradientButton
 import com.ddownloader.android.ui.components.SectionLabel
 import com.ddownloader.android.ui.components.StatusPill
@@ -70,11 +72,16 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
     val records by vm.records.collectAsStateWithLifecycle()
     val settings by vm.settings.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val gridState = androidx.compose.foundation.lazy.grid.rememberLazyGridState()
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    // The paste card is the last full-width block; the hero's "Paste" tile scrolls to it.
+    val pasteIndex = 3 + if (vm.searchResults.isNotEmpty()) 1 + vm.searchResults.size else 0
 
     LazyVerticalGrid(
         // Adaptive, not fixed: in landscape a fixed 3 makes each poster fill a third of
         // the screen. 132dp keeps ~5-6 columns on a phone and scales up on tablets.
         columns = GridCells.Adaptive(minSize = 132.dp),
+        state = gridState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
             start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp,
@@ -82,12 +89,15 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
-            SessionHero(
-                activeTransfers = active,
-                queuedTransfers = records.count { it.state == com.ddownloader.android.data.db.TransferState.QUEUED },
-                completedTransfers = records.count { it.state == com.ddownloader.android.data.db.TransferState.COMPLETED },
+            HomeHero(
+                active = active,
+                queued = records.count { it.state == com.ddownloader.android.data.db.TransferState.QUEUED },
+                completed = records.count { it.state == com.ddownloader.android.data.db.TransferState.COMPLETED },
                 hasDebrid = settings.hasAnyDebrid,
+                hasTmdb = settings.hasTmdb,
                 onOpenDownloads = onOpenDownloads,
+                onOpenDiscover = { vm.discoverKind = vm.discoverKind },
+                onPaste = { scope.launch { gridState.animateScrollToItem(pasteIndex) } },
             )
         }
 
