@@ -657,12 +657,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             if (code in 200..299) {
                 locator.settings.setTmdbApiKey(cleaned)
                 _tmdbKeyState.value = TmdbUi.Valid
-                toast(str.tmdbKeySaved)
             } else {
                 val reason = if (code <= 0) str.tmdbKeyNoNetwork else "HTTP $code"
-                val message = str.tmdbKeyInvalid.format(reason)
-                _tmdbKeyState.value = TmdbUi.Invalid(message)
-                toast(message)
+                // Rendered inline in the field's card (green/red), not as a toast.
+                _tmdbKeyState.value = TmdbUi.Invalid(str.tmdbKeyInvalid.format(reason))
             }
         }
     }

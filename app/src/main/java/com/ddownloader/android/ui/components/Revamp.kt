@@ -281,3 +281,22 @@ fun SettingsSection(
         )
     }
 }
+
+
+/**
+ * Inline result of a field validation (e.g. the TMDB key).
+ *
+ * Deliberately not a toast: a toast vanishes after ~3 s, cannot be re-read, and reads as a
+ * transient error rather than a field-level result. Colour carries the verdict, text the reason.
+ */
+@Composable
+fun ValidationLine(text: String, color: androidx.compose.ui.graphics.Color, modifier: Modifier = Modifier) {
+    androidx.compose.foundation.layout.Row(
+        modifier.fillMaxWidth(),
+        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(7.dp),
+    ) {
+        Box(Modifier.size(6.dp).clip(CircleShape).background(color))
+        Text(text, style = MaterialTheme.typography.bodySmall, color = color)
+    }
+}

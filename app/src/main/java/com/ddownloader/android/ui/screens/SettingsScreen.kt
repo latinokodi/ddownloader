@@ -44,6 +44,7 @@ import com.ddownloader.android.ui.components.GhostButton
 import com.ddownloader.android.ui.components.AuroraCard
 import com.ddownloader.android.ui.components.MetricRow
 import com.ddownloader.android.ui.components.SettingsSection
+import com.ddownloader.android.ui.components.ValidationLine
 import com.ddownloader.android.ui.components.StatusPill
 import com.ddownloader.android.ui.components.TdTextField
 import com.ddownloader.android.ui.components.ToggleRow
@@ -60,6 +61,7 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(vm: AppViewModel) {
     val t = LocalStrings.current
     val settings by vm.settings.collectAsStateWithLifecycle()
+    val tmdbState by vm.tmdbKeyState.collectAsStateWithLifecycle()
     val torboxState by vm.torboxAccount.collectAsStateWithLifecycle()
     val rdState by vm.realDebridAccount.collectAsStateWithLifecycle()
     val update by vm.updateState.collectAsStateWithLifecycle()
@@ -213,6 +215,17 @@ fun SettingsScreen(vm: AppViewModel) {
                             vm.saveTmdbKey("")
                         }
                     }
+                }
+                Spacer(Modifier.height(10.dp))
+                // Field-level result: green when accepted, red with the reason when not.
+                when (val st = tmdbState) {
+                    is AppViewModel.TmdbUi.Checking -> ValidationLine(t.checking, TdColor.Cyan)
+                    is AppViewModel.TmdbUi.Valid -> ValidationLine(t.tmdbValid, TdColor.Mint)
+                    is AppViewModel.TmdbUi.Invalid -> ValidationLine(st.reason, TdColor.Rose)
+                    AppViewModel.TmdbUi.Idle -> ValidationLine(
+                        if (settings.hasTmdb) t.tmdbValid else t.tmdbHint,
+                        if (settings.hasTmdb) TdColor.Mint else TdColor.TextLow,
+                    )
                 }
             }
         }
