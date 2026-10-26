@@ -1,0 +1,50 @@
+{
+  "project": "F:\\PyApps\\ddandroid\\app\\src",
+  "timestamp": "2026-10-26T09:58:31.188719",
+  "scan_type": "all",
+  "scans": {
+    "dependencies": {
+      "tool": "dependency_scanner",
+      "findings": [],
+      "status": "[OK] Supply chain checks passed"
+    },
+    "secrets": {
+      "tool": "secret_scanner",
+      "findings": [],
+      "status": "[OK] No secrets detected",
+      "scanned_files": 1,
+      "by_severity": {
+        "critical": 0,
+        "high": 0,
+        "medium": 0
+      }
+    },
+    "code_patterns": {
+      "tool": "pattern_scanner",
+      "findings": [],
+      "status": "[OK] No dangerous patterns",
+      "scanned_files": 0,
+      "by_category": {}
+    },
+    "configuration": {
+      "tool": "config_scanner",
+      "findings": [
+        {
+          "issue": "No security headers configuration found",
+          "severity": "medium",
+          "recommendation": "Configure CSP, HSTS, X-Frame-Options headers"
+        }
+      ],
+      "status": "[?] Minor configuration issues",
+      "checks": {
+        "security_headers_config": false
+      }
+    }
+  },
+  "summary": {
+    "total_findings": 1,
+    "critical": 0,
+    "high": 0,
+    "overall_status": "[?] REVIEW RECOMMENDED"
+  }
+}

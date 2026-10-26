@@ -1,0 +1,241 @@
+{
+  "runId": "20261026T152322Z",
+  "serial": "emulator-5554",
+  "package": "pro.tordownloader.android.verify",
+  "fixtureBase": "http://10.0.2.2:8787",
+  "results": [
+    {
+      "scenario": "s1",
+      "verdict": "PASS",
+      "detail": {
+        "state": "COMPLETED",
+        "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "expected": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "requests": {
+          "seq": 126,
+          "ts": "2026-10-26T15:23:23.668Z",
+          "method": "GET",
+          "path": "/file/plain.bin",
+          "raw_url": "/file/plain.bin?rate=2097152",
+          "range_header": null,
+          "status": 200,
+          "content_range": null,
+          "content_length_header": 8388608,
+          "bytes_written": 8388608,
+          "cut": false,
+          "remote_port": 58364,
+          "user_agent": "TorDownloader-Android/1.0",
+          "duration_ms": 4794,
+          "rate": 2097152,
+          "__done": true
+        }
+      }
+    },
+    {
+      "scenario": "s2",
+      "verdict": "PASS",
+      "detail": {
+        "bytesBeforeKill": 4456448,
+        "resumedFromByte": 4442400,
+        "state": "COMPLETED",
+        "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "expected": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "requests": [
+          {
+            "seq": 127,
+            "ts": "2026-10-26T15:23:30.629Z",
+            "method": "GET",
+            "path": "/file/plain.bin",
+            "raw_url": "/file/plain.bin?rate=2097152",
+            "range_header": null,
+            "status": 200,
+            "content_range": null,
+            "content_length_header": 8388608,
+            "bytes_written": 4456448,
+            "cut": false,
+            "remote_port": 58423,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 2589,
+            "rate": 2097152,
+            "__done": true
+          },
+          {
+            "seq": 128,
+            "ts": "2026-10-26T15:23:34.631Z",
+            "method": "GET",
+            "path": "/file/plain.bin",
+            "raw_url": "/file/plain.bin?rate=2097152",
+            "range_header": "bytes=4442400-",
+            "status": 206,
+            "content_range": "bytes 4442400-8388607/8388608",
+            "content_length_header": 3946208,
+            "bytes_written": 3946208,
+            "cut": false,
+            "remote_port": 58434,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 2377,
+            "rate": 2097152,
+            "__done": true
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "s3",
+      "verdict": "PASS",
+      "detail": {
+        "state": "COMPLETED",
+        "sha256": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488",
+        "expected": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488",
+        "requests": [
+          {
+            "seq": 129,
+            "ts": "2026-10-26T15:23:38.628Z",
+            "method": "GET",
+            "path": "/file/norange.bin",
+            "raw_url": "/file/norange.bin?rate=2097152",
+            "range_header": null,
+            "status": 200,
+            "content_range": null,
+            "content_length_header": 8388608,
+            "bytes_written": 4849664,
+            "cut": false,
+            "remote_port": 52533,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 2684,
+            "rate": 2097152,
+            "__done": true
+          },
+          {
+            "seq": 130,
+            "ts": "2026-10-26T15:23:42.694Z",
+            "method": "GET",
+            "path": "/file/norange.bin",
+            "raw_url": "/file/norange.bin?rate=2097152",
+            "range_header": "bytes=4784128-",
+            "status": 200,
+            "content_range": null,
+            "content_length_header": 8388608,
+            "bytes_written": 1048576,
+            "cut": false,
+            "remote_port": 52555,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 618,
+            "rate": 2097152,
+            "__done": true
+          },
+          {
+            "seq": 131,
+            "ts": "2026-10-26T15:23:43.354Z",
+            "method": "GET",
+            "path": "/file/norange.bin",
+            "raw_url": "/file/norange.bin?rate=2097152",
+            "range_header": null,
+            "status": 200,
+            "content_range": null,
+            "content_length_header": 8388608,
+            "bytes_written": 8388608,
+            "cut": false,
+            "remote_port": 52559,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 4925,
+            "rate": 2097152,
+            "__done": true
+          }
+        ],
+        "note": "electron/worker.ts would publish the truncated partial as complete; this port discards it and re-fetches from zero"
+      }
+    },
+    {
+      "scenario": "s4",
+      "verdict": "PASS",
+      "detail": {
+        "state": "COMPLETED",
+        "sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+        "expected": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+        "requests": {
+          "seq": 132,
+          "ts": "2026-10-26T15:23:50.473Z",
+          "method": "GET",
+          "path": "/file/flaky.bin",
+          "raw_url": "/file/flaky.bin?rate=2097152",
+          "range_header": null,
+          "status": 200,
+          "content_range": null,
+          "content_length_header": 8388608,
+          "bytes_written": 8388608,
+          "cut": false,
+          "remote_port": 51400,
+          "user_agent": "TorDownloader-Android/1.0",
+          "duration_ms": 5044,
+          "rate": 2097152,
+          "__done": true
+        }
+      }
+    },
+    {
+      "scenario": "s5",
+      "verdict": "PASS",
+      "detail": {
+        "state": "FAILED",
+        "error": "stream error at 0 bytes: ProtocolException: unexpected end of stream",
+        "published": null,
+        "requests": [
+          {
+            "seq": 133,
+            "ts": "2026-10-26T15:23:57.501Z",
+            "method": "GET",
+            "path": "/file/empty.bin",
+            "raw_url": "/file/empty.bin",
+            "range_header": null,
+            "status": 200,
+            "content_range": null,
+            "content_length_header": 1000,
+            "bytes_written": 0,
+            "cut": false,
+            "remote_port": 64669,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 1,
+            "__done": true
+          },
+          {
+            "seq": 134,
+            "ts": "2026-10-26T15:24:05.53Z",
+            "method": "GET",
+            "path": "/file/empty.bin",
+            "raw_url": "/file/empty.bin",
+            "range_header": null,
+            "status": 200,
+            "content_range": null,
+            "content_length_header": 1000,
+            "bytes_written": 0,
+            "cut": false,
+            "remote_port": 56523,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 1,
+            "__done": true
+          },
+          {
+            "seq": 135,
+            "ts": "2026-10-26T15:24:15.558Z",
+            "method": "GET",
+            "path": "/file/empty.bin",
+            "raw_url": "/file/empty.bin",
+            "range_header": null,
+            "status": 200,
+            "content_range": null,
+            "content_length_header": 1000,
+            "bytes_written": 0,
+            "cut": false,
+            "remote_port": 65355,
+            "user_agent": "TorDownloader-Android/1.0",
+            "duration_ms": 1,
+            "__done": true
+          }
+        ]
+      }
+    }
+  ],
+  "passCount": 5,
+  "failCount": 0
+}

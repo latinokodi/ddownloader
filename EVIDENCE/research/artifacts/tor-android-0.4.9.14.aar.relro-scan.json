@@ -1,0 +1,85 @@
+{
+  "aar": "artifacts\\tor-android-0.4.9.14.aar",
+  "abis": {
+    "arm64-v8a": {
+      "elf_class": 64,
+      "loads": [],
+      "relro": [
+        {
+          "vaddr": "0x6d4830",
+          "memsz": "0x5a7d0",
+          "end": "0x72f000",
+          "end_mod_0x4000": "0x3000",
+          "relro_16kb_rule_ok": false,
+          "containing_load_align": "0x4000",
+          "containing_load_vaddr": "0x6d4830",
+          "containing_load_memsz": "0x5a7d0",
+          "conclusion": "B: RELRO is its own LOAD; next writable LOAD starts on a separate 16 KB page"
+        }
+      ],
+      "relro_present": true,
+      "compliant": true,
+      "reason": "B: RELRO is its own LOAD; next writable LOAD starts on a separate 16 KB page"
+    },
+    "armeabi-v7a": {
+      "elf_class": 32,
+      "loads": [],
+      "relro": [
+        {
+          "vaddr": "0x6434d0",
+          "memsz": "0x31b30",
+          "end": "0x675000",
+          "end_mod_0x4000": "0x1000",
+          "relro_16kb_rule_ok": false,
+          "containing_load_align": "0x1000",
+          "containing_load_vaddr": "0x6434d0",
+          "containing_load_memsz": "0x31b30",
+          "conclusion": "B fails: writable LOAD overlaps RELRO-end 16 KB page"
+        }
+      ],
+      "relro_present": true,
+      "compliant": false,
+      "reason": "B fails: writable LOAD overlaps RELRO-end 16 KB page"
+    },
+    "x86": {
+      "elf_class": 32,
+      "loads": [],
+      "relro": [
+        {
+          "vaddr": "0x6a6750",
+          "memsz": "0x328b0",
+          "end": "0x6d9000",
+          "end_mod_0x4000": "0x1000",
+          "relro_16kb_rule_ok": false,
+          "containing_load_align": "0x1000",
+          "containing_load_vaddr": "0x6a6750",
+          "containing_load_memsz": "0x328b0",
+          "conclusion": "B fails: writable LOAD overlaps RELRO-end 16 KB page"
+        }
+      ],
+      "relro_present": true,
+      "compliant": false,
+      "reason": "B fails: writable LOAD overlaps RELRO-end 16 KB page"
+    },
+    "x86_64": {
+      "elf_class": 64,
+      "loads": [],
+      "relro": [
+        {
+          "vaddr": "0x7a5300",
+          "memsz": "0x5cd00",
+          "end": "0x802000",
+          "end_mod_0x4000": "0x2000",
+          "relro_16kb_rule_ok": false,
+          "containing_load_align": "0x4000",
+          "containing_load_vaddr": "0x7a5300",
+          "containing_load_memsz": "0x5cd00",
+          "conclusion": "B: RELRO is its own LOAD; next writable LOAD starts on a separate 16 KB page"
+        }
+      ],
+      "relro_present": true,
+      "compliant": true,
+      "reason": "B: RELRO is its own LOAD; next writable LOAD starts on a separate 16 KB page"
+    }
+  }
+}

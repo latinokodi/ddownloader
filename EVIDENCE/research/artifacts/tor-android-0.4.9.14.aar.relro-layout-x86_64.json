@@ -1,0 +1,79 @@
+{
+  "relro": {
+    "i": 6,
+    "type": 1685382482,
+    "flags": 4,
+    "off": 8000256,
+    "vaddr": 8016640,
+    "filesz": 378376,
+    "memsz": 380160,
+    "align": 1
+  },
+  "containing_load": {
+    "i": 3,
+    "type": 1,
+    "flags": 6,
+    "off": 8000256,
+    "vaddr": 8016640,
+    "filesz": 378376,
+    "memsz": 380160,
+    "align": 16384
+  },
+  "writable_in_end_page": [
+    {
+      "name": ".data.rel.ro",
+      "overlap_start": "0x800000",
+      "overlap_end": "0x800e98",
+      "overlap_bytes": 3736
+    },
+    {
+      "name": ".dynamic",
+      "overlap_start": "0x800e98",
+      "overlap_end": "0x801018",
+      "overlap_bytes": 384
+    },
+    {
+      "name": ".got",
+      "overlap_start": "0x801018",
+      "overlap_end": "0x801138",
+      "overlap_bytes": 288
+    },
+    {
+      "name": ".got.plt",
+      "overlap_start": "0x801138",
+      "overlap_end": "0x801908",
+      "overlap_bytes": 2000
+    },
+    {
+      "name": ".relro_padding",
+      "overlap_start": "0x801908",
+      "overlap_end": "0x802000",
+      "overlap_bytes": 1784
+    }
+  ],
+  "writable_after": [
+    {
+      "name": ".data",
+      "type": 1,
+      "flags": 3,
+      "addr": 8411408,
+      "off": 8378640,
+      "size": 65424,
+      "align": 16,
+      "write": true,
+      "nobits": false
+    },
+    {
+      "name": ".bss",
+      "type": 8,
+      "flags": 3,
+      "addr": 8476832,
+      "off": 8444064,
+      "size": 28609,
+      "align": 32,
+      "write": true,
+      "nobits": true
+    }
+  ],
+  "page_of_end": "0x800000"
+}

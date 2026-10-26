@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-10-26T14:26:31Z",
+  "tool": "scripts/verify_egress.py",
+  "tool_version": "2.0.0",
+  "purpose": "no-unexpected-egress check; 'tor' here means TorBox (debrid), NOT the Tor network",
+  "source": {
+    "kind": "pcap",
+    "description": "pcap decode: EVIDENCE\\captures\\app-launch-2026-10-26.pcap",
+    "path": "EVIDENCE\\captures\\app-launch-2026-10-26.pcap",
+    "sha256": "251c73534b53727baa20cf99397da9aa26518e6091c6006ca47068cb86a2c4bb",
+    "bytes": 5784358,
+    "decoded_summary": {
+      "tcp_packets": 5047,
+      "udp_packets": 6,
+      "unique_flows": 13,
+      "unique_destinations": 9,
+      "dns_query_count": 6,
+      "unique_dns_names": [
+        "www.gstatic.com"
+      ],
+      "tls_sni_names": [
+        "www.gstatic.com"
+      ],
+      "http_exchanges": 0
+    }
+  },
+  "allowlist": [
+    "api.torbox.app",
+    "api.real-debrid.com",
+    "api.themoviedb.org",
+    "image.tmdb.org",
+    "comet.stremio.ru"
+  ],
+  "fixture": "10.0.2.2:8787",
+  "endpoint_count": 2,
+  "counts": {
+    "UNEXPECTED": 2
+  },
+  "endpoints": [
+    {
+      "dst": "10.0.2.3",
+      "port": 53,
+      "proto": "UDP",
+      "packets": 3,
+      "bytes": 99,
+      "names": [
+        {
+          "name": "www.gstatic.com",
+          "source": "dns-query"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "DNS query names not allowlisted",
+        "not_allowed": [
+          "www.gstatic.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "172.217.162.131",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 1229,
+      "bytes": 3783,
+      "names": [
+        {
+          "name": "www.gstatic.com",
+          "source": "dns-answer"
+        },
+        {
+          "name": "www.gstatic.com",
+          "source": "tls-sni"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "www.gstatic.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    }
+  ],
+  "unexpected": [
+    {
+      "dst": "172.217.162.131",
+      "port": 443,
+      "proto": "TCP",
+      "names": [
+        "www.gstatic.com",
+        "www.gstatic.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "10.0.2.3",
+      "port": 53,
+      "proto": "UDP",
+      "names": [
+        "www.gstatic.com"
+      ],
+      "reason": "DNS query names not allowlisted"
+    }
+  ],
+  "verdict": "UNEXPECTED EGRESS: 2 destination(s) not covered by the allowlist",
+  "exit_code": 2
+}

@@ -1,0 +1,449 @@
+RUN LOG -- env-runner -- exact commands and observed results
+Host: Windows 11 PEGASUS, user MrAnderson, PowerShell 7.6.2, node v24.19.0, npm 11.9.0
+Times are America/Bogota (UTC-05:00). All outputs are verbatim or trimmed for width only.
+
+================================================================================
+A. ANDROID TOOLCHAIN
+================================================================================
+[1] 2026-10-26 09:02
+    C:\Android\Sdk\cmdline-tools\latest\bin\sdkmanager.bat --list_installed
+    -> Installed packages: emulator | 37.2.12
+    (platform-tools, platforms;android-35, build-tools;35.0.0 were NOT installed;
+     system-images/android-35/google_apis/x86_64/ contained only ".installer")
+    Note: `adb` was not on PATH and C:\Android\Sdk\platform-tools did not exist.
+
+[2] 2026-10-26 09:02  (background job pwsh-8236703559da41c5)
+    ("y`n" * 200) | & C:\Android\Sdk\cmdline-tools\latest\bin\sdkmanager.bat --licenses
+    -> "All SDK package licenses accepted."  exit 0
+
+    ("y`n" * 200) | & ...sdkmanager.bat "platform-tools" "platforms;android-35" "build-tools;35.0.0" "system-images;android-35;google_apis;x86_64"
+    -> exit 1, "Warning: Failed to download package!"
+       platform-tools + system image DID install; platforms was complete on disk with package.xml
+       but not registered; build-tools\35.0.0 was an ".installer"-only stub.
+
+[3] 2026-10-26 09:03  (background job pwsh-d07d0474ba1c4f76)  retry the two failed packages
+    ("y`n" * 50) | & ...sdkmanager.bat "platforms;android-35"   -> exit 0
+    ("y`n" * 50) | & ...sdkmanager.bat "build-tools;35.0.0"     -> exit 0
+    sdkmanager --list_installed ->
+      build-tools;35.0.0 35.0.0 | emulator 37.2.12 | platform-tools 37.0.1
+      platforms;android-35 2 | system-images;android-35;google_apis;x86_64 9
+    adb version -> "Android Debug Bridge version 1.0.41 / Version 37.0.1-15733141"
+
+[4] 2026-10-26 09:03  AVD
+    'no' | & C:\Android\Sdk\cmdline-tools\latest\bin\avdmanager.bat create avd `
+        -n dd35 -k "system-images;android-35;google_apis;x86_64" -d pixel_6 --force
+    -> exit 0, "Auto-selecting single ABI x86_64"
+    avdmanager list avd -> Name: dd35 | Device: pixel_6 (Google) | Target: Android 15.0 ("VanillaIceCream")
+                           Tag/ABI: google_apis/x86_64
+    config.ini tuned (backup at config.ini.original):
+        hw.ramSize=4096, hw.gpu.enabled=yes, hw.gpu.mode=swiftshader_indirect,
+        disk.dataPartition.size=12G, hw.keyboard=yes, snapshot.present=false,
+        fastboot.forceColdBoot=yes, fastboot.forceFastBoot=no,
+        firstboot.bootFromDownloadableSnapshot=no, firstboot.bootFromLocalSnapshot=no,
+        firstboot.saveToLocalSnapshot=no
+
+[5] 2026-10-26 09:03:43  emulator start (detached Start-Process, PID 20620)
+    C:\Android\Sdk\emulator\emulator.exe -avd dd35 -no-window -no-audio -no-boot-anim `
+        -no-snapshot -gpu swiftshader_indirect -accel on -verbose
+    stdout -> EVIDENCE\env\emulator-boot.log ; stderr -> EVIDENCE\env\emulator-boot.err.log
+    stderr contains only Vulkan-loader warnings ("forced disabled ... VK_LOADER_LAYERS_DISABLE").
+    emulator log: "WHPX on Windows 10.0.26200 detected." / "Windows Hypervisor Platform accelerator is operational"
+    emulator -accel-check -> "WHPX(10.0.26200) is installed and usable." (exit 0)
+
+[6] 2026-10-26 09:03:54  boot wait (background job pwsh-78e3a94599194608)
+    pwsh -File scripts\env-boot-wait.ps1 -Serial emulator-5554 -TimeoutSeconds 480
+    -> "[OK] device seen after 18.73s"
+       "[OK] sys.boot_completed=1 after 45.53s"
+    (device reported "offline" for 16 consecutive polls before going online -- normal adbd startup)
+
+[7] 2026-10-26 09:05  device facts
+    adb -s emulator-5554 shell:
+      getprop ro.build.version.sdk        -> 35
+      getprop ro.build.version.release    -> 15
+      getprop ro.product.cpu.abi          -> x86_64
+      getprop ro.product.model            -> sdk_gphone64_x86_64
+      wm size                             -> Physical size: 1080x2400
+      wm density                          -> Physical density: 420
+      ip -4 addr                          -> lo 127.0.0.1/8, eth0 10.0.2.15/24, wlan0 10.0.2.16/24
+
+[8] 2026-10-26 09:06  network
+    adb shell ping -c 2 8.8.8.8
+    -> "From 10.0.2.2: icmp_seq=1 Destination Net Unreachable" x2, 100% packet loss
+       (emulator user-mode network does not forward ICMP echo; not an internet failure)
+    adb shell "which curl; which wget; toybox | ..."          -> curl ABSENT, wget ABSENT, nc present
+    adb shell "toybox wget -O - https://example.com"          -> "toybox: Unknown command wget"
+    adb shell "printf 'GET / HTTP/1.0\r\nHost: check.torproject.org\r\n\r\n' | toybox nc -w 8 check.torproject.org 80"
+    -> "HTTP/1.1 301 Moved Permanently" / Date / Server: Apache / X-Content-Type-Options: nosniff
+       => DNS + TCP egress WORKS. HTTPS could not be tested (no TLS client on the image).
+
+[9] 2026-10-26 09:06  host reachability from the device
+    node fixture-server.js --port 8787 --log EVIDENCE\env\fixture-requests-standalone.jsonl (background job pwsh-dbf2674386f44528)
+    adb shell "printf 'GET /health HTTP/1.0\r\nHost: 10.0.2.2\r\n\r\n' | toybox nc -q 2 -w 8 10.0.2.2 8787"
+    -> "HTTP/1.1 200 OK ... Content-Length: 1203"
+       fixture server log: {"seq":2,...,"path":"/health","status":200,...}
+    adb shell "printf 'GET /file/plain.bin HTTP/1.1\r\nHost: 10.0.2.2\r\nRange: bytes=0-31\r\nConnection: close\r\n\r\n' | toybox nc ..."
+    -> "HTTP/1.1 206 Partial Content" + "Content-Range: bytes 0-31/8388608" + X-Fixture-Sha256: 7ea22e5b...
+       fixture server log: {"seq":3,...,"range_header":"bytes=0-31","status":206,...,"bytes_written":32}
+       => device -> host via 10.0.2.2 WORKS, including HTTP Range.
+
+[10] 2026-10-26 09:06-09:08  adb reverse / forward investigation (all BROKEN)
+    adb reverse tcp:8787 tcp:8787            -> "8787"; adb reverse --list -> "host-21 tcp:8787 tcp:8787"
+    device `ss -ltn`                          -> adbd listening on *:8787
+    device `grep 2253 /proc/net/tcp`          -> established/time-wait sockets to 127.0.0.1:8787
+    host fixture server                      -> NO request logged
+    host PowerShell TcpListener on 8790 + adb reverse:
+        host accept = True, host received = [] (0 bytes)
+    adb forward tcp:18788 tcp:8555 ; device listener verified via ss (*:8555) ; host TcpClient wrote bytes
+        -> device file /data/local/tmp/out.bin = 0 bytes
+    retried after `adb kill-server`/`adb start-server` and after `adb unroot` -> same (no payload)
+    CONCLUSION: tunnels establish but deliver no payload; use 10.0.2.2 instead.
+
+[11] 2026-10-26 09:09  root
+    adb -s emulator-5554 root  -> "restarting adbd as root"
+    adb -s emulator-5554 shell id
+    -> "uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),... context=u:r:su:s0"
+    adb shell "head -5 /proc/net/tcp; echo ---; wc -l /proc/net/tcp"
+    -> 5 header/rows printed, "15 /proc/net/tcp"   => /proc/net/tcp readable as root.
+    NOTE: `adb unroot` -> uid=2000(shell) (used once to test the reverse hypothesis).
+
+[12] 2026-10-26 09:10  UI baseline (android_ui_verification workflow)
+    adb shell wm size                          -> Physical size: 1080x2400
+    adb shell uiautomator dump /sdcard/ui.xml  -> "UI hierchary dumped to: /sdcard/ui.xml"
+    adb pull /sdcard/ui.xml EVIDENCE\screenshots\emulator-home-ui.xml -> 1 file pulled (12307 bytes)
+    adb exec-out screencap -p > EVIDENCE\screenshots\emulator-boot.png -> 1378082 bytes, 1080x2400
+    adb shell "dumpsys window | grep mCurrentFocus"
+    -> mCurrentFocus=Window{... com.google.android.apps.nexuslauncher/...NexusLauncherActivity}
+       (screenshot visually confirmed: Pixel launcher home screen, Mon Oct 26 9:10)
+
+================================================================================
+B. ELECTRON GROUND TRUTH
+================================================================================
+[13] 2026-10-26 09:02  static build facts -> EVIDENCE\electron\build-facts.txt
+    package.json: name=tordownloader-pro, version=1.0.18, main=dist-electron/main.js,
+                  scripts.start="electron .", scripts.build="tsc -b && vite build"
+    electron: declared ^42.5.0, installed 42.11.10 (electron.exe FileVersion 42.11.10)
+    node_modules: present (425 top-level dirs), better-sqlite3 native module present, axios 1.20.0
+    dist-electron: main.js 1128134 B (2026-10-10 17:01:05), preload.js 6366 B,
+                   electron/downloader.js 7690 B (compiled ESM), electron/*.js siblings
+    dist/index.html present (prebuilt renderer, assets/index-hCYfcoIq.js)
+    main.js contains markers: 'Security: Download rejected', 'Range not supported by CDN',
+                              'Truncated download: got', 'dl.torbox.app', 'real-debrid.com'
+
+[14] 2026-10-26 09:09  launch attempt -- pwsh -File scripts\env-launch-electron.ps1
+    Start-Process cmd.exe /c "npm start" -WorkingDirectory F:\PyApps\tordownloaderElectron
+        stdout -> EVIDENCE\electron\app-launch.log, stderr -> app-launch.err.log
+    Observed stdout (392 bytes, stderr 0 bytes):
+        > tordownloader-pro@1.0.18 start
+        > electron .
+        [Worker] Starting background worker (10s interval)
+        [FlareSolverr] Starting: C:\Users\ferna\AppData\Roaming\tordownloader-pro\flaresolverr\flaresolverr\flaresolverr.exe
+        [CF Fetcher] HTTP bridge listening on port 56042
+        Skip checkForUpdates because application is not packed and dev update config is not forced
+        [FlareSolverr] Ready on port 8191
+    Processes: 4 electron PIDs (7528, 6816, 13604, 18380) -> app window/process APPEARED (True)
+    30 s @500 ms Get-NetTCPConnection sampling -> EVIDENCE\electron\app-connections.json
+      19 samples; distinct remote endpoints:
+        127.0.0.1:8191     (3 samples)  local FlareSolverr
+        94.140.4.10:443    (4 samples)  PTR -> real-debrid.com
+        81.85.62.11:443   (10 samples)  PTR -> real-debrid.com
+        104.20.28.56:443   (7 samples)  resolves torbox.app / api.torbox.app (Cloudflare)
+    Cleanup: Stop-Process electron x4 + python PID 7512 + cmd parent; exit code -1 (killed).
+    DNS cross-check: torbox.app/api.torbox.app -> 172.66.170.114,104.20.28.56 ;
+                      api.real-debrid.com/real-debrid.com -> 94.140.4.10,81.85.62.11 ;
+                      tb-cdn.io -> 104.20.31.36,172.66.166.168 ; rd.nu -> 5.83.210.1
+
+[15] 2026-10-26 09:10  pktmon (UNAVAILABLE -- not elevated)
+    is_admin -> False
+    pktmon start --capture --pkt-size 128 --file-name EVIDENCE\electron\capture.etl
+    -> "Failed to communicate with the PktMon driver: Access is denied."  exit 5
+    pktmon stop -> same error, exit 5
+    capture.etl NOT created. (No ETL/PCAP produced; connection sampling in [14] is the evidence.)
+
+[16] 2026-10-26 09:11  differential harness
+    copy dist-electron\electron\downloader.js -> EVIDENCE\electron\shim\downloader.original.js (identical sha256)
+    copy again                                  -> EVIDENCE\electron\shim\downloader.test.js
+    edit shim: REALDEBRID_CDN_DOMAINS gains '127.0.0.1' and 'localhost' ONLY (see SHIM-MANIFEST.txt)
+    EVIDENCE\electron\shim\package.json = {"type":"module","private":true}
+    cmd /c mklink /J EVIDENCE\electron\shim\node_modules F:\PyApps\tordownloaderElectron\node_modules
+        -> "Junction created ..."  (axios resolvable = True)
+    cd F:\PyApps\ddandroid\test-fixtures ; node electron-diff.js
+      first run: SyntaxError at electron-diff.js:107 (computed object key) -> fixed with ['...' + n]
+      second run (background job pwsh-113fa493d5f548d4) -> exit 0:
+        s1-fresh-full            final_size=8388608 sha=7ea22e5b... [MATCH] result={"success":true,"bytes_downloaded":8388608}
+        s2-resume-range          final_size=8388608 sha=7ea22e5b... [MATCH] result={"success":true,"bytes_downloaded":8388608}
+        s3-norange-ignored       final_size=3145728 result={"success":false,"error":"Range not supported by CDN","bytes_downloaded":3145728,"rangeIgnored":true}
+        s4-flaky-cut             attempt1 timedOut=True (30011 ms, result=null, size=4194304)
+                                 attempt2 success 8388608 sha=bac64e9d... [MATCH]
+        s5-empty-truncation      attempt1 timedOut=True (30012 ms, result=null, size=0)
+        guard probe: original isDebridCDN(127.0.0.1)=false, shim=true; all real debrid hosts identical
+        original ctor on 127.0.0.1 -> throws "Security: Download rejected. URL ... is not a recognized debrid CDN domain."
+      fatal_events captured: 0 (uncaughtException/unhandledRejection handlers installed; none fired)
+      server request log: EVIDENCE\electron\diff-server-requests.jsonl
+      outputs: diff-electron.json, diff-electron.md, reference-hashes.json
+      workspace: EVIDENCE\electron\diff-workspace\s{1..5}*\dest.bin (kept for SHA inspection)
+
+[17] 2026-10-26 09:11  validation (lint-and-validate)
+    node --check test-fixtures\fixture-server.js    -> exit 0
+    node --check test-fixtures\electron-diff.js     -> exit 0
+    node --input-type=module -e "import('file:///.../shim/downloader.test.js')..."
+        -> "shim import OK, exports=Downloader,isDebridCDN"
+    [Parser]::ParseFile scripts\env-boot-wait.ps1       -> parse_errors=0
+    [Parser]::ParseFile scripts\env-launch-electron.ps1 -> parse_errors=0
+    ConvertFrom-Json on diff-electron.json / reference-hashes.json / environment.json /
+                     app-connections.json / boot-timing.json -> all VALID JSON
+
+================================================================================
+C. ARTIFACTS PRODUCED
+================================================================================
+docs\ENVIRONMENT.md
+scripts\env-android.ps1, scripts\env-boot-wait.ps1, scripts\env-launch-electron.ps1
+test-fixtures\fixture-server.js, test-fixtures\electron-diff.js, test-fixtures\README.md
+EVIDENCE\env\environment.json, boot-timing.json, emulator-start.json,
+              emulator-boot.log, emulator-boot.err.log, fixture-requests-standalone.jsonl
+EVIDENCE\electron\build-facts.txt, app-launch.log, app-launch.err.log, app-connections.json,
+                  diff-electron.json, diff-electron.md, diff-server-requests.jsonl,
+                  reference-hashes.json, shim\{downloader.original.js,downloader.test.js,
+                  package.json,SHIM-MANIFEST.txt,node_modules junction}, diff-workspace\s1..s5
+EVIDENCE\screenshots\emulator-boot.png, emulator-home-ui.xml
+
+================================================================================
+D. PACKET CAPTURE + TOR ORACLE (follow-up round)
+================================================================================
+[18] 2026-10-26 09:12  fixture server had died -> restarted detached
+    Start-Process node.exe ...\test-fixtures\fixture-server.js --port 8787 --log EVIDENCE\env\fixture-requests-standalone.jsonl
+    -> PID 5708, stdout "fixture-server listening on http://127.0.0.1:8787"
+    Invoke-WebRequest http://127.0.0.1:8787/health -> 200, 1203 bytes
+    adb shell ".../curl http://10.0.2.2:8787/health" -> 200
+    adb shell "df -h /data" -> /dev/block/dm-46 12G 1.0G used 11G avail 10%
+
+[19] 2026-10-26 09:12  guest capture binaries (host pktmon blocked: access denied without elevation)
+    https://raw.githubusercontent.com/fkie-cad/friTap/main/friTap/assets/tcpdump_binaries/tcpdump_x86_64_android
+      -> 5175560 B, sha256 126636E370E5FDFD3645E2C9458DA520F982D360C92B389D7AEA13C1CE493BCF
+         ELF64 class=2 type=2(EXEC... static) machine=0x3e(x86-64)
+    https://github.com/stunnel/static-curl/releases/download/8.23.0-1/curl-linux-x86_64-musl-8.23.0-1.tar.xz
+      -> curl 10836152 B, sha256 715F85AAE6D9CAECA203F7C1F8697B02193C53F8DD6112D54647F0777290F23E
+    adb push both to /data/local/tmp, "su 0 chmod 755"
+    adb shell "su 0 /data/local/tmp/tcpdump --version"
+      -> "tcpdump version 4.9.2 / libpcap version 1.9.0-PRE-GIT (with TPACKET_V3)"
+    adb shell "su 0 /data/local/tmp/curl --version"
+      -> "curl 8.23.0 (x86_64-pc-linux-gnu) libcurl/8.23.0 OpenSSL/4.0.3 ..."
+
+[20] 2026-10-26 09:14  capture
+    adb shell "su 0 rm -f /data/local/tmp/cap.pcap; su 0 /data/local/tmp/tcpdump -i any -n -s 0 -U -w /data/local/tmp/cap.pcap"
+    -> "tcpdump: listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes"
+    file size grew 24 -> 970966 -> 2422796 B while running (verified growth)
+
+[21] 2026-10-26 09:14-09:15  traffic generated from the DEVICE
+    curl -k --resolve check.torproject.org:443:116.202.120.181 https://check.torproject.org/
+      FIRST attempt plain: status=000 "Could not resolve host" (static musl curl has no /etc/resolv.conf)
+      with --resolve      : status=200 ip=116.202.120.181 tls_appconnect=0.690 s
+    ping -c 1 check.torproject.org / example.org / torproject.org  -> bionic resolver DNS (ICMP fails as expected)
+    curl http://10.0.2.2:8787/health                    -> 200
+    curl -r 0-1048575 http://10.0.2.2:8787/file/plain.bin -> 206, 1048576 bytes
+
+[22] 2026-10-26 09:15  stop + pull
+    NOTE: first stop attempt used $pid (PowerShell READ-ONLY automatic variable) -> assignment failed,
+          kill went to the wrong id, tcpdump kept running. Re-done with $tpid:
+    adb shell "su 0 kill -INT <tcpdump pid>"
+    -> tcpdump exit summary: "3129 packets captured / 3227 packets received by filter / 0 packets dropped by kernel"
+    adb pull /data/local/tmp/cap.pcap -> EVIDENCE\captures\guest-traffic-2026-10-26.pcap
+    -> 2423924 B, sha256 D7FDB7FEA830706D50AD0B793C7D7E49B1DC797EFE79AD8CA40B5AADFDE11BEC
+       magic d4c3b2a1 (pcap LE), version 2.0, snaplen 262144, linktype 113 (LINUX_SLL)
+
+[23] 2026-10-26 09:16  scripts/pcap_parse.py (stdlib only)
+    python scripts\pcap_parse.py EVIDENCE\captures\guest-traffic-2026-10-26.pcap
+    -> pcap, 3125 decoded packets (4 non-IP frames), 189 flows, 104 destinations
+       dns names: check.torproject.org, example.com, example.org, torproject.org,
+                  android.googleapis.com, connectivitycheck.gstatic.com,
+                  digitalassetlinks.googleapis.com, mtalk.google.com,
+                  notifications-pa.googleapis.com, voilatile-pa.googleapis.com, www.google.com
+       first run had no SNI for check.torproject.org -> ClientHello spans TCP segments;
+       added reassembled-TCP-stream SNI pass -> now:
+       tls sni: android.googleapis.com, check.torproject.org, mtalk.google.com,
+                notifications-pa.googleapis.com, voilatile-pa.googleapis.com, www.google.com
+       PROOF: check.torproject.org -> 116.202.120.181:443 (src 10.0.2.16, reassembled stream)
+              + DNS A/AAAA/HTTPS queries for check.torproject.org
+              + HTTP GET / Host: check.torproject.org captured
+    output: EVIDENCE\captures\guest-traffic-2026-10-26.flows.json (1013797 B,
+            sha256 207EE3368741D3008983E95043146A845AABCFE56DA3C4A09C6F1E61CEF5035C)
+
+[24] 2026-10-26 09:17  scripts/verify_egress.py (Tor relay oracle)
+    onionoo fetch: https://onionoo.torproject.org/details?type=relay&running=true&fields=nickname,or_addresses,exit_addresses
+    -> 9164 running relays, 9722 unique OR IPs
+       saved EVIDENCE\captures\onionoo-relays-20261026T141735Z.json (847181 B,
+       sha256 E86CB43D986F095E549B9306F823B3964D0FA48341AABCFCA8AE34658A9B487F) + .meta.json
+    A) --source electron-connections (app-connections.json)
+       -> 94.140.4.10:443, 81.85.62.11:443, 104.20.28.56:443 = UNKNOWN (non-Tor)
+          127.0.0.1:8191 = loopback
+          VERDICT "NON-TOR EGRESS DETECTED" exit 2   (proves oracle detects non-Tor)
+    B) --source pcap-flows (outbound only)
+       -> 12 external UNKNOWN (check.torproject.org 116.202.120.181:443, google 142.251.*/172.217.*
+          on 443/80/5228, 93.184.215.14:443), 10.0.2.3:53 = DNS (flagged, never Tor),
+          10.0.2.2:8787 = fixture; VERDICT NON-TOR EGRESS DETECTED exit 2
+    C) positive control --source endpoints
+       -> 91.66.247.27:9006 = tor-relay [BaumiMiddleRelays]; 10.0.2.3:53 = DNS;
+          10.0.2.2:8787 = fixture; 127.0.0.1:8191 = loopback; 94.140.4.10:443 = UNKNOWN
+       (proves oracle also recognises real relays; not a rubber stamp)
+    reports: egress-electron.json, egress-guest-pcap.json, egress-control.json
+
+[25] 2026-10-26 09:18  capture manifest + dry-run validation
+    EVIDENCE\captures\CAPTURE-MANIFEST.json written (tool versions, binary sha256, pcap sha256,
+    packet counts, generated traffic, onionoo identity, egress report verdicts)
+    python -m py_compile scripts\pcap_parse.py scripts\verify_egress.py -> exit 0
+    [Parser]::ParseFile  -> no change to .ps1 in this round
+
+[26] 2026-10-26 09:19  fixture + storage re-confirmed for the Lead
+    Get-NetTCPConnection -LocalPort 8787 -> 127.0.0.1:8787 PID 5708 listening
+    /health -> 200 (1203 bytes); device http://10.0.2.2:8787/health -> 200
+    adb shell "df -h /data" -> 12G size, 1.0G used, 11G avail
+    flaky[0:4194304] sha256 = f09dce77fdfa7fd34ff46e4e7bed643dfd70fe54fbb4c13eb771c5823ed97295
+    adb devices -> emulator-5554 device; sys.boot_completed=1; id=uid=0(root)
+
+================================================================================
+E. SCOPE CORRECTION ROUND (TorBox, not Tor network) + LIFECYCLE HARNESS
+================================================================================
+[27] 2026-10-26 09:22  scope correction received: "tor" = TorBox (debrid), no onion routing.
+     Decision: remove relay/oracle classification; keep the pcap->flows decode and repurpose
+     scripts/verify_egress.py as an allowlist "no unexpected egress" checker. Old Tor-oracle
+     artifacts moved to EVIDENCE/captures/deprecated-tor-oracle/ (see README.txt there).
+
+[28] 2026-10-26 09:22  fixture throttle added (test-fixtures/fixture-server.js)
+     change: optional ?rate=<bytes/sec> streams the body in paced 64 KiB writes; same bytes and
+             same SHA-256; response header X-Fixture-Rate; /health now advertises throttle_param;
+             finish() guard added ('finish' + 'close' can both fire); records rec.rate.
+     node --check -> exit 0
+     restart: node fixture-server.js --port 8787 --log EVIDENCE/env/fixture-requests-standalone.jsonl
+              new detached PID 29020 (old 5708 stopped), /health -> 200
+     test: curl http://127.0.0.1:8787/file/plain.bin?rate=2097152
+           -> http=200 bytes=8388608 time=4.424843 (wall 4.46 s)
+           sha256=7EA22E5BBAF0D5711CD6681E5E3054F8FA6A1ED621787D0DC4C74E669FA41C56 (unchanged)
+           unthrottled -> http=200 time=0.020324
+
+[29] 2026-10-26 09:23  verify_egress.py v2 (allowlist mode)
+     default allowlist: api.torbox.app, api.real-debrid.com, api.themoviedb.org, image.tmdb.org,
+                        comet.stremio.ru ; fixture 10.0.2.2:8787 ; loopback
+     names come from TLS SNI / HTTP Host / DNS answers / DNS query names; DNS dest allowed only if
+     ALL decoded query names are allowlisted; exit 2 on UNEXPECTED.
+     py_compile -> exit 0
+     CONTROL 1 (stock capture, default allowlist):
+       14 UNEXPECTED (google/gstatic/check.torproject.org etc) + 1 fixture -> exit 2
+       -> EVIDENCE/captures/egress-allowlist-control.json   (proves detection, not rubber-stamping)
+     CONTROL 2 (same capture, --allowed "...,check.torproject.org"):
+       116.202.120.181:443 flips to allowed (1 allowed, 13 UNEXPECTED) -> exit 2
+       -> EVIDENCE/captures/egress-allowlist-control2.json  (proves allowlisting works on real data)
+
+[30] 2026-10-26 09:25  fresh app-launch capture
+     adb shell "am force-stop pkg; su 0 tcpdump -i any -n -s 0 -U -w /data/local/tmp/applaunch.pcap"
+     cold launch: am start -W -n pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity
+       -> Status: ok, LaunchState: COLD, TotalTime 1958 ms
+     UI dump text: TORDOWNLOADER | NO ACCOUNT | READY TO SET UP | ... |
+       "Every request leaves through the Tor circuit above — direct connections are refused." |
+       FIND SOMETHING | PASTE A LINK | Direct URL | Queue download | Discover | Settings | Logs
+       (the installed build still carries the OLD Tor-network copy)
+     stop -> "5054 packets captured / 5076 received / 0 dropped"
+     pull -> EVIDENCE/captures/app-launch-2026-10-26.pcap
+            5784358 B, sha256 251C73534B53727BAA20CF99397DA9AA26518E6091C6006CA47068CB86A2C4BB
+     pcap_parse.py -> 5054 packets, 0 decode errors, 13 flows, 9 destinations,
+                      dns/tls names: www.gstatic.com only
+     verify_egress.py --capture -> 2 UNEXPECTED (www.gstatic.com TLS + DNS), exit 2
+       -> EVIDENCE/captures/egress-app-launch.json
+       NO debrid API traffic: build has no account and cannot be scripted (see [32]).
+
+[31] 2026-10-26 09:23  device-lifecycle-test.ps1 created
+     scenarios a (process death) b (Doze) c (network toggle) d (queue survives stopservice)
+     per scenario records: intent, sleeps, pidof, partial-size samples, deviceidle deep state,
+     network state, final size + pulled SHA-256, assertions, verdict; JSON per run under
+     EVIDENCE/lifecycle/run-<ts>/lifecycle.json + latest.json + adb-transcript.log
+     idempotent: force-stop + pm clear + rm external files dir per scenario
+     blocking preflight: adb, device, boot, app installed, tddl://download resolvable,
+                         fixture reachable host+device
+     exit 0 pass / 2 fail / 3 preflight blocked / 1 error
+
+[32] 2026-10-26 09:24-09:25  harness runs against the installed APK
+     installed: pro.tordownloader.android.debug versionName=1.0.0, firstInstall/lastUpdate
+                2026-10-26 09:22:53, codePath /data/app/~~RVtryHVI.../base.apk
+     `am start -a VIEW -d 'tddl://download?...'` ->
+       "Error: Activity not started, unable to resolve Intent { act=VIEW dat=tddl://download/... }"
+     `cmd package query-activities -a android.intent.action.VIEW -d 'tddl://download'`
+       -> "No activities found"
+     `dumpsys package` -> only MainActivity with MAIN/LAUNCHER filter; NO DownloadService component
+     app DOES launch: am start -n ...MainActivity -> pid 5421, mCurrentFocus=MainActivity
+       screenshot EVIDENCE/screenshots/app-debug-1.0.0.png, ui xml app-debug-1.0.0-ui.xml
+     RUN 1 (20261026T142444Z): harness bug -> "Argument types do not match" when building JSON
+       cause: @($genericList) under StrictMode in this PowerShell build; fixed with .ToArray()
+     RUN 2 (20261026T142536Z): preflight BLOCKED, exit 3
+       debug_deeplink_resolvable FAIL (raw: No activities found)
+       download_service_present  FAIL (component not found)
+       blocked_reason = "debug deep link tddl://download is not resolvable in the installed build"
+       -> EVIDENCE/lifecycle/run-20261026T142536Z/lifecycle.json + latest.json
+     => harness is complete and ready; it will run scenarios as soon as a build with the
+        tddl:// intent-filter + DownloadService is installed.
+
+[33] 2026-10-26 09:26  re-confirmed for the Lead
+     fixture server UP (127.0.0.1:8787), /health 200 (1304 B), device 10.0.2.2:8787 -> 200
+     adb shell df -h /data -> 12G total, 1.0G used, 11G avail
+     python -m py_compile pcap_parse.py + verify_egress.py -> exit 0
+
+================================================================================
+F. R8/SIGNED VERIFY BUILD: LIFECYCLE SUITE + UI GOLDENS + A11Y
+================================================================================
+[34] 2026-10-26 09:39  verify APK appeared
+     F:\PyApps\ddandroid\app\build\outputs\apk\verify\app-verify.apk
+     size=9528564 sha256=340FE00AB6E48873A162B7F723A822792462EB85934F2A8BECE8EC42106BE5B6
+     adb install -r -t -> Success
+     package pro.tordownloader.android.verify versionName=1.0.0 lastUpdate 09:50:26
+     run-as -> "run-as: package not debuggable: pro.tordownloader.android.verify"
+       => verify build is NOT debuggable despite the plan; harness falls back to adb root
+     aapt2 dump xmltree base.apk -> scheme tddl host download on MainActivity;
+       service pro.tordownloader.android.download.DownloadService declared
+     `cmd package query-activities -a VIEW -d 'tddl://download'` on the primary emulator:
+       2 activities (debug + verify) -> implicit `am start` opens ResolverActivity, URL never
+       delivered. Harness changed to `-n <pkg>/<activity>`.
+
+[35] 2026-10-26 09:40-10:02  concurrent-run interference discovered and avoided
+     Another teammate's scripts\device-differential.ps1 was using emulator-5554 on the same
+     package and restarting the fixture server on :8787; its startup truncates
+     EVIDENCE\env\fixture-requests-standalone.jsonl, which corrupted my fixture-log Range
+     assertion (requests "disappeared"). I did not kill their processes.
+     Fix: created second AVD dd35b (Pixel 6/API35/x86_64, 1080x2400@420), booted headless on
+     -port 5556 (device seen 25.8 s, boot_completed 50.48 s, adb root OK), and started a PRIVATE
+     fixture server on 127.0.0.1:8788 with its own log file.
+
+[36] 2026-10-26 10:03  final lifecycle run on verify build (emulator-5556, fixture :8788)
+     pwsh -File scripts\device-lifecycle-test.ps1 -Serial emulator-5556 `
+          -Package pro.tordownloader.android.verify -FixturePort 8788 `
+          -FixtureLog EVIDENCE\env\fixture-requests-lifecycle.jsonl -CompleteTimeoutSeconds 180
+     preflight: all blocking checks PASS (deep link resolvable, DownloadService present in manifest,
+     fixture reachable host+device; run-as FAIL but root fallback used; app launches)
+     results -> EVIDENCE\lifecycle\run-20261026T150303Z\lifecycle.json + adb-transcript.log
+       a PASS  kill at partial 2621440 B; resume "Range: bytes=2621440-" -> 206
+               "bytes 2621440-8388607/8388608"; final 8388608 sha 7ea22e5b...41c56
+       b PASS  deep=IDLE during 20 s force-idle; completed; sha matches
+       c FAIL  partial frozen 1703936 B; NO retry request for 180 s after network restore;
+               jobscheduler shows only WorkManager housekeeping; no final file
+       d PASS  "Service stopped"; both transfers completed, plain 7ea22e5b... and
+               norange c0db8a12...b7488
+     Bugs found+fixed in my harness during this work: ls -lR directory headers were dropped
+     (pulls then read a bare filename), Measure-Object cannot read [ordered] keys, PS list
+     unrolling under StrictMode, missing device curl on a fresh emulator (now auto-pushed).
+
+[37] 2026-10-26 10:09  UI goldens (verify build, emulator-5556, 1080x2400 @420)
+     pwsh -File scripts\capture-goldens.ps1 -Serial emulator-5556 -Package pro.tordownloader.android.verify
+     navigation taps computed from live uiautomator bounds (not the estimate):
+       Search (157,2133) Discover (365,2133) Downloads (572,2133) Settings (779,2133) Logs (955,2133)
+     -> EVIDENCE\screenshots\golden\{search,discover,downloads,settings,logs}.png + .xml
+        + goldens.json (tap points, node bounds, visible text per screen, png sha256)
+
+[38] 2026-10-26 10:10-10:24  accessibility audit
+     python scripts\a11y-audit.py --golden-dir EVIDENCE\screenshots\golden `
+        --theme app\src\main\java\pro\tordownloader\android\ui\theme\Theme.kt --out-dir EVIDENCE\a11y
+     first pass: 9 findings; two classes were checker artifacts, fixed:
+       R1 now counts descendant content-desc (top-bar Logs icon button labels a child)
+       nodes whose bounds exceed an ancestor clip are "clipped-skipped" (Real-Debrid Save/Clear
+       buttons have only 16 px inside the LazyColumn viewport; full composable is 52 dp)
+     final: 0 violations (R1=0 R2=0 R3=0), 3 clipped-skipped, 5 screens / 378 nodes
+     R3 icon coverage = 0 icon-like nodes detected (Compose icons are android.view.View)
+     contrast (current Theme.kt): brandButton #6D4AE0 5.67:1 and #4F46E5 6.29:1 PASS;
+       TextLow #8590A3 5.76-6.28 PASS; TextMid 7.48-8.16; TextHi 16.89-18.43;
+       decorative brand gradient endpoints: White/Violet 4.35:1, White/Cyan 1.81:1 (not text-bearing)
+     -> EVIDENCE\a11y\a11y-report.json + summary.md

@@ -1,0 +1,98 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
+The current default is 'false'.
+It will be removed in version 9.0 of the Android Gradle plugin.
+To keep using this feature, add the following to your module-level build.gradle files:
+    android.buildFeatures.buildConfig = true
+or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`.
+
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preVerifyBuild UP-TO-DATE
+> Task :app:generateVerifyBuildConfig FROM-CACHE
+> Task :app:checkVerifyAarMetadata UP-TO-DATE
+> Task :app:generateVerifyResValues UP-TO-DATE
+> Task :app:mapVerifySourceSetPaths
+> Task :app:generateVerifyResources
+> Task :app:packageVerifyResources
+> Task :app:createVerifyCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksVerify UP-TO-DATE
+> Task :app:processVerifyMainManifest FROM-CACHE
+> Task :app:processVerifyManifest FROM-CACHE
+> Task :app:processVerifyManifestForPackage FROM-CACHE
+> Task :app:javaPreCompileVerify UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeVerifyJniLibFolders UP-TO-DATE
+> Task :app:parseVerifyLocalResources
+> Task :app:mergeVerifyNativeLibs UP-TO-DATE
+> Task :app:stripVerifyDebugSymbols UP-TO-DATE
+> Task :app:extractVerifyNativeSymbolTables UP-TO-DATE
+> Task :app:mergeVerifyNativeDebugMetadata NO-SOURCE
+> Task :app:checkVerifyDuplicateClasses UP-TO-DATE
+> Task :app:mergeVerifyArtProfile UP-TO-DATE
+> Task :app:mergeVerifyStartupProfile UP-TO-DATE
+> Task :app:mergeVerifyShaders UP-TO-DATE
+> Task :app:compileVerifyShaders NO-SOURCE
+> Task :app:generateVerifyAssets UP-TO-DATE
+> Task :app:mergeVerifyAssets UP-TO-DATE
+> Task :app:compressVerifyAssets FROM-CACHE
+> Task :app:extractVerifyVersionControlInfo UP-TO-DATE
+> Task :app:collectVerifyDependencies UP-TO-DATE
+> Task :app:sdkVerifyDependencyData UP-TO-DATE
+> Task :app:validateSigningVerify UP-TO-DATE
+> Task :app:writeVerifyAppMetadata UP-TO-DATE
+> Task :app:writeVerifySigningConfigVersions UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig UP-TO-DATE
+> Task :app:checkReleaseAarMetadata UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:mergeVerifyResources
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :app:processReleaseMainManifest UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseManifestForPackage UP-TO-DATE
+> Task :app:parseReleaseLocalResources
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:preReleaseUnitTestBuild UP-TO-DATE
+> Task :app:mergeReleaseResources
+> Task :app:processVerifyResources
+> Task :app:processReleaseResources
+> Task :app:optimizeVerifyResources
+> Task :app:compileReleaseKotlin
+> Task :app:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :app:generateReleaseLintReportModel
+> Task :app:bundleReleaseClassesToCompileJar
+> Task :app:generateReleaseUnitTestLintModel
+> Task :app:compileVerifyKotlin
+> Task :app:compileVerifyJavaWithJavac FROM-CACHE
+> Task :app:generateVerifyLintVitalReportModel
+> Task :app:mergeVerifyGeneratedProguardFiles UP-TO-DATE
+> Task :app:processVerifyJavaRes
+> Task :app:expandVerifyArtProfileWildcards
+> Task :app:mergeVerifyJavaResource
+> Task :app:lintAnalyzeReleaseUnitTest
+> Task :app:lintVitalAnalyzeVerify
+> Task :app:lintVitalReportVerify
+> Task :app:lintVitalVerify
+> Task :app:lintAnalyzeRelease
+> Task :app:minifyVerifyWithR8
+
+> Task :app:lintReportRelease
+Wrote HTML report to file:///F:/PyApps/ddandroid/app/build/reports/lint-results-release.html
+
+> Task :app:lintRelease
+> Task :app:compileVerifyArtProfile
+> Task :app:packageVerify
+> Task :app:createVerifyApkListingFileRedirect
+> Task :app:assembleVerify
+
+BUILD SUCCESSFUL in 1m 53s
+72 actionable tasks: 33 executed, 6 from cache, 33 up-to-date

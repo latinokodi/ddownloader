@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Brand mark: an uninterrupted "circuit" ring with a download arrow inside.
+  Ring = the Tor circuit, arrow = the transfer. Rendered 108x108 with the
+  standard adaptive-icon safe zone (inner 72x72).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:strokeColor="#7C5CFF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M54,28 a26,26 0 1 1 -0.01,0" />
+    <path
+        android:strokeColor="#22D3EE"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M54,38 a16,16 0 1 1 -0.01,0" />
+    <path
+        android:fillColor="#F4F4FF"
+        android:pathData="M50.5,45h7v13.5h7.5L54,74L43,58.5h7.5z" />
+</vector>

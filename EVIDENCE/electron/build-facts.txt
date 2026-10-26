@@ -1,0 +1,158 @@
+ELECTRON APP BUILD FACTS
+captured_at=2026-10-26T09:02:57.1154611-05:00
+host=PEGASUS user=MrAnderson powershell=7.6.2
+app_dir=F:\PyApps\tordownloaderElectron
+node=v24.19.0
+npm=11.9.0
+
+=== package.json name/version/main ===
+name=tordownloader-pro
+version=1.0.18
+main=dist-electron/main.js
+scripts.start=electron .
+scripts.build=tsc -b && vite build
+
+=== electron devDependencies ===
+declared electron=^42.5.0
+installed electron=42.11.10
+electron dist version file=42.11.10
+electron.exe exists=True
+electron.exe FileVersion=42.11.10 ProductVersion=42.11.10
+electron.exe LastWriteTime=1979-12-31T19:00:00.0000000-05:00
+
+=== node_modules ===
+node_modules exists=True LastWriteTime=2026-10-02T10:22:25.5858077-05:00
+node_modules top-level entries=425
+better-sqlite3 native module exists=True
+axios package version=1.20.0
+
+=== dist-electron (compiled main) ===
+electron  size=1  mtime=2026-08-27T05:14:55.2892145-05:00
+main.js  size=1128134  mtime=2026-10-10T17:01:05.8964300-05:00
+preload.js  size=6366  mtime=2026-10-10T17:01:03.0685121-05:00
+tsconfig.node.tsbuildinfo  size=45450  mtime=2026-10-02T11:20:02.2255772-05:00
+vite.config.d.ts  size=76  mtime=2026-06-27T08:20:02.1281309-05:00
+vite.config.js  size=1651  mtime=2026-10-02T11:16:41.3917175-05:00
+
+=== dist-electron/electron subdir ===
+qbit-plugins  size=1  mtime=2026-08-03T18:01:48.7185375-05:00
+cf-fetcher.d.ts  size=520  mtime=2026-08-02T07:17:08.7842667-05:00
+cf-fetcher.js  size=6957  mtime=2026-10-02T11:16:41.3041903-05:00
+cf-solver.d.ts  size=940  mtime=2026-07-31T07:50:34.7799905-05:00
+cf-solver.js  size=5465  mtime=2026-07-31T07:50:34.7789915-05:00
+db.d.ts  size=1484  mtime=2026-08-22T08:14:01.9210963-05:00
+db.js  size=4800  mtime=2026-10-02T11:16:41.3077016-05:00
+downloader.d.ts  size=804  mtime=2026-08-26T22:35:36.0295887-05:00
+downloader.js  size=7690  mtime=2026-10-02T11:16:41.3163255-05:00
+flaresolverr.d.ts  size=706  mtime=2026-08-04T08:42:33.7562616-05:00
+flaresolverr.js  size=9406  mtime=2026-10-02T11:16:41.3233408-05:00
+idm.d.ts  size=366  mtime=2026-06-27T08:20:02.0865448-05:00
+idm.js  size=1440  mtime=2026-06-27T08:20:02.0850380-05:00
+jackett.d.ts  size=613  mtime=2026-07-27T20:41:54.0139213-05:00
+jackett.js  size=5909  mtime=2026-07-27T20:41:54.0129180-05:00
+main.d.ts  size=11  mtime=2026-06-27T08:20:02.1022080-05:00
+main.js  size=48340  mtime=2026-10-02T11:20:02.2176439-05:00
+media-layout.d.ts  size=1352  mtime=2026-08-26T21:44:21.1895388-05:00
+media-layout.js  size=8865  mtime=2026-10-02T11:16:41.3517337-05:00
+metasearch.d.ts  size=1326  mtime=2026-08-02T06:55:30.5237308-05:00
+metasearch.js  size=10113  mtime=2026-10-02T11:16:41.3293449-05:00
+plugin-updater.d.ts  size=624  mtime=2026-08-02T08:00:00.6340549-05:00
+plugin-updater.js  size=7267  mtime=2026-10-02T11:16:41.3363798-05:00
+preload.d.ts  size=11  mtime=2026-06-27T08:20:02.1037125-05:00
+preload.js  size=5988  mtime=2026-10-02T11:16:41.3912129-05:00
+realdebrid.d.ts  size=1742  mtime=2026-08-03T05:48:57.5441836-05:00
+realdebrid.js  size=10029  mtime=2026-10-02T11:16:41.3477361-05:00
+scraper.d.ts  size=308  mtime=2026-06-27T08:20:02.0935541-05:00
+scraper.js  size=7818  mtime=2026-06-28T10:11:21.5588384-05:00
+season-cache.d.ts  size=448  mtime=2026-08-27T05:14:55.2892145-05:00
+season-cache.js  size=1316  mtime=2026-10-02T11:16:41.3713094-05:00
+torbox.d.ts  size=1039  mtime=2026-07-26T17:42:39.5662496-05:00
+torbox.js  size=7115  mtime=2026-10-02T11:16:41.3426926-05:00
+updater.d.ts  size=410  mtime=2026-08-04T08:26:29.4582799-05:00
+updater.js  size=4166  mtime=2026-10-02T11:16:41.3703058-05:00
+worker.d.ts  size=287  mtime=2026-07-25T05:47:06.0845691-05:00
+worker.js  size=42980  mtime=2026-10-02T11:16:41.3683067-05:00
+
+=== dist (renderer) ===
+dist\index.html  size=615  mtime=2026-10-02T11:20:08.0824569-05:00
+dist\assets\DiscoverView-OokJxZ-m.js  size=27012  mtime=2026-10-02T11:20:08.0824569-05:00
+dist\assets\index-hCYfcoIq.js  size=190274  mtime=2026-10-02T11:20:08.0824569-05:00
+dist\assets\index-XoBxZAoZ.css  size=20655  mtime=2026-10-02T11:20:08.0824569-05:00
+dist\assets\LogPanel-DsWXmKPe.js  size=1353  mtime=2026-10-02T11:20:08.0824569-05:00
+dist\assets\SettingsModal-B5uEJ3mU.js  size=13037  mtime=2026-10-02T11:20:08.0824569-05:00
+
+=== dist/index.html exists=True ===
+
+=== electron/ source dir (TS) ===
+cf-fetcher.ts  size=5752  mtime=2026-08-02T07:49:39.2151624-05:00
+db.ts  size=5696  mtime=2026-08-22T08:09:25.8261331-05:00
+downloader.ts  size=6935  mtime=2026-08-27T05:39:41.9276997-05:00
+flaresolverr.ts  size=8786  mtime=2026-08-04T08:40:03.7643533-05:00
+latino-providers.py  size=18343  mtime=2026-08-04T05:54:20.9154275-05:00
+main.ts  size=43880  mtime=2026-10-02T11:19:53.6778502-05:00
+media-layout.ts  size=9007  mtime=2026-08-26T22:05:58.1803196-05:00
+metasearch.ts  size=9616  mtime=2026-09-29T13:22:46.1638517-05:00
+plugin-updater.ts  size=7088  mtime=2026-08-02T07:55:42.3479959-05:00
+preload.ts  size=7370  mtime=2026-09-29T13:22:56.0999955-05:00
+realdebrid.ts  size=9486  mtime=2026-08-03T05:47:00.3584005-05:00
+season-cache.ts  size=1438  mtime=2026-08-27T05:14:40.5907627-05:00
+subtitles.py  size=11554  mtime=2026-08-22T06:16:29.6869077-05:00
+tmdb-provider.py  size=5894  mtime=2026-08-04T10:14:17.9248361-05:00
+torbox.ts  size=6687  mtime=2026-07-27T20:40:33.4621648-05:00
+updater.ts  size=4059  mtime=2026-08-04T08:23:59.9411424-05:00
+worker.ts  size=38313  mtime=2026-08-27T05:57:49.6399761-05:00
+
+=== does compiled downloader.js exist? ===
+dist-electron/downloader.js exists=False
+dist-electron/electron/downloader.js exists=True
+searching main.js for downloader bundle marker:
+main.js length=1127752
+  marker 'Security: Download rejected' present=True
+  marker 'Range not supported by CDN' present=True
+  marker 'Truncated download: got' present=True
+  marker 'dl.torbox.app' present=True
+  marker 'real-debrid.com' present=True
+
+=== tsconfig / build config ===
+tsconfig.json:
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "electron"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
+
+tsconfig.node.json:
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020"],
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist-electron",
+    "declaration": true,
+    "types": ["node"],
+    "composite": true
+  },
+  "include": ["electron", "vite.config.ts"]
+}
+

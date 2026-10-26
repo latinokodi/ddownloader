@@ -1,0 +1,29 @@
+{
+  "serial": "emulator-5554",
+  "started_utc": "2026-10-26T14:03:54.1930246Z",
+  "device_seen_utc": "2026-10-26T14:04:12.9155609Z",
+  "device_seen_after_seconds": 18.73,
+  "boot_completed": 1,
+  "boot_completed_utc": "2026-10-26T14:04:39.7174087Z",
+  "boot_completed_after_seconds": 45.53,
+  "timed_out": false,
+  "error": null,
+  "poll_log": [
+    "[2026-10-26T14:03:56.3886678Z] device offline",
+    "[2026-10-26T14:03:57.4163766Z] device offline",
+    "[2026-10-26T14:03:58.4509511Z] device offline",
+    "[2026-10-26T14:03:59.4856472Z] device offline",
+    "[2026-10-26T14:04:00.5097014Z] device offline",
+    "[2026-10-26T14:04:01.5453743Z] device offline",
+    "[2026-10-26T14:04:02.5729823Z] device offline",
+    "[2026-10-26T14:04:03.6049557Z] device offline",
+    "[2026-10-26T14:04:04.6537371Z] device offline",
+    "[2026-10-26T14:04:05.6874661Z] device offline",
+    "[2026-10-26T14:04:06.7214769Z] device offline",
+    "[2026-10-26T14:04:07.7526758Z] device offline",
+    "[2026-10-26T14:04:08.7838939Z] device offline",
+    "[2026-10-26T14:04:09.8143895Z] device offline",
+    "[2026-10-26T14:04:10.8461704Z] device offline",
+    "[2026-10-26T14:04:11.8831530Z] device offline"
+  ]
+}

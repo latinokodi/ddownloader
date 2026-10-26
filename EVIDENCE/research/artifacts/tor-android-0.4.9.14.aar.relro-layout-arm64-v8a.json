@@ -1,0 +1,85 @@
+{
+  "relro": {
+    "i": 6,
+    "type": 1685382482,
+    "flags": 4,
+    "off": 7145520,
+    "vaddr": 7161904,
+    "filesz": 368952,
+    "memsz": 370640,
+    "align": 1
+  },
+  "containing_load": {
+    "i": 3,
+    "type": 1,
+    "flags": 6,
+    "off": 7145520,
+    "vaddr": 7161904,
+    "filesz": 368952,
+    "memsz": 370640,
+    "align": 16384
+  },
+  "writable_in_end_page": [
+    {
+      "name": ".data.rel.ro",
+      "overlap_start": "0x72c000",
+      "overlap_end": "0x72d2a0",
+      "overlap_bytes": 4768
+    },
+    {
+      "name": ".init_array",
+      "overlap_start": "0x72d2a0",
+      "overlap_end": "0x72d2b8",
+      "overlap_bytes": 24
+    },
+    {
+      "name": ".dynamic",
+      "overlap_start": "0x72d2b8",
+      "overlap_end": "0x72d458",
+      "overlap_bytes": 416
+    },
+    {
+      "name": ".got",
+      "overlap_start": "0x72d458",
+      "overlap_end": "0x72e188",
+      "overlap_bytes": 3376
+    },
+    {
+      "name": ".got.plt",
+      "overlap_start": "0x72e188",
+      "overlap_end": "0x72e968",
+      "overlap_bytes": 2016
+    },
+    {
+      "name": ".relro_padding",
+      "overlap_start": "0x72e968",
+      "overlap_end": "0x72f000",
+      "overlap_bytes": 1688
+    }
+  ],
+  "writable_after": [
+    {
+      "name": ".data",
+      "type": 1,
+      "flags": 3,
+      "addr": 7547240,
+      "off": 7514472,
+      "size": 64016,
+      "align": 8,
+      "write": true,
+      "nobits": false
+    },
+    {
+      "name": ".bss",
+      "type": 8,
+      "flags": 3,
+      "addr": 7611264,
+      "off": 7578488,
+      "size": 28000,
+      "align": 32,
+      "write": true,
+      "nobits": true
+    }
+  ],
+  "page_of_end": "0x72c000"
+}

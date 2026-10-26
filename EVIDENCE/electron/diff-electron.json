@@ -1,0 +1,581 @@
+{
+  "generated_at": "2026-10-26T14:09:37.415Z",
+  "generated_by": "env-runner :: test-fixtures/electron-diff.js",
+  "host": {
+    "os": "win32 v24.19.0",
+    "node": "v24.19.0",
+    "machine": "PEGASUS"
+  },
+  "ground_truth_source": "F:\\PyApps\\tordownloaderElectron (Electron 42.11.10 app, version 1.0.18); compiled Downloader at dist-electron/electron/downloader.js",
+  "original_module": {
+    "path": "F:\\PyApps\\ddandroid\\EVIDENCE\\electron\\shim\\downloader.original.js",
+    "sha256": "0e6fce3ed554b6e3b536ccb9180f67e51fea537dccfaf65c4ec35b36ebf731bc"
+  },
+  "shim_module": {
+    "path": "F:\\PyApps\\ddandroid\\EVIDENCE\\electron\\shim\\downloader.test.js",
+    "sha256": "326f742722749fa32bf08695457eef4b93bfa9ce1a64172084aedf5aef3e63ef",
+    "delta": "ONLY the debrid allowlist constants were extended with '127.0.0.1' and 'localhost'; all other bytes identical to the original",
+    "axios_resolution": "EVIDENCE/electron/shim/node_modules -> junction -> F:\\PyApps\\tordownloaderElectron\\node_modules"
+  },
+  "guard_probe": {
+    "hosts": {
+      "127.0.0.1": null,
+      "localhost": null,
+      "dl.torbox.app": null,
+      "cdn.torbox.app": null,
+      "torbox.app": null,
+      "media.torbox.app": null,
+      "tb-cdn.io": null,
+      "tb-cdn.cx": null,
+      "download.real-debrid.com": null,
+      "rd.nu": null,
+      "evil.example.com": null,
+      "not-torbox.app.evil.com": null
+    },
+    "results": {
+      "127.0.0.1": {
+        "url": "http://127.0.0.1/file/plain.bin",
+        "original_isDebridCDN": false,
+        "shim_isDebridCDN": true
+      },
+      "localhost": {
+        "url": "http://localhost/file/plain.bin",
+        "original_isDebridCDN": false,
+        "shim_isDebridCDN": true
+      },
+      "dl.torbox.app": {
+        "url": "http://dl.torbox.app/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "cdn.torbox.app": {
+        "url": "http://cdn.torbox.app/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "torbox.app": {
+        "url": "http://torbox.app/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "media.torbox.app": {
+        "url": "http://media.torbox.app/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "tb-cdn.io": {
+        "url": "http://tb-cdn.io/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "tb-cdn.cx": {
+        "url": "http://tb-cdn.cx/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "download.real-debrid.com": {
+        "url": "http://download.real-debrid.com/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "rd.nu": {
+        "url": "http://rd.nu/file/plain.bin",
+        "original_isDebridCDN": true,
+        "shim_isDebridCDN": true
+      },
+      "evil.example.com": {
+        "url": "http://evil.example.com/file/plain.bin",
+        "original_isDebridCDN": false,
+        "shim_isDebridCDN": false
+      },
+      "not-torbox.app.evil.com": {
+        "url": "http://not-torbox.app.evil.com/file/plain.bin",
+        "original_isDebridCDN": false,
+        "shim_isDebridCDN": false
+      }
+    },
+    "original_downloader_constructor_on_127_0_0_1": {
+      "threw": true,
+      "message": "Security: Download rejected. URL http://127.0.0.1:9/file/plain.bin is not a recognized debrid CDN domain. This app only downloads via debrid services (TorBox / Real-Debrid) — never via torrents/seeds/P2P."
+    },
+    "only_delta_is_allowlist": true
+  },
+  "fixture_server": {
+    "url": "http://127.0.0.1:56033",
+    "health": {
+      "ok": true,
+      "prng": "xorshift32 seeded by (0x1234abcd ^ fnv1a32(name))",
+      "base_seed": 305441741,
+      "partial_size": 3145728,
+      "flaky_cut": 4194304,
+      "files": {
+        "plain.bin": {
+          "size": 8388608,
+          "supportsRange": true,
+          "cutFirstRequest": false,
+          "sendNoBody": false,
+          "seed": 2610714709,
+          "sha256_from_server": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56"
+        },
+        "norange.bin": {
+          "size": 8388608,
+          "supportsRange": false,
+          "cutFirstRequest": false,
+          "sendNoBody": false,
+          "seed": 3959979221,
+          "sha256_from_server": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488"
+        },
+        "flaky.bin": {
+          "size": 8388608,
+          "supportsRange": true,
+          "cutFirstRequest": true,
+          "sendNoBody": false,
+          "seed": 4023885044,
+          "sha256_from_server": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa"
+        },
+        "empty.bin": {
+          "size": 1000,
+          "supportsRange": false,
+          "cutFirstRequest": false,
+          "sendNoBody": true,
+          "seed": 270832740,
+          "sha256_from_server": "f229154fb9bd64a1cff3487982c00195df4bc6ba34a0729408e00856869f4341"
+        }
+      }
+    }
+  },
+  "reference_hashes_file": "EVIDENCE/electron/reference-hashes.json",
+  "attempt_timeout_ms": 30000,
+  "scenarios": [
+    {
+      "id": "s1-fresh-full",
+      "description": "fresh full download of plain.bin (server supports Range, no partial present)",
+      "url_path": "/file/plain.bin",
+      "expected_size": 8388608,
+      "preexisting": null,
+      "reference": {
+        "size": 8388608,
+        "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "source": "plain.bin"
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "url": "http://127.0.0.1:56033/file/plain.bin",
+          "expectedSize": 8388608,
+          "timedOut": false,
+          "thrown": null,
+          "elapsed_ms": 47,
+          "result": {
+            "success": true,
+            "bytes_downloaded": 8388608
+          },
+          "final_size": 8388608,
+          "final_sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+          "matches_reference": true
+        }
+      ],
+      "requests": [
+        {
+          "seq": 2,
+          "ts": "2026-10-26T14:08:37.135Z",
+          "method": "GET",
+          "path": "/file/plain.bin",
+          "raw_url": "/file/plain.bin",
+          "range_header": null,
+          "status": 200,
+          "content_range": null,
+          "content_length_header": 8388608,
+          "bytes_written": 8388608,
+          "cut": false,
+          "remote_port": 56035,
+          "user_agent": "axios/1.20.0",
+          "duration_ms": 16
+        }
+      ],
+      "final_file": "F:\\PyApps\\ddandroid\\EVIDENCE\\electron\\diff-workspace\\s1-fresh-full\\dest.bin",
+      "final_size": 8388608,
+      "final_sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+      "matches_reference": true,
+      "final_size_equals_expected": true
+    },
+    {
+      "id": "s2-resume-range",
+      "description": "resume from pre-existing 3145728-byte partial of plain.bin; server honours Range",
+      "url_path": "/file/plain.bin",
+      "expected_size": 8388608,
+      "preexisting": {
+        "from": "plain.bin",
+        "bytes": 3145728
+      },
+      "reference": {
+        "size": 8388608,
+        "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "source": "plain.bin"
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "url": "http://127.0.0.1:56033/file/plain.bin",
+          "expectedSize": 8388608,
+          "timedOut": false,
+          "thrown": null,
+          "elapsed_ms": 32,
+          "result": {
+            "success": true,
+            "bytes_downloaded": 8388608
+          },
+          "final_size": 8388608,
+          "final_sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+          "matches_reference": true
+        }
+      ],
+      "requests": [
+        {
+          "seq": 3,
+          "ts": "2026-10-26T14:08:37.214Z",
+          "method": "GET",
+          "path": "/file/plain.bin",
+          "raw_url": "/file/plain.bin",
+          "range_header": "bytes=3145728-",
+          "status": 206,
+          "content_range": "bytes 3145728-8388607/8388608",
+          "content_length_header": 5242880,
+          "bytes_written": 5242880,
+          "cut": false,
+          "remote_port": 56035,
+          "user_agent": "axios/1.20.0",
+          "duration_ms": 17
+        }
+      ],
+      "final_file": "F:\\PyApps\\ddandroid\\EVIDENCE\\electron\\diff-workspace\\s2-resume-range\\dest.bin",
+      "final_size": 8388608,
+      "final_sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+      "matches_reference": true,
+      "final_size_equals_expected": true
+    },
+    {
+      "id": "s3-norange-ignored",
+      "description": "resume attempt against norange.bin (server always returns 200 full body) with 3145728-byte partial",
+      "url_path": "/file/norange.bin",
+      "expected_size": 8388608,
+      "preexisting": {
+        "from": "norange.bin",
+        "bytes": 3145728
+      },
+      "reference": {
+        "size": 8388608,
+        "sha256": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488",
+        "source": "norange.bin"
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "url": "http://127.0.0.1:56033/file/norange.bin",
+          "expectedSize": 8388608,
+          "timedOut": false,
+          "thrown": null,
+          "elapsed_ms": 19,
+          "result": {
+            "success": false,
+            "error": "Range not supported by CDN",
+            "bytes_downloaded": 3145728,
+            "rangeIgnored": true
+          },
+          "final_size": 3145728,
+          "final_sha256": "752f1cd15b4e8869f843e600c931d1a893ecf8c929e6b4820a2eca42f4fd0027",
+          "matches_reference": false
+        }
+      ],
+      "requests": [
+        {
+          "seq": 4,
+          "ts": "2026-10-26T14:08:37.281Z",
+          "method": "GET",
+          "path": "/file/norange.bin",
+          "raw_url": "/file/norange.bin",
+          "range_header": "bytes=3145728-",
+          "status": 200,
+          "content_range": null,
+          "content_length_header": 8388608,
+          "bytes_written": 8388608,
+          "cut": false,
+          "remote_port": 56035,
+          "user_agent": "axios/1.20.0",
+          "duration_ms": 16
+        }
+      ],
+      "final_file": "F:\\PyApps\\ddandroid\\EVIDENCE\\electron\\diff-workspace\\s3-norange-ignored\\dest.bin",
+      "final_size": 3145728,
+      "final_sha256": "752f1cd15b4e8869f843e600c931d1a893ecf8c929e6b4820a2eca42f4fd0027",
+      "matches_reference": false,
+      "final_size_equals_expected": false
+    },
+    {
+      "id": "s4-flaky-cut",
+      "description": "flaky.bin: server cuts the first response after 4194304 bytes; a retry must resume via Range",
+      "url_path": "/file/flaky.bin",
+      "expected_size": 8388608,
+      "preexisting": null,
+      "reference": {
+        "size": 8388608,
+        "sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+        "source": "flaky.bin"
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "url": "http://127.0.0.1:56033/file/flaky.bin",
+          "expectedSize": 8388608,
+          "timedOut": true,
+          "thrown": null,
+          "elapsed_ms": 30011,
+          "result": null,
+          "final_size": 4194304,
+          "final_sha256": "f09dce77fdfa7fd34ff46e4e7bed643dfd70fe54fbb4c13eb771c5823ed97295",
+          "matches_reference": false
+        },
+        {
+          "attempt": 2,
+          "url": "http://127.0.0.1:56033/file/flaky.bin",
+          "expectedSize": 8388608,
+          "timedOut": false,
+          "thrown": null,
+          "elapsed_ms": 30,
+          "result": {
+            "success": true,
+            "bytes_downloaded": 8388608
+          },
+          "final_size": 8388608,
+          "final_sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+          "matches_reference": true
+        }
+      ],
+      "requests": [
+        {
+          "seq": 5,
+          "ts": "2026-10-26T14:08:37.317Z",
+          "method": "GET",
+          "path": "/file/flaky.bin",
+          "raw_url": "/file/flaky.bin",
+          "range_header": null,
+          "status": 200,
+          "content_range": null,
+          "content_length_header": 8388608,
+          "bytes_written": 4194304,
+          "cut": true,
+          "remote_port": 56036,
+          "user_agent": "axios/1.20.0",
+          "duration_ms": 118
+        },
+        {
+          "seq": 6,
+          "ts": "2026-10-26T14:09:07.336Z",
+          "method": "GET",
+          "path": "/file/flaky.bin",
+          "raw_url": "/file/flaky.bin",
+          "range_header": "bytes=4194304-",
+          "status": 206,
+          "content_range": "bytes 4194304-8388607/8388608",
+          "content_length_header": 4194304,
+          "bytes_written": 4194304,
+          "cut": false,
+          "remote_port": 51915,
+          "user_agent": "axios/1.20.0",
+          "duration_ms": 15
+        }
+      ],
+      "final_file": "F:\\PyApps\\ddandroid\\EVIDENCE\\electron\\diff-workspace\\s4-flaky-cut\\dest.bin",
+      "final_size": 8388608,
+      "final_sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+      "matches_reference": true,
+      "final_size_equals_expected": true
+    },
+    {
+      "id": "s5-empty-truncation-extra",
+      "description": "EXTRA: empty.bin advertises Content-Length 1000 but sends 0 body bytes -> truncation must be detected",
+      "url_path": "/file/empty.bin",
+      "expected_size": 1000,
+      "preexisting": null,
+      "reference": {
+        "size": 1000,
+        "sha256": "f229154fb9bd64a1cff3487982c00195df4bc6ba34a0729408e00856869f4341",
+        "source": "empty.bin"
+      },
+      "attempts": [
+        {
+          "attempt": 1,
+          "url": "http://127.0.0.1:56033/file/empty.bin",
+          "expectedSize": 1000,
+          "timedOut": true,
+          "thrown": null,
+          "elapsed_ms": 30012,
+          "result": null,
+          "final_size": 0,
+          "final_sha256": null,
+          "matches_reference": false
+        }
+      ],
+      "requests": [
+        {
+          "seq": 7,
+          "ts": "2026-10-26T14:09:07.404Z",
+          "method": "GET",
+          "path": "/file/empty.bin",
+          "raw_url": "/file/empty.bin",
+          "range_header": null,
+          "status": 200,
+          "content_range": null,
+          "content_length_header": 1000,
+          "bytes_written": 0,
+          "cut": false,
+          "remote_port": 51915,
+          "user_agent": "axios/1.20.0",
+          "duration_ms": 0
+        }
+      ],
+      "final_file": "F:\\PyApps\\ddandroid\\EVIDENCE\\electron\\diff-workspace\\s5-empty-truncation-extra\\dest.bin",
+      "final_size": 0,
+      "final_sha256": null,
+      "matches_reference": false,
+      "final_size_equals_expected": false
+    }
+  ],
+  "fatal_events": [],
+  "summary": {
+    "s1-fresh-full": {
+      "attempts": 1,
+      "timed_out": false,
+      "results": [
+        {
+          "success": true,
+          "bytes_downloaded": 8388608
+        }
+      ],
+      "final_size": 8388608,
+      "final_sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+      "matches_reference": true,
+      "request_count": 1,
+      "requests": [
+        {
+          "seq": 2,
+          "path": "/file/plain.bin",
+          "range": null,
+          "status": 200,
+          "content_range": null,
+          "bytes_written": 8388608,
+          "cut": false
+        }
+      ]
+    },
+    "s2-resume-range": {
+      "attempts": 1,
+      "timed_out": false,
+      "results": [
+        {
+          "success": true,
+          "bytes_downloaded": 8388608
+        }
+      ],
+      "final_size": 8388608,
+      "final_sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+      "matches_reference": true,
+      "request_count": 1,
+      "requests": [
+        {
+          "seq": 3,
+          "path": "/file/plain.bin",
+          "range": "bytes=3145728-",
+          "status": 206,
+          "content_range": "bytes 3145728-8388607/8388608",
+          "bytes_written": 5242880,
+          "cut": false
+        }
+      ]
+    },
+    "s3-norange-ignored": {
+      "attempts": 1,
+      "timed_out": false,
+      "results": [
+        {
+          "success": false,
+          "error": "Range not supported by CDN",
+          "bytes_downloaded": 3145728,
+          "rangeIgnored": true
+        }
+      ],
+      "final_size": 3145728,
+      "final_sha256": "752f1cd15b4e8869f843e600c931d1a893ecf8c929e6b4820a2eca42f4fd0027",
+      "matches_reference": false,
+      "request_count": 1,
+      "requests": [
+        {
+          "seq": 4,
+          "path": "/file/norange.bin",
+          "range": "bytes=3145728-",
+          "status": 200,
+          "content_range": null,
+          "bytes_written": 8388608,
+          "cut": false
+        }
+      ]
+    },
+    "s4-flaky-cut": {
+      "attempts": 2,
+      "timed_out": true,
+      "results": [
+        null,
+        {
+          "success": true,
+          "bytes_downloaded": 8388608
+        }
+      ],
+      "final_size": 8388608,
+      "final_sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+      "matches_reference": true,
+      "request_count": 2,
+      "requests": [
+        {
+          "seq": 5,
+          "path": "/file/flaky.bin",
+          "range": null,
+          "status": 200,
+          "content_range": null,
+          "bytes_written": 4194304,
+          "cut": true
+        },
+        {
+          "seq": 6,
+          "path": "/file/flaky.bin",
+          "range": "bytes=4194304-",
+          "status": 206,
+          "content_range": "bytes 4194304-8388607/8388608",
+          "bytes_written": 4194304,
+          "cut": false
+        }
+      ]
+    },
+    "s5-empty-truncation-extra": {
+      "attempts": 1,
+      "timed_out": true,
+      "results": [
+        null
+      ],
+      "final_size": 0,
+      "final_sha256": null,
+      "matches_reference": false,
+      "request_count": 1,
+      "requests": [
+        {
+          "seq": 7,
+          "path": "/file/empty.bin",
+          "range": null,
+          "status": 200,
+          "content_range": null,
+          "bytes_written": 0,
+          "cut": false
+        }
+      ]
+    }
+  }
+}

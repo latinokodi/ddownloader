@@ -1,0 +1,24 @@
+[09:25:36.525] [INFO] lifecycle harness start  serial=emulator-5554  package=pro.tordownloader.android.debug  run=20261026T142536Z
+[09:25:36.579] adb -s emulator-5554 get-state
+  exit=0 out=device
+[09:25:36.624] adb shell getprop sys.boot_completed
+  exit=0 out=1
+[09:25:36.669] adb shell pm list packages pro.tordownloader.android.debug
+  exit=0 out=package:pro.tordownloader.android.debug
+[09:25:36.726] adb shell dumpsys package pro.tordownloader.android.debug | grep -E 'versionName|lastUpdateTime' | head -2
+  exit=0 out=versionName=1.0.0 |     lastUpdateTime=2026-10-26 09:24:03
+[09:25:36.780] adb shell cmd package query-activities -a android.intent.action.VIEW -d 'tddl://download'
+  exit=0 out=No activities found
+[09:25:36.844] adb shell dumpsys package pro.tordownloader.android.debug | grep -F 'pro.tordownloader.android.download.DownloadService'
+  exit=1 out=
+[09:25:36.897] adb shell cmd package resolve-activity --brief pro.tordownloader.android.debug
+  exit=0 out=priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false | pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity
+[09:25:36.966] adb shell am start -n pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { cmp=pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity }
+[09:25:38.619] adb shell dumpsys window | grep -E 'mCurrentFocus' | head -1
+  exit=0 out=mCurrentFocus=Window{7f915ab u0 pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity}
+[09:25:38.696] adb shell am force-stop pro.tordownloader.android.debug
+  exit=0 out=
+[09:25:38.994] adb shell su 0 /data/local/tmp/curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://10.0.2.2:8787/health
+  exit=0 out=200
+[09:25:39.672] [FAIL] preflight blocked: debug deep link tddl://download is not resolvable in the installed build (no matching VIEW intent-filter)

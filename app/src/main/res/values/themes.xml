@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Compose owns all theming; this base theme only controls the window
+         background so there is no white flash on a dark UI before the first frame.
+         Light-status/navigation-bar attributes are intentionally absent: they need
+         API 27 (minSdk here is 26) and the dark theme already draws light icons. -->
+    <style name="Theme.TorDownloader" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

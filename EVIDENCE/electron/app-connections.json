@@ -1,0 +1,608 @@
+{
+  "started_utc": "2026-10-26T14:08:39.2414426Z",
+  "working_directory": "F:\\PyApps\\tordownloaderElectron",
+  "command": "npm start   (package.json scripts.start = \"electron .\")",
+  "env_notes": {
+    "VITE_DEV_SERVER_URL": "<unset>",
+    "ELECTRON_RUN_AS_NODE": "<unset>",
+    "DISPLAY": "<unset>"
+  },
+  "process": {
+    "pid": 24288,
+    "name": "cmd.exe (npm start parent)",
+    "start_time": "2026-10-26T14:08:39.2693786Z"
+  },
+  "electron_pids": [
+    7528,
+    6816,
+    13604,
+    18380
+  ],
+  "window_or_process_appeared": true,
+  "samples": [
+    {
+      "t_ms": 13.0,
+      "electron_pids": [],
+      "connections": []
+    },
+    {
+      "t_ms": 528.0,
+      "electron_pids": [],
+      "connections": []
+    },
+    {
+      "t_ms": 1046.0,
+      "electron_pids": [
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 3618.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 5291.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 7053.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 8711.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:53007",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "127.0.0.1:53007",
+          "remote": "127.0.0.1:8191"
+        }
+      ]
+    },
+    {
+      "t_ms": 10367.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:53007",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "127.0.0.1:53007",
+          "remote": "127.0.0.1:8191"
+        }
+      ]
+    },
+    {
+      "t_ms": 12008.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:64488",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:64486",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:53007",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:64486",
+          "remote": "104.20.28.56:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "127.0.0.1:53007",
+          "remote": "127.0.0.1:8191"
+        }
+      ]
+    },
+    {
+      "t_ms": 13649.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:64488",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:64486",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:64486",
+          "remote": "104.20.28.56:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 15291.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:64488",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:64486",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:64486",
+          "remote": "104.20.28.56:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 16910.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 18579.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 20201.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        }
+      ]
+    },
+    {
+      "t_ms": 21855.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:51905",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:51905",
+          "remote": "104.20.28.56:443"
+        }
+      ]
+    },
+    {
+      "t_ms": 23460.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:51907",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:51905",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:51907",
+          "remote": "94.140.4.10:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:51905",
+          "remote": "104.20.28.56:443"
+        }
+      ]
+    },
+    {
+      "t_ms": 25098.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:51907",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:51905",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:51907",
+          "remote": "94.140.4.10:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:51905",
+          "remote": "104.20.28.56:443"
+        }
+      ]
+    },
+    {
+      "t_ms": 26767.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:51907",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Bound",
+          "local": "0.0.0.0:51905",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:64488",
+          "remote": "81.85.62.11:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:51907",
+          "remote": "94.140.4.10:443"
+        },
+        {
+          "pid": 13604,
+          "state": "Established",
+          "local": "192.168.0.222:51905",
+          "remote": "104.20.28.56:443"
+        }
+      ]
+    },
+    {
+      "t_ms": 28414.0,
+      "electron_pids": [
+        7528,
+        6816,
+        13604,
+        18380
+      ],
+      "connections": [
+        {
+          "pid": 13604,
+          "state": "Listen",
+          "local": "127.0.0.1:56042",
+          "remote": "0.0.0.0:0"
+        },
+        {
+          "pid": 13604,
+          "state": "LastAck",
+          "local": "192.168.0.222:51907",
+          "remote": "94.140.4.10:443"
+        }
+      ]
+    }
+  ],
+  "distinct_remote_endpoints": [
+    {
+      "endpoint": "94.140.4.10:443",
+      "samples": 4
+    },
+    {
+      "endpoint": "127.0.0.1:8191",
+      "samples": 3
+    },
+    {
+      "endpoint": "81.85.62.11:443",
+      "samples": 10
+    },
+    {
+      "endpoint": "104.20.28.56:443",
+      "samples": 7
+    }
+  ],
+  "exit": -1,
+  "cleanup": {
+    "killed": [
+      "electron:6816",
+      "electron:7528",
+      "electron:13604",
+      "electron:18380",
+      "python:7512"
+    ],
+    "finished_utc": "2026-10-26T14:09:09.8589966Z"
+  },
+  "error": null,
+  "stdout_head": [
+    "",
+    "> tordownloader-pro@1.0.18 start",
+    "> electron .",
+    "",
+    "",
+    "[Worker] Starting background worker (10s interval)",
+    "[FlareSolverr] Starting: C:\\Users\\ferna\\AppData\\Roaming\\tordownloader-pro\\flaresolverr\\flaresolverr\\flaresolverr.exe",
+    "[CF Fetcher] HTTP bridge listening on port 56042",
+    "Skip checkForUpdates because application is not packed and dev update config is not forced",
+    "[FlareSolverr] Ready on port 8191"
+  ],
+  "stderr_head": null,
+  "stdout_length": 392,
+  "stderr_length": 0,
+  "parent_still_running": true
+}

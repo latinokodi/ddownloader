@@ -1,0 +1,106 @@
+{
+  "generated_at": "2026-10-26T14:18:14.3182884Z",
+  "generated_by": "env-runner",
+  "capture": {
+    "tool": "tcpdump (guest-side, static Android x86_64 binary) -- pktmon on the host was blocked (needs elevation)",
+    "tool_version": "tcpdump version 4.9.2\r\nlibpcap version 1.9.0-PRE-GIT (with TPACKET_V3)",
+    "tool_binary": "/data/local/tmp/tcpdump",
+    "tool_host_source": "https://raw.githubusercontent.com/fkie-cad/friTap/main/friTap/assets/tcpdump_binaries/tcpdump_x86_64_android",
+    "tool_sha256": "126636E370E5FDFD3645E2C9458DA520F982D360C92B389D7AEA13C1CE493BCF",
+    "command": "adb shell \"su 0 /data/local/tmp/tcpdump -i any -n -s 0 -U -w /data/local/tmp/cap.pcap\"",
+    "device": "emulator-5554 (Android 15 / API 35 / x86_64), adb root",
+    "linktype": "LINUX_SLL (113)",
+    "pcap_path": "F:\\PyApps\\ddandroid\\EVIDENCE\\captures\\guest-traffic-2026-10-26.pcap",
+    "pcap_bytes": 2423924,
+    "pcap_sha256": "D7FDB7FEA830706D50AD0B793C7D7E49B1DC797EFE79AD8CA40B5AADFDE11BEC",
+    "packets_captured": 3129,
+    "packets_received_by_filter": 3227,
+    "packets_dropped": 0
+  },
+  "parsed": {
+    "parser": "scripts/pcap_parse.py",
+    "flows_json": "F:\\PyApps\\ddandroid\\EVIDENCE\\captures\\guest-traffic-2026-10-26.flows.json",
+    "flows_json_sha256": "207EE3368741D3008983E95043146A845AABCFE56DA3C4A09C6F1E61CEF5035C",
+    "packets_parsed": 3125,
+    "decode_errors": 4,
+    "note": "4 frames were not IPv4/IPv6 (non-IP link-layer frames)",
+    "dns_names": [
+      "check.torproject.org",
+      "example.com",
+      "example.org",
+      "torproject.org",
+      "android.googleapis.com",
+      "connectivitycheck.gstatic.com",
+      "digitalassetlinks.googleapis.com",
+      "mtalk.google.com",
+      "notifications-pa.googleapis.com",
+      "voilatile-pa.googleapis.com",
+      "www.google.com"
+    ],
+    "tls_sni": [
+      "check.torproject.org",
+      "android.googleapis.com",
+      "mtalk.google.com",
+      "notifications-pa.googleapis.com",
+      "voilatile-pa.googleapis.com",
+      "www.google.com"
+    ]
+  },
+  "traffic_generated": [
+    "HTTPS GET https://check.torproject.org/  (static curl 8.23.0 with --resolve 116.202.120.181, -k) -> HTTP 200, TLS appconnect 0.69 s",
+    "DNS lookups via Android bionic resolver for check.torproject.org / example.org / torproject.org",
+    "HTTP GET http://10.0.2.2:8787/health -> 200",
+    "HTTP GET http://10.0.2.2:8787/file/plain.bin with Range 0-1048575 -> 206, 1048576 bytes"
+  ],
+  "curl_tool": {
+    "path": "/data/local/tmp/curl",
+    "version": "curl 8.23.0 (x86_64-pc-linux-gnu) OpenSSL/4.0.3",
+    "host_source": "https://github.com/stunnel/static-curl/releases/download/8.23.0-1/curl-linux-x86_64-musl-8.23.0-1.tar.xz",
+    "sha256": "715F85AAE6D9CAECA203F7C1F8697B02193C53F8DD6112D54647F0777290F23E",
+    "note": "static musl curl cannot use the Android resolver (/etc/resolv.conf absent); DNS was driven by ping/bionic and TLS by --resolve"
+  },
+  "onionoo": {
+    "url": "https://onionoo.torproject.org/details?type=relay&running=true&fields=nickname,or_addresses,exit_addresses",
+    "raw_file": "EVIDENCE\\captures\\onionoo-relays-20261026T141735Z.json",
+    "sha256": "e86cb43d986f095e549b9306f823b3964d0fa48341aabcfca8ae34658a9b487f",
+    "bytes": 847181,
+    "http_status": 200,
+    "fetched_at": "2026-10-26T14:17:35Z",
+    "relay_count": 9164
+  },
+  "egress_reports": [
+    {
+      "file": "F:\\PyApps\\ddandroid\\EVIDENCE\\captures\\egress-allowlist-control.json",
+      "source": "stock emulator capture (guest-traffic-2026-10-26.pcap)",
+      "verdict": "UNEXPECTED EGRESS 14 (google/gstatic/torproject) + 1 fixture -> proves detection"
+    },
+    {
+      "file": "F:\\PyApps\\ddandroid\\EVIDENCE\\captures\\egress-allowlist-control2.json",
+      "source": "same capture, allowlist += check.torproject.org",
+      "verdict": "that endpoint flips to allowed (1 allowed, 13 UNEXPECTED) -> proves allowlisting works"
+    },
+    {
+      "file": "F:\\PyApps\\ddandroid\\EVIDENCE\\captures\\egress-app-launch.json",
+      "source": "fresh app-launch-2026-10-26.pcap",
+      "verdict": "UNEXPECTED EGRESS 2 (www.gstatic.com TLS + DNS); no debrid traffic in installed build"
+    }
+  ],
+  "app_launch_capture_2026-10-26": {
+    "generated_at": "2026-10-26T14:26:48.8286359Z",
+    "device": "emulator-5554 (Android 15/API 35/x86_64), adb root",
+    "command": "adb shell \"su 0 /data/local/tmp/tcpdump -i any -n -s 0 -U -w /data/local/tmp/applaunch.pcap\"",
+    "purpose": "cold launch of the currently installed debug build (v1.0.0) to observe its egress",
+    "traffic_window": "force-stop -> cold am start MainActivity (-W, COLD) -> 8 s wait -> one UI tap -> 6 s wait",
+    "pcap_bytes": 5784358,
+    "pcap_sha256": "251C73534B53727BAA20CF99397DA9AA26518E6091C6006CA47068CB86A2C4BB",
+    "packets_captured": 5054,
+    "packets_received_by_filter": 5076,
+    "packets_dropped": 0,
+    "parser": "scripts/pcap_parse.py",
+    "flows_json": "F:\\PyApps\\ddandroid\\EVIDENCE\\captures\\app-launch-2026-10-26.flows.json",
+    "flows_json_sha256": "B060F3BFBDB8CEABBAF5C3BCC2117066BE3302F7A5B11966F437400D69D27D84",
+    "observed": "only www.gstatic.com TLS (172.217.162.131:443) + DNS to 10.0.2.3:53; NO debrid API calls (build has no account and no deep-link trigger)",
+    "egress_allowlist_report": "F:\\PyApps\\ddandroid\\EVIDENCE\\captures\\egress-app-launch.json",
+    "egress_allowlist_verdict": "UNEXPECTED EGRESS (2): www.gstatic.com TLS + DNS; exit 2"
+  }
+}

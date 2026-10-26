@@ -1,0 +1,76 @@
+{
+  "runId": "20261026T144304Z",
+  "serial": "emulator-5554",
+  "fixtureBase": "http://10.0.2.2:8787",
+  "apkSha256": "8d8e1ae8303b967abeb46cafc0685b5e32397770160b9a947c36724389680692",
+  "startedUtc": "20261026T144304Z",
+  "results": [
+    {
+      "scenario": "s1",
+      "verdict": "FAIL",
+      "detail": {
+        "state": null,
+        "bytes": null,
+        "sha256": null,
+        "expected": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "requests": null,
+        "note": "Electron s1: 200, 8 MiB, same sha"
+      }
+    },
+    {
+      "scenario": "s2",
+      "verdict": "FAIL",
+      "detail": {
+        "partialBeforeKill": 0,
+        "partialAfterKill": 0,
+        "pidAtKill": "",
+        "state": null,
+        "bytes": null,
+        "sha256": null,
+        "expected": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+        "rangeRequested": false,
+        "requests": null
+      }
+    },
+    {
+      "scenario": "s3",
+      "verdict": "FAIL",
+      "detail": {
+        "partialKept": 0,
+        "partialAfterRestart": 0,
+        "published": null,
+        "state": "COMPLETED",
+        "sha256": null,
+        "expected": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488",
+        "sawRangeIgnoredThenRestart": false,
+        "requests": "{\"seq\":40,\"ts\":\"2026-10-26T14:46:53.524Z\",\"method\":\"GET\",\"path\":\"/file/plain.bin\",\"raw_url\":\"/file/plain.bin?rate=2097152\",\"range_header\":null,\"status\":200,\"content_range\":null,\"content_length_header\":8388608,\"bytes_written\":8388608,\"cut\":false,\"remote_port\":60334,\"user_agent\":\"TorDownloader-Android/1.0\",\"duration_ms\":4867,\"rate\":2097152,\"__done\":true}",
+        "note": "Electron s3 (Downloader level): rangeIgnored=true, partial preserved; at worker level it would publish a truncated file. Android restarts from zero instead."
+      }
+    },
+    {
+      "scenario": "s4",
+      "verdict": "FAIL",
+      "detail": {
+        "state": "COMPLETED",
+        "bytes": 8388608,
+        "sha256": null,
+        "expected": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+        "requests": "{\"seq\":41,\"ts\":\"2026-10-26T14:47:26.414Z\",\"method\":\"GET\",\"path\":\"/file/plain.bin\",\"raw_url\":\"/file/plain.bin?rate=2097152\",\"range_header\":null,\"status\":200,\"content_range\":null,\"content_length_header\":8388608,\"bytes_written\":8388608,\"cut\":false,\"remote_port\":56989,\"user_agent\":\"TorDownloader-Android/1.0\",\"duration_ms\":4861,\"rate\":2097152,\"__done\":true}",
+        "note": "Electron s4: attempt 1 never resolved (defect); retry with Range succeeded"
+      }
+    },
+    {
+      "scenario": "s5",
+      "verdict": "FAIL",
+      "detail": {
+        "state": null,
+        "error": null,
+        "published": null,
+        "requests": null,
+        "note": "Electron s5: promise never resolved (defect); Android must report failure"
+      }
+    }
+  ],
+  "passCount": 0,
+  "failCount": 5
+}

@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-10-26T14:50:34.3921671Z",
+  "tool": "scripts/device-lifecycle-test.ps1",
+  "tool_version": "1.0.0",
+  "serial": "emulator-5556",
+  "package": "pro.tordownloader.android.verify",
+  "service": "pro.tordownloader.android.download.DownloadService",
+  "run_dir": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T145030Z",
+  "transcript": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T145030Z\\adb-transcript.log",
+  "preflight": {
+    "ok": false,
+    "checks": [
+      {
+        "check": "adb_available",
+        "pass": true,
+        "blocking": true,
+        "detail": "Android Debug Bridge version 1.0.41\r / Version 37.0.1-15733141\r"
+      },
+      {
+        "check": "device_online",
+        "pass": true,
+        "blocking": true,
+        "detail": "device"
+      },
+      {
+        "check": "boot_completed",
+        "pass": true,
+        "blocking": true,
+        "detail": "1"
+      },
+      {
+        "check": "app_installed",
+        "pass": true,
+        "blocking": true,
+        "detail": "package:pro.tordownloader.android.verify | versionName=1.0.0\r     lastUpdateTime=2026-10-26 09:50:26"
+      },
+      {
+        "check": "run_as_available",
+        "pass": false,
+        "blocking": false,
+        "detail": "run-as refused (not debuggable or not installed for this user)"
+      },
+      {
+        "check": "partial_sampling_access",
+        "pass": true,
+        "blocking": false,
+        "detail": "method=root (run-as preferred, adb-root fallback; 'none' means partial sizes cannot be sampled)"
+      },
+      {
+        "check": "debug_deeplink_resolvable",
+        "pass": true,
+        "blocking": true,
+        "detail": "1 activities found:\r /   Activity #0:\r"
+      },
+      {
+        "check": "download_service_present",
+        "pass": true,
+        "blocking": false,
+        "detail": "declared in installed manifest: pro.tordownloader.android.download.DownloadService"
+      },
+      {
+        "check": "app_launches",
+        "pass": false,
+        "blocking": false,
+        "detail": "focus not on app: mCurrentFocus=Window{45e14c5 u0 com.google.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity}"
+      },
+      {
+        "check": "fixture_server_host",
+        "pass": true,
+        "blocking": true,
+        "detail": "status=200 bytes=1304"
+      },
+      {
+        "check": "fixture_server_device",
+        "pass": false,
+        "blocking": true,
+        "detail": "http_code=su: failed to exec /data/local/tmp/curl: No such file or directory via 10.0.2.2:8787"
+      }
+    ],
+    "blocked_reason": "fixture_server_device failed",
+    "started_at": "2026-10-26T14:50:30.2086375Z",
+    "finished_at": "2026-10-26T14:50:34.3542680Z"
+  },
+  "reference": {
+    "plain.bin": {
+      "size": 8388608,
+      "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56"
+    },
+    "flaky.bin": {
+      "size": 8388608,
+      "sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa"
+    },
+    "norange.bin": {
+      "size": 8388608,
+      "sha256": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488"
+    }
+  },
+  "scenarios": [],
+  "summary": {
+    "total": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+  "verdict": "BLOCKED",
+  "failure_reason": "fixture_server_device failed",
+  "exit_code": 3,
+  "note": "Fail-fast is the expected behaviour when the debug APK is not installed yet."
+}

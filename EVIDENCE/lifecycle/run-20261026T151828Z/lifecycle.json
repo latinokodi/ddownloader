@@ -1,0 +1,235 @@
+{
+  "generated_at": "2026-10-26T15:18:56.7501820Z",
+  "tool": "scripts/device-lifecycle-test.ps1",
+  "tool_version": "1.0.0",
+  "serial": "emulator-5554",
+  "package": "pro.tordownloader.android.verify",
+  "service": "pro.tordownloader.android.download.DownloadService",
+  "run_dir": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T151828Z",
+  "transcript": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T151828Z\\adb-transcript.log",
+  "device": {
+    "adb_version": "Android Debug Bridge version 1.0.41\r\nVersion 37.0.1-15733141\r\nInstalled as C:\\Android\\Sdk\\platform-tools\\adb.exe\r\nRunning on Windows 10.0.26200",
+    "boot_completed": "1",
+    "android_release": "15",
+    "sdk": "35",
+    "abi": "x86_64"
+  },
+  "preflight": {
+    "ok": true,
+    "checks": [
+      {
+        "check": "adb_available",
+        "pass": true,
+        "blocking": true,
+        "detail": "Android Debug Bridge version 1.0.41\r / Version 37.0.1-15733141\r"
+      },
+      {
+        "check": "device_online",
+        "pass": true,
+        "blocking": true,
+        "detail": "device"
+      },
+      {
+        "check": "boot_completed",
+        "pass": true,
+        "blocking": true,
+        "detail": "1"
+      },
+      {
+        "check": "app_installed",
+        "pass": true,
+        "blocking": true,
+        "detail": "package:pro.tordownloader.android.verify | versionName=1.0.0\r     lastUpdateTime=2026-10-26 10:18:27"
+      },
+      {
+        "check": "run_as_available",
+        "pass": false,
+        "blocking": false,
+        "detail": "run-as refused (not debuggable or not installed for this user)"
+      },
+      {
+        "check": "partial_sampling_access",
+        "pass": true,
+        "blocking": false,
+        "detail": "method=root (run-as preferred, adb-root fallback; 'none' means partial sizes cannot be sampled)"
+      },
+      {
+        "check": "debug_deeplink_resolvable",
+        "pass": true,
+        "blocking": true,
+        "detail": "1 activities found:\r /   Activity #0:\r"
+      },
+      {
+        "check": "download_service_present",
+        "pass": true,
+        "blocking": false,
+        "detail": "declared in installed manifest: pro.tordownloader.android.download.DownloadService"
+      },
+      {
+        "check": "app_launches",
+        "pass": true,
+        "blocking": false,
+        "detail": "mCurrentFocus=Window{d967771 u0 pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity}"
+      },
+      {
+        "check": "fixture_server_host",
+        "pass": true,
+        "blocking": true,
+        "detail": "status=200 bytes=1304"
+      },
+      {
+        "check": "fixture_server_device",
+        "pass": true,
+        "blocking": true,
+        "detail": "http_code=200 via 10.0.2.2:8787"
+      }
+    ],
+    "blocked_reason": null,
+    "started_at": "2026-10-26T15:18:28.9754965Z",
+    "finished_at": "2026-10-26T15:18:33.2114974Z"
+  },
+  "reference": {
+    "plain.bin": {
+      "size": 8388608,
+      "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56"
+    },
+    "flaky.bin": {
+      "size": 8388608,
+      "sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa"
+    },
+    "norange.bin": {
+      "size": 8388608,
+      "sha256": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "c",
+      "name": "network toggle (wifi+data off then on)",
+      "started_at": "2026-10-26T15:18:33.2353929Z",
+      "intent": "tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D1048576&name=plain.bin&expected=8388608",
+      "steps": [
+        {
+          "step": "clear_app_state",
+          "at": "2026-10-26T15:18:34.0303235Z",
+          "result": {
+            "pm_clear": "Success",
+            "pid": null,
+            "post_notifications_granted": true
+          }
+        },
+        {
+          "step": "am start",
+          "at": "2026-10-26T15:18:34.1092152Z",
+          "result": {
+            "command": "am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D1048576&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity",
+            "exit": 0,
+            "output": "Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }"
+          }
+        },
+        {
+          "step": "network_off",
+          "at": "2026-10-26T15:18:36.3038366Z",
+          "result": {
+            "wifi": "",
+            "data": "",
+            "net": {
+              "wifi_on": "0",
+              "mobile_data": "0",
+              "deviceidle_deep": "ACTIVE",
+              "ipv4": [
+                "inet 127.0.0.1/8 scope host lo",
+                "inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0"
+              ]
+            }
+          }
+        },
+        {
+          "step": "sample_during_outage",
+          "at": "2026-10-26T15:18:46.9877154Z",
+          "result": {
+            "partials_at_off": [
+              {
+                "name": "e0f45968-plain.bin.part",
+                "size": 1572864
+              }
+            ],
+            "partials_after_10s": [
+              {
+                "name": "e0f45968-plain.bin.part",
+                "size": 1572864
+              }
+            ],
+            "net": {
+              "wifi_on": "0",
+              "mobile_data": "0",
+              "deviceidle_deep": "ACTIVE",
+              "ipv4": [
+                "inet 127.0.0.1/8 scope host lo",
+                "inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0"
+              ]
+            }
+          }
+        },
+        {
+          "step": "network_on",
+          "at": "2026-10-26T15:18:47.3075977Z",
+          "result": {
+            "wifi": "",
+            "data": ""
+          }
+        },
+        {
+          "step": "wait_final",
+          "at": "2026-10-26T15:18:56.5042930Z",
+          "result": {
+            "found": true,
+            "elapsed_s": 6.16
+          }
+        }
+      ],
+      "partial_samples": [],
+      "assertions": [
+        {
+          "name": "completed_after_network_toggle",
+          "expected": "final file present",
+          "actual": true,
+          "pass": true,
+          "detail": "",
+          "skipped": false
+        },
+        {
+          "name": "final_sha256",
+          "expected": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+          "actual": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+          "pass": true,
+          "detail": "",
+          "skipped": false
+        }
+      ],
+      "verdict": "PASS",
+      "failure_reason": null,
+      "final_files": [],
+      "pulled": [
+        {
+          "pulled": true,
+          "path": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T151828Z\\c-plain.bin",
+          "size": 8388608,
+          "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+          "error": null
+        }
+      ],
+      "skipped_assertions": [],
+      "exit_code": 0,
+      "finished_at": "2026-10-26T15:18:56.7360873Z"
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "blocked": 0
+  },
+  "verdict": "PASS",
+  "exit_code": 0
+}

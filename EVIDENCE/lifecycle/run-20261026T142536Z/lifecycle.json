@@ -1,0 +1,97 @@
+{
+  "generated_at": "2026-10-26T14:25:39.6542643Z",
+  "tool": "scripts/device-lifecycle-test.ps1",
+  "tool_version": "1.0.0",
+  "serial": "emulator-5554",
+  "package": "pro.tordownloader.android.debug",
+  "service": "pro.tordownloader.android.download.DownloadService",
+  "run_dir": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T142536Z",
+  "transcript": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T142536Z\\adb-transcript.log",
+  "preflight": {
+    "ok": false,
+    "checks": [
+      {
+        "check": "adb_available",
+        "pass": true,
+        "blocking": true,
+        "detail": "Android Debug Bridge version 1.0.41\r / Version 37.0.1-15733141\r"
+      },
+      {
+        "check": "device_online",
+        "pass": true,
+        "blocking": true,
+        "detail": "device"
+      },
+      {
+        "check": "boot_completed",
+        "pass": true,
+        "blocking": true,
+        "detail": "1"
+      },
+      {
+        "check": "app_installed",
+        "pass": true,
+        "blocking": true,
+        "detail": "package:pro.tordownloader.android.debug | versionName=1.0.0\r     lastUpdateTime=2026-10-26 09:24:03"
+      },
+      {
+        "check": "debug_deeplink_resolvable",
+        "pass": false,
+        "blocking": true,
+        "detail": "installed build does not resolve tddl://download (no VIEW intent-filter). raw: No activities found"
+      },
+      {
+        "check": "download_service_present",
+        "pass": false,
+        "blocking": false,
+        "detail": "component not found: pro.tordownloader.android.debug/pro.tordownloader.android.download.DownloadService"
+      },
+      {
+        "check": "app_launches",
+        "pass": true,
+        "blocking": false,
+        "detail": "mCurrentFocus=Window{7f915ab u0 pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity}"
+      },
+      {
+        "check": "fixture_server_host",
+        "pass": true,
+        "blocking": true,
+        "detail": "status=200 bytes=1304"
+      },
+      {
+        "check": "fixture_server_device",
+        "pass": true,
+        "blocking": true,
+        "detail": "http_code=200 via 10.0.2.2:8787"
+      }
+    ],
+    "blocked_reason": "debug deep link tddl://download is not resolvable in the installed build (no matching VIEW intent-filter)",
+    "started_at": "2026-10-26T14:25:36.5369760Z",
+    "finished_at": "2026-10-26T14:25:39.6258336Z"
+  },
+  "reference": {
+    "plain.bin": {
+      "size": 8388608,
+      "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56"
+    },
+    "flaky.bin": {
+      "size": 8388608,
+      "sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa"
+    },
+    "norange.bin": {
+      "size": 8388608,
+      "sha256": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488"
+    }
+  },
+  "scenarios": [],
+  "summary": {
+    "total": 0,
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+  "verdict": "BLOCKED",
+  "failure_reason": "debug deep link tddl://download is not resolvable in the installed build (no matching VIEW intent-filter)",
+  "exit_code": 3,
+  "note": "Fail-fast is the expected behaviour when the debug APK is not installed yet."
+}

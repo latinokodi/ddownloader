@@ -1,0 +1,24 @@
+# detekt configuration — deliberately close to the default rule set.
+# Only thresholds that fight this codebase are adjusted; everything else is detekt's
+# own default so findings stay meaningful. (A first version of this file used several
+# property names that do not exist in detekt 1.23 and the task refused to run; keep
+# this minimal and validated by an actual run.)
+build:
+  maxIssues: 0
+
+complexity:
+  LongMethod:
+    threshold: 140
+  LongParameterList:
+    functionThreshold: 12
+    constructorThreshold: 14
+
+style:
+  MagicNumber:
+    ignoreNumbers: ['-1', '0', '1', '2', '3', '100', '1000', '1024']
+  MaxLineLength:
+    maxLineLength: 140
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']

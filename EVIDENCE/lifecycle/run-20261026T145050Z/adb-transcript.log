@@ -1,0 +1,970 @@
+[09:50:50.070] [INFO] lifecycle harness start  serial=emulator-5556  package=pro.tordownloader.android.verify  run=20261026T145050Z
+[09:50:50.128] adb -s emulator-5556 get-state
+  exit=0 out=device
+[09:50:50.195] adb shell getprop sys.boot_completed
+  exit=0 out=1
+[09:50:50.265] adb shell pm list packages pro.tordownloader.android.verify
+  exit=0 out=package:pro.tordownloader.android.verify
+[09:50:50.368] adb shell dumpsys package pro.tordownloader.android.verify | grep -E 'versionName|lastUpdateTime' | head -2
+  exit=0 out=versionName=1.0.0 |     lastUpdateTime=2026-10-26 09:50:26
+[09:50:50.590] adb shell run-as pro.tordownloader.android.verify id
+  exit=1 out=run-as: package not debuggable: pro.tordownloader.android.verify
+[09:50:50.710] adb shell id
+  exit=0 out=uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),1078(ext_data_rw),1079(ext_obb_rw),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats),3009(readproc),3011(uhid),3012(readtracefs) context=u:r:su:s0
+[09:50:50.787] adb shell cmd package query-activities -a android.intent.action.VIEW -d 'tddl://download'
+  exit=0 out=1 activities found: |   Activity #0: |     priority=0 preferredOrder=0 match=0x308000 specificIndex=-1 isDefault=true |     ActivityInfo: |       name=pro.tordownloader.android.ui.MainActivity |       packageName=pro.tordownloader.android.verify |       enabled=true exported=true directBootAware=false |       taskAffinity=pro.tordownloader.android.verify targetActivity=null persistableMode=PERSIST_ROOT_ONLY |       launchMode=LAUNCH_MULTIPLE flags=0x310200 privateFlags=0x2 theme=0x7f0c000a |       screenOrientation=-1 configChanges=0x7a3 softInputMode=0x10 |       lockTaskLaunchMode=LOCK_TASK_LAUNCH_MODE_DEFAULT |       resizeMode=RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION |       knownActivityEmbeddingCerts={} |       requireContentUriPermissionFromCaller=CONTENT_URI_PERMISSION_NONE |       ApplicationInfo: |         name=pro.tordownloader.android.App |         packageName=pro.tordownloader.android.verify |         labelRes=0x7f0b0001 nonLocalizedLabel=null icon=0x7f0a0000 banner=0x0 |         className=pro.tordownloader.android.App |         processName=pro.tordownloader.android.verify |         taskAffinity=pro.tordownloader.android.verify |         uid=10209 flags=0x20e83e44 privateFlags=0x8c001100 theme=0x7f0c000a |         requiresSmallestWidthDp=0 compatibleWidthLimitDp=0 largestWidthLimitDp=0 |         sourceDir=/data/app/~~ISmMUQvhndZT15VAAB3S4A==/pro.tordownloader.android.verify--YX4KuA3uKnf0oXWT9qZBQ==/base.apk |         resourceDirs=[/product/overlay/EmulationPixel6/EmulationPixel6Overlay.apk, /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk] |         overlayPaths=[/product/overlay/EmulationPixel6/EmulationPixel6Overlay.apk, /product/overlay/NavigationBarModeGestural/NavigationBarModeGesturalOverlay.apk] |         seinfo=default:targetSdkVersion=35 |         seinfoUser=:complete |         dataDir=/data/user/0/pro.tordownloader.android.verify |         deviceProtectedDataDir=/data/user_de/0/pro.tordownloader.android.verify |         credentialProtectedDataDir=/data/user/0/pro.tordownloader.android.verify |         enabled=true minSdkVersion=26 targetSdkVersion=35 versionCode=1 targetSandboxVersion=1 |         supportsRtl=true |         fullBackupContent=true |         dataExtractionRules=@xml/2131623936 |         crossProfile=false |         networkSecurityConfigRes=0x7f0e0001 |         HiddenApiEnforcementPolicy=2 |         usesNonSdkApi=false |         allowsPlaybackCapture=true |         nativeHeapZeroInitialized=0 |         enableOnBackInvokedCallback=false |         allowCrossUidActivitySwitchFromBelow=true |         createTimestamp=80810
+[09:50:50.874] adb shell pm path pro.tordownloader.android.verify
+  exit=0 out=package:/data/app/~~ISmMUQvhndZT15VAAB3S4A==/pro.tordownloader.android.verify--YX4KuA3uKnf0oXWT9qZBQ==/base.apk
+[09:50:51.242] adb shell cmd package resolve-activity --brief pro.tordownloader.android.verify
+  exit=0 out=priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false | pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+[09:50:51.343] adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS
+  exit=0 out=
+[09:50:51.410] adb shell am start -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+[09:50:53.472] adb shell dumpsys window | grep -E 'mCurrentFocus' | head -1
+  exit=0 out=mCurrentFocus=Window{cd8b756 u0 pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity}
+[09:50:53.782] adb shell am force-stop pro.tordownloader.android.verify
+  exit=0 out=
+[09:50:54.276] adb shell su 0 test -x /data/local/tmp/curl; echo rc=\True
+  exit=0 out=rc=True
+[09:50:54.379] adb -s emulator-5556 push F:\PyApps\ddandroid\EVIDENCE\captures\tools\curl_x86_64 /data/local/tmp/curl
+  exit=0 out=F:\PyApps\ddandroid\EVIDENCE\captures\tools\curl_x86_64: 1 file pushed, 0 skipped. 61.9 MB/s (10836152 bytes in 0.167s)
+[09:50:54.619] adb -s emulator-5556 push F:\PyApps\ddandroid\EVIDENCE\captures\tools\tcpdump_x86_64_android /data/local/tmp/tcpdump
+  exit=0 out=F:\PyApps\ddandroid\EVIDENCE\captures\tools\tcpdump_x86_64_android: 1 file pushed, 0 skipped. 34.9 MB/s (5175560 bytes in 0.141s)
+[09:50:54.864] adb shell su 0 chmod 755 /data/local/tmp/curl /data/local/tmp/tcpdump
+  exit=0 out=
+[09:50:54.944] adb shell su 0 test -x /data/local/tmp/curl; echo rc=\True
+  exit=0 out=rc=True
+[09:50:55.033] [INFO] pushed static curl+tcpdump helpers to /data/local/tmp (fresh emulator)
+[09:50:55.050] adb shell su 0 /data/local/tmp/curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://10.0.2.2:8787/health
+  exit=0 out=200
+[09:50:55.533] [INFO] --- scenario a: process death mid-download ---
+[09:50:55.558] adb shell am force-stop pro.tordownloader.android.verify
+  exit=0 out=
+[09:50:55.774] adb shell pm clear pro.tordownloader.android.verify
+  exit=0 out=Success
+[09:50:55.983] adb shell su 0 rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=0 out=
+[09:50:56.068] adb shell su 0 rm -rf /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=
+[09:50:56.196] adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS
+  exit=0 out=
+[09:50:56.698] adb shell pidof pro.tordownloader.android.verify
+  exit=1 out=
+[09:50:56.812] adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D2097152&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+[09:50:58.439] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1348 | -rw------- 1 u0_a209 u0_a209 1376256 2026-10-26 09:50 1cfc645b-plain.bin.part
+[09:50:58.545] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:50:58.654] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:50:58.757] adb shell pidof pro.tordownloader.android.verify
+  exit=0 out=4221
+[09:50:58.850] adb shell am force-stop pro.tordownloader.android.verify
+  exit=0 out=
+[09:50:59.698] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 2052 | -rw------- 1 u0_a209 u0_a209 2097152 2026-10-26 09:50 1cfc645b-plain.bin.part
+[09:50:59.835] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:50:59.984] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:00.147] adb shell pidof pro.tordownloader.android.verify
+  exit=1 out=
+[09:51:00.382] adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D2097152&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+[09:51:00.523] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:00.722] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:00.943] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 2052 | -rw------- 1 u0_a209 u0_a209 2097152 2026-10-26 09:50 1cfc645b-plain.bin.part
+[09:51:01.982] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:02.066] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:02.168] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 2584 | -rw------- 1 u0_a209 u0_a209 2249824 2026-10-26 09:51 1cfc645b-plain.bin.part | -rw------- 1 u0_a209 u0_a209  383104 2026-10-26 09:51 fa78c32d-plain.bin.part
+[09:51:03.070] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:03.264] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:03.391] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 4076 | -rw------- 1 u0_a209 u0_a209 3093664 2026-10-26 09:51 1cfc645b-plain.bin.part | -rw------- 1 u0_a209 u0_a209 1065664 2026-10-26 09:51 fa78c32d-plain.bin.part
+[09:51:04.336] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:04.478] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:04.617] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 8440 | -rw------- 1 u0_a209 u0_a209 5429344 2026-10-26 09:51 1cfc645b-plain.bin.part | -rw------- 1 u0_a209 u0_a209 3201920 2026-10-26 09:51 fa78c32d-plain.bin.part
+[09:51:05.557] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:05.698] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:05.827] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 13288 | -rw------- 1 u0_a209 u0_a209 8146624 2026-10-26 09:51 1cfc645b-plain.bin.part | -rw------- 1 u0_a209 u0_a209 5449760 2026-10-26 09:51 fa78c32d-plain.bin.part
+[09:51:06.745] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=0 out=/sdcard/Android/data/pro.tordownloader.android.verify/files: | total 8 | drwxrws--- 2 u0_a209 ext_data_rw 4096 2026-10-26 09:51 Download |  | /sdcard/Android/data/pro.tordownloader.android.verify/files/Download: | total 8196 | -rw-rw---- 1 u0_a209 ext_data_rw 8388608 2026-10-26 09:51 plain.bin
+[09:51:06.896] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 7540 | -rw------- 1 u0_a209 u0_a209 7716864 2026-10-26 09:51 fa78c32d-plain.bin.part
+[09:51:07.163] adb -s emulator-5556 pull plain.bin F:\PyApps\ddandroid\EVIDENCE\lifecycle\run-20261026T145050Z\a-plain.bin
+  exit=1 out=adb: error: failed to stat remote object 'plain.bin': No such file or directory
+[09:51:07.439] [FAIL] scenario a -> FAIL
+[09:51:07.457] [INFO] --- scenario b: Doze ---
+[09:51:07.469] adb shell am force-stop pro.tordownloader.android.verify
+  exit=0 out=
+[09:51:07.798] adb shell pm clear pro.tordownloader.android.verify
+  exit=0 out=Success
+[09:51:08.135] adb shell su 0 rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=0 out=
+[09:51:08.242] adb shell su 0 rm -rf /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=
+[09:51:08.376] adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS
+  exit=0 out=
+[09:51:08.970] adb shell pidof pro.tordownloader.android.verify
+  exit=1 out=
+[09:51:09.046] adb shell settings get global wifi_on
+  exit=0 out=1
+[09:51:09.122] adb shell settings get global mobile_data
+  exit=0 out=1
+[09:51:09.205] adb shell dumpsys deviceidle get deep
+  exit=0 out=ACTIVE
+[09:51:09.266] adb shell ip -4 addr show
+  exit=0 out=1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000 |     inet 127.0.0.1/8 scope host lo |        valid_lft forever preferred_lft forever | 15: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000 |     inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0 |        valid_lft forever preferred_lft forever | 16: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000 |     inet 10.0.2.17/24 brd 10.0.2.255 scope global wlan0 |        valid_lft forever preferred_lft forever
+[09:51:09.348] adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D524288&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+[09:51:11.473] adb shell dumpsys deviceidle force-idle
+  exit=0 out=Now forced in to deep idle mode
+[09:51:31.708] adb shell settings get global wifi_on
+  exit=0 out=1
+[09:51:31.765] adb shell settings get global mobile_data
+  exit=0 out=1
+[09:51:31.820] adb shell dumpsys deviceidle get deep
+  exit=0 out=IDLE
+[09:51:31.867] adb shell ip -4 addr show
+  exit=0 out=1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000 |     inet 127.0.0.1/8 scope host lo |        valid_lft forever preferred_lft forever | 15: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000 |     inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0 |        valid_lft forever preferred_lft forever | 16: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000 |     inet 10.0.2.17/24 brd 10.0.2.255 scope global wlan0 |        valid_lft forever preferred_lft forever
+[09:51:31.911] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 0
+[09:51:31.970] adb shell dumpsys deviceidle unforce
+  exit=0 out=Light state: ACTIVE, deep state: ACTIVE | mForceModeManagerQuickDozeRequest: false | mForceModeManagerOffBodyState: false
+[09:51:34.033] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=0 out=/sdcard/Android/data/pro.tordownloader.android.verify/files: | total 8 | drwxrws--- 2 u0_a209 ext_data_rw 4096 2026-10-26 09:51 Download |  | /sdcard/Android/data/pro.tordownloader.android.verify/files/Download: | total 8196 | -rw-rw---- 1 u0_a209 ext_data_rw 8388608 2026-10-26 09:51 plain.bin
+[09:51:34.107] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 0
+[09:51:34.190] adb -s emulator-5556 pull plain.bin F:\PyApps\ddandroid\EVIDENCE\lifecycle\run-20261026T145050Z\b-plain.bin
+  exit=1 out=adb: error: failed to stat remote object 'plain.bin': No such file or directory
+[09:51:34.291] [FAIL] scenario b -> FAIL
+[09:51:34.302] [INFO] --- scenario c: network toggle ---
+[09:51:34.311] adb shell am force-stop pro.tordownloader.android.verify
+  exit=0 out=
+[09:51:34.471] adb shell pm clear pro.tordownloader.android.verify
+  exit=0 out=Success
+[09:51:34.839] adb shell su 0 rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=0 out=
+[09:51:34.991] adb shell su 0 rm -rf /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=
+[09:51:35.186] adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS
+  exit=0 out=
+[09:51:35.726] adb shell pidof pro.tordownloader.android.verify
+  exit=1 out=
+[09:51:35.802] adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D1048576&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+[09:51:37.908] adb shell svc wifi disable
+  exit=0 out=
+[09:51:38.100] adb shell svc data disable
+  exit=0 out=
+[09:51:38.259] adb shell settings get global wifi_on
+  exit=0 out=0
+[09:51:38.435] adb shell settings get global mobile_data
+  exit=0 out=0
+[09:51:38.546] adb shell dumpsys deviceidle get deep
+  exit=0 out=ACTIVE
+[09:51:38.679] adb shell ip -4 addr show
+  exit=0 out=1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000 |     inet 127.0.0.1/8 scope host lo |        valid_lft forever preferred_lft forever | 15: eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000 |     inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0 |        valid_lft forever preferred_lft forever
+[09:51:38.788] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:48.934] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:48.984] adb shell settings get global wifi_on
+  exit=0 out=0
+[09:51:49.034] adb shell settings get global mobile_data
+  exit=0 out=0
+[09:51:49.084] adb shell dumpsys deviceidle get deep
+  exit=0 out=ACTIVE
+[09:51:49.132] adb shell ip -4 addr show
+  exit=0 out=1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000 |     inet 127.0.0.1/8 scope host lo |        valid_lft forever preferred_lft forever | 15: eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000 |     inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0 |        valid_lft forever preferred_lft forever
+[09:51:49.176] adb shell svc wifi enable
+  exit=0 out=
+[09:51:49.229] adb shell svc data enable
+  exit=0 out=
+[09:51:52.300] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:52.353] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:52.407] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:53.278] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:53.343] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:53.405] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:54.269] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:54.342] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:54.404] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:55.273] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:55.359] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:55.479] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:56.431] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:56.501] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:56.564] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:57.447] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:57.582] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:57.708] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:58.618] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:58.700] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:58.818] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:51:59.793] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:59.863] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:51:59.933] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:00.822] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:00.899] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:00.970] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:01.849] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:01.920] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:01.982] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:02.849] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:02.920] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:03.003] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:03.879] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:03.959] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:04.043] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:04.925] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:04.990] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:05.052] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:05.926] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:05.983] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:06.034] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:06.900] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:06.950] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:06.999] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:07.860] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:07.909] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:07.961] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:08.814] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:08.865] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:08.916] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:09.767] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:09.816] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:09.867] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:10.720] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:10.790] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:10.840] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:11.689] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:11.740] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:11.792] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:12.657] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:12.711] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:12.763] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:13.641] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:13.697] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:13.750] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:14.623] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:14.675] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:14.723] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:15.587] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:15.640] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:15.691] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:16.554] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:16.605] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:16.655] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:17.525] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:17.582] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:17.635] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:18.491] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:18.547] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:18.601] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:19.461] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:19.511] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:19.561] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:20.417] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:20.470] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:20.520] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:21.382] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:21.433] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:21.483] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:22.332] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:22.380] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:22.430] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:23.293] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:23.341] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:23.391] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:24.260] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:24.311] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:24.360] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:25.223] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:25.273] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:25.323] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:26.174] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:26.224] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:26.274] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:27.139] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:27.189] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:27.238] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:28.104] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:28.153] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:28.201] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:29.058] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:29.109] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:29.158] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:30.024] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:30.076] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:30.126] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:30.988] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:31.037] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:31.088] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:31.941] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:31.991] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:32.039] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:32.893] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:32.942] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:32.991] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:33.846] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:33.896] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:33.945] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:34.799] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:34.848] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:34.899] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:35.766] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:35.815] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:35.865] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:36.733] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:36.783] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:36.832] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:37.688] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:37.739] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:37.791] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:38.652] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:38.702] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:38.751] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:39.621] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:39.670] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:39.720] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:40.590] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:40.641] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:40.690] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:41.553] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:41.602] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:41.651] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:42.508] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:42.557] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:42.605] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:43.463] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:43.527] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:43.577] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:44.432] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:44.481] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:44.530] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:45.403] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:45.452] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:45.500] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:46.363] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:46.413] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:46.462] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:47.320] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:47.370] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:47.419] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:48.274] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:48.325] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:48.374] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:49.222] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:49.271] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:49.319] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:50.179] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:50.229] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:50.277] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:51.135] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:51.187] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:51.236] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:52.101] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:52.165] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:52.227] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:53.097] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:53.147] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:53.197] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:54.048] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:54.099] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:54.154] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:55.032] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:55.084] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:55.132] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:55.986] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:56.037] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:56.103] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:56.977] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:57.026] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:57.079] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:57.944] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:57.995] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:58.043] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:58.902] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:58.952] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:59.002] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:52:59.875] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:59.925] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:52:59.974] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:00.843] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:00.891] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:00.941] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:01.799] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:01.849] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:01.898] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:02.754] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:02.804] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:02.853] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:03.705] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:03.756] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:03.807] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:04.672] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:04.723] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:04.773] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:05.638] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:05.689] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:05.735] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:06.603] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:06.654] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:06.704] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:07.572] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:07.623] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:07.673] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:08.536] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:08.586] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:08.636] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:09.487] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:09.536] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:09.585] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:10.440] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:10.491] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:10.542] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:11.406] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:11.455] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:11.504] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:12.371] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:12.420] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:12.470] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:13.339] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:13.391] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:13.440] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:14.299] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:14.352] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:14.402] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:15.251] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:15.303] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:15.351] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:16.214] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:16.264] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:16.315] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:17.181] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:17.234] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:17.287] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:18.150] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:18.199] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:18.250] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:19.117] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:19.167] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:19.216] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:20.085] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:20.134] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:20.184] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:21.036] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:21.085] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:21.136] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:21.987] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:22.037] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:22.088] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:22.939] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:22.988] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:23.037] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:23.906] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:23.956] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:24.004] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:24.873] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:24.922] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:24.971] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:25.829] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:25.881] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:25.931] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:26.788] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:26.841] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:26.891] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:27.766] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:27.865] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:27.963] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:28.854] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:28.983] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:29.061] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:29.950] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:30.001] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:30.050] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:30.918] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:30.969] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:31.018] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:31.886] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:31.939] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:31.989] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:32.852] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:32.900] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:32.950] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:33.827] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:33.876] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:33.929] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:34.785] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:34.834] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:34.886] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:35.746] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:35.795] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:35.843] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:36.696] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:36.745] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:36.793] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:37.645] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:37.697] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:37.746] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:38.595] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:38.646] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:38.697] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:39.548] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:39.597] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:39.646] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:40.501] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:40.559] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:40.610] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:41.479] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:41.587] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:41.662] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:42.549] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:42.601] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:42.650] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:43.514] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:43.567] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:43.616] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:44.476] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:44.525] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:44.576] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:45.447] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:45.499] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:45.550] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:46.417] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:46.467] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:46.515] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:47.371] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:47.421] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:47.471] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:48.338] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:48.388] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:48.437] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:49.291] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:49.339] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:49.388] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:50.247] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:50.304] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:50.406] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:51.357] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:51.409] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /data/media/0/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:51.459] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 1476 | -rw------- 1 u0_a209 u0_a209 1507328 2026-10-26 09:51 935219bf-plain.bin.part
+[09:53:52.329] [FAIL] scenario c -> FAIL
+[09:53:52.345] [INFO] --- scenario d: queue survives FGS stop ---
+[09:53:52.358] adb shell am force-stop pro.tordownloader.android.verify
+  exit=0 out=
+[09:53:52.515] adb shell pm clear pro.tordownloader.android.verify
+  exit=0 out=Success
+[09:53:52.833] adb shell su 0 rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=0 out=
+[09:53:52.955] adb shell su 0 rm -rf /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=
+[09:53:53.053] adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS
+  exit=0 out=
+[09:53:53.560] adb shell pidof pro.tordownloader.android.verify
+  exit=1 out=
+[09:53:53.613] adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D1048576&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+[09:53:54.311] adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fnorange.bin%3Frate%3D1048576&name=norange.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+[09:53:56.402] adb shell pidof pro.tordownloader.android.verify
+  exit=0 out=5882
+[09:53:56.477] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 3400 | -rw------- 1 u0_a209 u0_a209 2228224 2026-10-26 09:53 13e3f0fe-plain.bin.part | -rw------- 1 u0_a209 u0_a209 1245184 2026-10-26 09:53 cc5004de-norange.bin.part
+[09:53:56.564] adb shell am stopservice -n pro.tordownloader.android.verify/pro.tordownloader.android.download.DownloadService
+  exit=255 out=Stopping service: Intent { cmp=pro.tordownloader.android.verify/pro.tordownloader.android.download.DownloadService } | Service stopped
+[09:53:57.693] adb shell pidof pro.tordownloader.android.verify
+  exit=0 out=5882
+[09:53:57.784] adb shell su 0 ls -l /data/data/pro.tordownloader.android.verify/files/partials
+  exit=0 out=total 5704 | -rw------- 1 u0_a209 u0_a209 3407872 2026-10-26 09:53 13e3f0fe-plain.bin.part | -rw------- 1 u0_a209 u0_a209 2424832 2026-10-26 09:53 cc5004de-norange.bin.part
+[09:53:57.867] adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D1048576&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity
+  exit=0 out=Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity } | Warning: Activity not started, intent has been delivered to currently running top-most instance.
+[09:53:57.973] adb shell su 0 ls -lR /sdcard/Android/data/pro.tordownloader.android.verify/files
+  exit=1 out=ls: /sdcard/Android/data/pro.tordownloader.android.verify/files: No such file or directory
+[09:53:58.069] adb shell su 0 ls -lR /data/media/0/Android/data/pro.tordownloader.android.verify/files

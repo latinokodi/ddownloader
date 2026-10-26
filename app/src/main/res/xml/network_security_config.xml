@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Cleartext HTTP is disabled globally. The ONLY exception is the loopback
+  interface, which the app uses for (a) its own local test fixtures reached via
+  `adb reverse` and (b) nothing else — Tor's SOCKS listener is a raw socket and
+  is not subject to this policy. Every non-loopback origin must be HTTPS and is
+  reached exclusively through the Tor SOCKS proxy (see data/Net.kt).
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">localhost</domain>
+        <domain includeSubdomains="false">::1</domain>
+    </domain-config>
+</network-security-config>

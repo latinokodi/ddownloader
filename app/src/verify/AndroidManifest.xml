@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DEBUG-ONLY overlay: lets verification scripts enqueue a transfer without driving
+  the UI, e.g.
+
+    adb shell am start -a android.intent.action.VIEW \
+      -d "tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin&name=plain.bin&expected=8388608"
+
+  MainActivity.handleLaunchIntent() parses this and refuses to act unless
+  BuildConfig.DEBUG, so the release APK has no externally reachable entry point
+  for it (and this filter is not part of the release manifest at all).
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="tddl"
+                    android:host="download" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

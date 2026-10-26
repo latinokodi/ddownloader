@@ -1,0 +1,8 @@
+{
+  "pid": 20620,
+  "started_utc": "2026-10-26T14:03:43.6984535Z",
+  "command_line": "C:\\Android\\Sdk\\emulator\\emulator.exe -avd dd35 -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -accel on -verbose",
+  "avd": "dd35",
+  "log": "F:\\PyApps\\ddandroid\\EVIDENCE\\env\\emulator-boot.log",
+  "err_log": "F:\\PyApps\\ddandroid\\EVIDENCE\\env\\emulator-boot.err.log"
+}

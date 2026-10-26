@@ -1,0 +1,575 @@
+{
+  "generated_at": "2026-10-26T14:23:34Z",
+  "tool": "scripts/verify_egress.py",
+  "tool_version": "2.0.0",
+  "purpose": "no-unexpected-egress check; 'tor' here means TorBox (debrid), NOT the Tor network",
+  "source": {
+    "kind": "pcap",
+    "description": "pcap decode: EVIDENCE\\captures\\guest-traffic-2026-10-26.pcap",
+    "path": "EVIDENCE\\captures\\guest-traffic-2026-10-26.pcap",
+    "sha256": "d7fdb7fea830706d50ad0b793c7d7e49b1dc797efe79ad8ca40b5aadfde11bec",
+    "bytes": 2423924,
+    "decoded_summary": {
+      "tcp_packets": 2869,
+      "udp_packets": 196,
+      "unique_flows": 189,
+      "unique_destinations": 104,
+      "dns_query_count": 104,
+      "unique_dns_names": [
+        "2.2.0.10.in-addr.arpa",
+        "android.googleapis.com",
+        "check.torproject.org",
+        "connectivitycheck.gstatic.com",
+        "digitalassetlinks.googleapis.com",
+        "example.com",
+        "example.org",
+        "mtalk.google.com",
+        "notifications-pa.googleapis.com",
+        "torproject.org",
+        "voilatile-pa.googleapis.com",
+        "www.google.com"
+      ],
+      "tls_sni_names": [
+        "android.googleapis.com",
+        "check.torproject.org",
+        "mtalk.google.com",
+        "notifications-pa.googleapis.com",
+        "voilatile-pa.googleapis.com",
+        "www.google.com"
+      ],
+      "http_exchanges": 12
+    }
+  },
+  "allowlist": [
+    "api.torbox.app",
+    "api.real-debrid.com",
+    "check.torproject.org"
+  ],
+  "fixture": "10.0.2.2:8787",
+  "endpoint_count": 15,
+  "counts": {
+    "fixture": 1,
+    "UNEXPECTED": 13,
+    "allowed": 1
+  },
+  "endpoints": [
+    {
+      "dst": "10.0.2.3",
+      "port": 53,
+      "proto": "UDP",
+      "packets": 28,
+      "bytes": 1169,
+      "names": [
+        {
+          "name": "2.2.0.10.in-addr.arpa",
+          "source": "dns-query"
+        },
+        {
+          "name": "android.googleapis.com",
+          "source": "dns-query"
+        },
+        {
+          "name": "connectivitycheck.gstatic.com",
+          "source": "dns-query"
+        },
+        {
+          "name": "digitalassetlinks.googleapis.com",
+          "source": "dns-query"
+        },
+        {
+          "name": "example.org",
+          "source": "dns-query"
+        },
+        {
+          "name": "mtalk.google.com",
+          "source": "dns-query"
+        },
+        {
+          "name": "notifications-pa.googleapis.com",
+          "source": "dns-query"
+        },
+        {
+          "name": "torproject.org",
+          "source": "dns-query"
+        },
+        {
+          "name": "voilatile-pa.googleapis.com",
+          "source": "dns-query"
+        },
+        {
+          "name": "www.google.com",
+          "source": "dns-query"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "DNS query names not allowlisted",
+        "not_allowed": [
+          "2.2.0.10.in-addr.arpa",
+          "android.googleapis.com",
+          "connectivitycheck.gstatic.com",
+          "digitalassetlinks.googleapis.com",
+          "example.org",
+          "mtalk.google.com",
+          "notifications-pa.googleapis.com",
+          "torproject.org",
+          "voilatile-pa.googleapis.com",
+          "www.google.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "142.251.150.120",
+      "port": 80,
+      "proto": "TCP",
+      "packets": 5,
+      "bytes": 227,
+      "names": [
+        {
+          "name": "connectivitycheck.gstatic.com",
+          "source": "dns-answer"
+        },
+        {
+          "name": "connectivitycheck.gstatic.com",
+          "source": "http-host"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "connectivitycheck.gstatic.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "142.251.151.119",
+      "port": 443,
+      "proto": "UDP",
+      "packets": 25,
+      "bytes": 2404,
+      "names": [
+        {
+          "name": "www.google.com",
+          "source": "dns-answer"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "www.google.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "142.251.153.119",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 9,
+      "bytes": 885,
+      "names": [
+        {
+          "name": "www.google.com",
+          "source": "dns-answer"
+        },
+        {
+          "name": "www.google.com",
+          "source": "tls-sni"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "www.google.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "172.217.112.4",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 15,
+      "bytes": 2259,
+      "names": [
+        {
+          "name": "digitalassetlinks.googleapis.com",
+          "source": "dns-answer"
+        },
+        {
+          "name": "notifications-pa.googleapis.com",
+          "source": "tls-sni"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "digitalassetlinks.googleapis.com",
+          "notifications-pa.googleapis.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "172.217.113.4",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 10,
+      "bytes": 120,
+      "names": [
+        {
+          "name": "digitalassetlinks.googleapis.com",
+          "source": "dns-answer"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "digitalassetlinks.googleapis.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "172.217.115.4",
+      "port": 443,
+      "proto": "UDP",
+      "packets": 22,
+      "bytes": 10393,
+      "names": [
+        {
+          "name": "digitalassetlinks.googleapis.com",
+          "source": "dns-answer"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "digitalassetlinks.googleapis.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "172.217.115.4",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 9,
+      "bytes": 696,
+      "names": [
+        {
+          "name": "android.googleapis.com",
+          "source": "tls-sni"
+        },
+        {
+          "name": "digitalassetlinks.googleapis.com",
+          "source": "dns-answer"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "android.googleapis.com",
+          "digitalassetlinks.googleapis.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "172.217.116.4",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 23,
+      "bytes": 1789,
+      "names": [
+        {
+          "name": "digitalassetlinks.googleapis.com",
+          "source": "dns-answer"
+        },
+        {
+          "name": "voilatile-pa.googleapis.com",
+          "source": "tls-sni"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "digitalassetlinks.googleapis.com",
+          "voilatile-pa.googleapis.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "172.217.119.4",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 4,
+      "bytes": 24,
+      "names": [
+        {
+          "name": "digitalassetlinks.googleapis.com",
+          "source": "dns-answer"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "digitalassetlinks.googleapis.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "173.194.216.188",
+      "port": 5228,
+      "proto": "TCP",
+      "packets": 1,
+      "bytes": 0,
+      "names": [],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "no name observed for this destination (no TLS SNI / HTTP Host / DNS name)"
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "192.178.239.188",
+      "port": 5228,
+      "proto": "TCP",
+      "packets": 9,
+      "bytes": 884,
+      "names": [
+        {
+          "name": "mobile-gtalk.l.google.com",
+          "source": "dns-answer"
+        },
+        {
+          "name": "mtalk.google.com",
+          "source": "tls-sni"
+        }
+      ],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "observed names not in allowlist",
+        "names": [
+          "mobile-gtalk.l.google.com",
+          "mtalk.google.com"
+        ]
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "93.184.215.14",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 9,
+      "bytes": 0,
+      "names": [],
+      "classification": "UNEXPECTED",
+      "evidence": {
+        "reason": "no name observed for this destination (no TLS SNI / HTTP Host / DNS name)"
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "10.0.2.2",
+      "port": 8787,
+      "proto": "TCP",
+      "packets": 1091,
+      "bytes": 396,
+      "names": [
+        {
+          "name": "10.0.2.2",
+          "source": "http-host"
+        }
+      ],
+      "classification": "fixture",
+      "evidence": {
+        "reason": "local fixture server (debug-only allowance)"
+      },
+      "allowed_by": null,
+      "matched_name": null
+    },
+    {
+      "dst": "116.202.120.181",
+      "port": 443,
+      "proto": "TCP",
+      "packets": 42,
+      "bytes": 3620,
+      "names": [
+        {
+          "name": "check.torproject.org",
+          "source": "http-host"
+        },
+        {
+          "name": "check.torproject.org",
+          "source": "tls-sni"
+        }
+      ],
+      "classification": "allowed",
+      "evidence": {
+        "reason": "observed name matches allowlist entry",
+        "matched_entry": "check.torproject.org"
+      },
+      "allowed_by": "check.torproject.org",
+      "matched_name": "check.torproject.org"
+    }
+  ],
+  "unexpected": [
+    {
+      "dst": "142.251.151.119",
+      "port": 443,
+      "proto": "UDP",
+      "names": [
+        "www.google.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "172.217.115.4",
+      "port": 443,
+      "proto": "UDP",
+      "names": [
+        "digitalassetlinks.googleapis.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "172.217.116.4",
+      "port": 443,
+      "proto": "TCP",
+      "names": [
+        "digitalassetlinks.googleapis.com",
+        "voilatile-pa.googleapis.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "172.217.112.4",
+      "port": 443,
+      "proto": "TCP",
+      "names": [
+        "digitalassetlinks.googleapis.com",
+        "notifications-pa.googleapis.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "142.251.153.119",
+      "port": 443,
+      "proto": "TCP",
+      "names": [
+        "www.google.com",
+        "www.google.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "192.178.239.188",
+      "port": 5228,
+      "proto": "TCP",
+      "names": [
+        "mobile-gtalk.l.google.com",
+        "mtalk.google.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "93.184.215.14",
+      "port": 443,
+      "proto": "TCP",
+      "names": [],
+      "reason": "no name observed for this destination (no TLS SNI / HTTP Host / DNS name)"
+    },
+    {
+      "dst": "172.217.115.4",
+      "port": 443,
+      "proto": "TCP",
+      "names": [
+        "android.googleapis.com",
+        "digitalassetlinks.googleapis.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "142.251.150.120",
+      "port": 80,
+      "proto": "TCP",
+      "names": [
+        "connectivitycheck.gstatic.com",
+        "connectivitycheck.gstatic.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "172.217.113.4",
+      "port": 443,
+      "proto": "TCP",
+      "names": [
+        "digitalassetlinks.googleapis.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "172.217.119.4",
+      "port": 443,
+      "proto": "TCP",
+      "names": [
+        "digitalassetlinks.googleapis.com"
+      ],
+      "reason": "observed names not in allowlist"
+    },
+    {
+      "dst": "10.0.2.3",
+      "port": 53,
+      "proto": "UDP",
+      "names": [
+        "2.2.0.10.in-addr.arpa",
+        "android.googleapis.com",
+        "connectivitycheck.gstatic.com",
+        "digitalassetlinks.googleapis.com",
+        "example.org",
+        "mtalk.google.com",
+        "notifications-pa.googleapis.com",
+        "torproject.org",
+        "voilatile-pa.googleapis.com",
+        "www.google.com"
+      ],
+      "reason": "DNS query names not allowlisted"
+    },
+    {
+      "dst": "173.194.216.188",
+      "port": 5228,
+      "proto": "TCP",
+      "names": [],
+      "reason": "no name observed for this destination (no TLS SNI / HTTP Host / DNS name)"
+    }
+  ],
+  "verdict": "UNEXPECTED EGRESS: 13 destination(s) not covered by the allowlist",
+  "exit_code": 2
+}

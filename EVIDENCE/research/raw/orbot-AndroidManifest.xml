@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="internalOnly">
+
+    <!--
+        Some Chromebooks don't support touch. Although not essential,
+        it's a good idea to explicitly include this declaration.
+    -->
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE"
+        tools:ignore="ForegroundServicesPolicy" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
+
+
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- For Android 13 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- For Android 14 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
+    <!--
+    usesCleartextTraffic is needed for SSDP multicast local router discovery (which is an unencrypted
+    HTTP-style protocol) and for UPnP IGD requests to map ports for Snowflake Proxy, (which are also
+    unencrypted HTTP-style requests).
+     -->
+    <application
+        android:name=".OrbotApp"
+        android:allowBackup="false"
+        android:allowClearUserData="true"
+        android:configChanges="locale|orientation|screenSize"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:description="@string/app_description"
+        android:fullBackupContent="false"
+        android:hasFragileUserData="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/DefaultTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="29">
+
+        <activity
+            android:name="org.torproject.android.OrbotActivity"
+            android:excludeFromRecents="false"
+            android:exported="true"
+            android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.v3onionservice.OnionServiceActivity"
+            android:label="@string/v3_hosted_services" />
+
+        <activity
+            android:name=".ui.v3onionservice.clientauth.ClientAuthActivity"
+            android:label="@string/v3_client_auth_activity_title" />
+
+        <provider
+            android:name=".ui.v3onionservice.OnionServiceContentProvider"
+            android:authorities="${applicationId}.ui.v3onionservice"
+            android:exported="false" />
+
+        <provider
+            android:name=".ui.v3onionservice.clientauth.ClientAuthContentProvider"
+            android:authorities="${applicationId}.ui.v3onionservice.clientauth"
+            android:exported="false" />
+
+        <provider
+            android:name=".util.PreferenceProvider"
+            android:authorities="${applicationId}.provider.preferences"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receivers.OnBootReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".ui.kindness.SnowflakeProxyService"
+            android:enabled="true"
+            android:foregroundServiceType="remoteMessaging"
+            android:stopWithTask="false" />
+
+        <service
+            android:name=".ui.kindness.TestTorForSnowflakeProxyService"
+            android:enabled="true"
+            android:stopWithTask="true" />
+
+        <service
+            android:name=".ui.kindness.KindnessWatchdogJob"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".service.OrbotService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="systemExempted"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:process=":tor"
+            android:stopWithTask="false"
+            tools:ignore="VpnServicePolicy">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="org.torproject.jni.TorService"
+            android:process=":tor"
+            tools:node="merge" />
+
+        <service
+            android:name=".ui.quicksettings.LaunchOrbotTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_foreground_title"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".ui.quicksettings.RefreshConnectionTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_refresh"
+            android:label="@string/btn_refresh"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <activity-alias
+            android:name="org.torproject.android.main.NightWatch"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_camouflage_night_watch"
+            android:label="@string/app_icon_chooser_label_night_watch"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.Assistant"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_camouflage_assistant"
+            android:label="@string/app_icon_chooser_label_assistant"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.Paint"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_camouflage_paint"
+            android:label="@string/app_icon_chooser_label_paint"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.Tetras"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_camouflage_tetras"
+            android:label="@string/app_icon_chooser_label_tetras"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.ToDo"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_camouflage_todo"
+            android:label="@string/app_icon_chooser_label_todo"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".main.FitGrit"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_camouflage_fitgrit"
+            android:label="@string/app_icon_chooser_label_fit_grit"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.Birdie"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_camouflage_birdie"
+            android:label="@string/app_icon_chooser_label_birdie"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.OrbotAlt1"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_foreground_alt1"
+            android:label="@string/app_name"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.OrbotAlt2"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_foreground_alt2"
+            android:label="@string/app_name"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.OrbotAlt3"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_foreground_alt3"
+            android:label="@string/app_name"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="org.torproject.android.main.OrbotAlt4"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_foreground_alt4"
+            android:label="@string/app_name"
+            android:targetActivity="org.torproject.android.OrbotActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+    </application>
+</manifest>
+

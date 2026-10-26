@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-10-26T14:08:36.930Z",
+  "generated_by": "env-runner :: test-fixtures/electron-diff.js",
+  "algorithm": "sha256",
+  "prng": "xorshift32, seed = (0x1234abcd ^ fnv1a32(fileName)) >>> 0; per byte: x^=x<<13; x^=x>>>17; x^=x<<5; byte=x&0xFF",
+  "base_seed": 305441741,
+  "files": {
+    "plain.bin": {
+      "size": 8388608,
+      "seed": 2610714709,
+      "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+      "supportsRange": true
+    },
+    "norange.bin": {
+      "size": 8388608,
+      "seed": 3959979221,
+      "sha256": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488",
+      "supportsRange": false
+    },
+    "flaky.bin": {
+      "size": 8388608,
+      "seed": 4023885044,
+      "sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa",
+      "supportsRange": true
+    },
+    "empty.bin": {
+      "size": 1000,
+      "seed": 270832740,
+      "sha256": "f229154fb9bd64a1cff3487982c00195df4bc6ba34a0729408e00856869f4341",
+      "supportsRange": false
+    }
+  },
+  "partial_prefixes": {
+    "plain.bin@3145728": {
+      "size": 3145728,
+      "sha256": "ef30bf0fcda87f299e2a03e4d8199b940fadfcea002dc61b9cd7ec8210c1f70a"
+    },
+    "norange.bin@3145728": {
+      "size": 3145728,
+      "sha256": "752f1cd15b4e8869f843e600c931d1a893ecf8c929e6b4820a2eca42f4fd0027"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "url": "https://onionoo.torproject.org/details?type=relay&running=true&fields=nickname,or_addresses,exit_addresses",
+  "path": "EVIDENCE\\captures\\onionoo-relays-20261026T141735Z.json",
+  "sha256": "e86cb43d986f095e549b9306f823b3964d0fa48341aabcfca8ae34658a9b487f",
+  "bytes": 847181,
+  "http_status": 200,
+  "fetched_at": "2026-10-26T14:17:35Z",
+  "fetched_epoch": 1793024255.9525938,
+  "relay_count": 9164,
+  "from_cache": false
+}

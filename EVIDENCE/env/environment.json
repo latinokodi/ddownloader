@@ -1,0 +1,102 @@
+{
+  "generated_at": "2026-10-26T14:10:04.3209289Z",
+  "generated_by": "env-runner",
+  "host": {
+    "computer": "PEGASUS",
+    "user": "MrAnderson",
+    "os": "Microsoft Windows 11 Pro",
+    "os_version": "10.0.26200",
+    "powershell": "7.6.2",
+    "node": "v24.19.0",
+    "npm": "11.9.0",
+    "ram_gb": 31.9
+  },
+  "java": {
+    "java_home": "C:\\Program Files\\Microsoft\\jdk-21.0.9.10-hotspot\\",
+    "version": "openjdk version \"21.0.9\" 2025-10-21 LTS\r\nOpenJDK Runtime Environment Microsoft-12574459 (build 21.0.9+10-LTS)\r\nOpenJDK 64-Bit Server VM Microsoft-12574459 (build 21.0.9+10-LTS, mixed mode, sharing)"
+  },
+  "android": {
+    "ANDROID_HOME_env": "C:\\Android\\Sdk",
+    "sdk_root": "C:\\Android\\Sdk",
+    "sdkmanager_version": "19.0 (cmdline-tools latest)",
+    "adb_version": "Android Debug Bridge version 1.0.41\r\nVersion 37.0.1-15733141\r\nInstalled as C:\\Android\\Sdk\\platform-tools\\adb.exe\r\nRunning on Windows 10.0.26200",
+    "emulator_version": "Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)",
+    "installed_packages": "  Path                                        | Version | Description                                | Location                                   \r\n  -------                                     | ------- | -------                                    | -------                                    \r\n  build-tools;35.0.0                          | 35.0.0  | Android SDK Build-Tools 35                 | build-tools\\35.0.0                         \r\n  emulator                                    | 37.2.12 | Android Emulator                           | emulator                                   \r\n  platform-tools                              | 37.0.1  | Android SDK Platform-Tools                 | platform-tools                             \r\n  platforms;android-35                        | 2       | Android SDK Platform 35                    | platforms\\android-35                       \r\n  system-images;android-35;google_apis;x86_64 | 9       | Google APIs Intel x86_64 Atom System Image | system-images\\android-35\\google_apis\\x86_64\r",
+    "hypervisor": "WHPX (emulator -accel-check: \"WHPX(10.0.26200) is installed and usable\")"
+  },
+  "avd": {
+    "name": "dd35",
+    "path": "C:\\Users\\ferna\\.android\\avd\\dd35.avd",
+    "ini": "C:\\Users\\ferna\\.android\\avd\\dd35.ini",
+    "device_profile": "pixel_6 (Google)",
+    "image": "system-images;android-35;google_apis;x86_64",
+    "android_version": "15 (API 35)",
+    "applied_config": "disk.dataPartition.size=12G\nfastboot.forceColdBoot=yes\nfastboot.forceFastBoot=no\nfirstboot.bootFromDownloadableSnapshot=no\nfirstboot.bootFromLocalSnapshot=no\nfirstboot.saveToLocalSnapshot=no\nhw.gpu.enabled=yes\nhw.gpu.mode=swiftshader_indirect\nhw.keyboard=yes\nhw.keyboard.charmap=qwerty2\nhw.keyboard.lid=yes\nhw.ramSize=4096\nsnapshot.present=false"
+  },
+  "emulator_boot": {
+    "serial": "emulator-5554",
+    "started_utc": "2026-10-26T14:03:54.1930246Z",
+    "device_seen_utc": "2026-10-26T14:04:12.9155609Z",
+    "device_seen_after_seconds": 18.73,
+    "boot_completed": 1,
+    "boot_completed_utc": "2026-10-26T14:04:39.7174087Z",
+    "boot_completed_after_seconds": 45.53,
+    "timed_out": false,
+    "error": null,
+    "poll_log": [
+      "[2026-10-26T14:03:56.3886678Z] device offline",
+      "[2026-10-26T14:03:57.4163766Z] device offline",
+      "[2026-10-26T14:03:58.4509511Z] device offline",
+      "[2026-10-26T14:03:59.4856472Z] device offline",
+      "[2026-10-26T14:04:00.5097014Z] device offline",
+      "[2026-10-26T14:04:01.5453743Z] device offline",
+      "[2026-10-26T14:04:02.5729823Z] device offline",
+      "[2026-10-26T14:04:03.6049557Z] device offline",
+      "[2026-10-26T14:04:04.6537371Z] device offline",
+      "[2026-10-26T14:04:05.6874661Z] device offline",
+      "[2026-10-26T14:04:06.7214769Z] device offline",
+      "[2026-10-26T14:04:07.7526758Z] device offline",
+      "[2026-10-26T14:04:08.7838939Z] device offline",
+      "[2026-10-26T14:04:09.8143895Z] device offline",
+      "[2026-10-26T14:04:10.8461704Z] device offline",
+      "[2026-10-26T14:04:11.8831530Z] device offline"
+    ]
+  },
+  "emulator_start_command": {
+    "pid": 20620,
+    "started_utc": "2026-10-26T14:03:43.6984535Z",
+    "command_line": "C:\\Android\\Sdk\\emulator\\emulator.exe -avd dd35 -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -accel on -verbose",
+    "avd": "dd35",
+    "log": "F:\\PyApps\\ddandroid\\EVIDENCE\\env\\emulator-boot.log",
+    "err_log": "F:\\PyApps\\ddandroid\\EVIDENCE\\env\\emulator-boot.err.log"
+  },
+  "device": {
+    "serial": "emulator-5554",
+    "state": "List of devices attached\r\nemulator-5554\tdevice",
+    "sdk": "35",
+    "release": "15",
+    "abi": "x86_64",
+    "model": "sdk_gphone64_x86_64",
+    "build_fingerprint": "google/sdk_gphone64_x86_64/emu64xa:15/AE3A.240806.043/12960925:userdebug/dev-keys",
+    "wm_size": "Physical size: 1080x2400",
+    "wm_density": "Physical density: 420",
+    "adb_root_works": true,
+    "adb_shell_id_after_root": "uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),1078(ext_data_rw),1079(ext_obb_rw),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats),3009(readproc),3011(uhid),3012(readtracefs) context=u:r:su:s0",
+    "proc_net_tcp_sample": "sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     \r\n   0: 0100007F:22A8 00000000:0000 0A 00000000:00000000 00:00000000 00000000  1002        0 10980 1 0000000000000000 100 0 0 10 0                     \r\n   1: 1002000A:BD46 5ECCD9AC:01BB 08 00000000:00000082 00:00000000 00000000 10154        0 25196 1 0000000000000000 26 4 28 10 -1                    \r\n   2: 1002000A:B75E 0477D9AC:01BB 08 00000000:00000082 00:00000000 00000000 10143        0 20937 1 0000000000000000 22 4 28 10 -1                    \r\n   3: 1002000A:DE04 779DFB8E:01BB 08 00000000:00000000 00:00000000 00000000 10144        0 18415 1 0000000000000000 22 4 28 10 -1                    \r\n---\r\n15 /proc/net/tcp"
+  },
+  "network": {
+    "icmp_ping_8_8_8_8": "FAILED: \"From 10.0.2.2: Destination Net Unreachable\", 100% packet loss (emulator slirp does not forward ICMP echo)",
+    "dns_tcp_http_egress": "OK: TCP connect + DNS to check.torproject.org:80 returned HTTP/1.1 301 Moved Permanently",
+    "stock_http_clients": "curl ABSENT, wget ABSENT (toybox 0.8.11-android only provides nc); HTTPS could not be tested from the shell",
+    "host_reachability_10_0_2_2": "OK: device -> http://10.0.2.2:8787/health returned HTTP/1.1 200 with the fixture JSON; /file/plain.bin Range bytes=0-31 returned 206 with Content-Range: bytes 0-31/8388608",
+    "adb_reverse": "BROKEN on this host: mapping registers (adb reverse --list OK, adbd listens on *:8787) and the host listener ACCEPTS the tunnel TCP connection, but 0 payload bytes are delivered in either direction (verified with a PowerShell TcpListener and with toybox nc). Do not rely on adb reverse.",
+    "adb_forward": "SAME SYMPTOM: adb forward tcp:18788 tcp:8555 reports OK and the host TCP connect succeeds, but the device-side listener receives 0 bytes. Do not rely on adb forward.",
+    "recommended_host_path": "Use http://10.0.2.2:<host-port> from inside the emulator (verified working, including HTTP Range/206)."
+  },
+  "toolchain_notes": {
+    "platform_tools": "C:\\Android\\Sdk\\platform-tools (adb 37.0.1)",
+    "platforms": "C:\\Android\\Sdk\\platforms\\android-35",
+    "build_tools": "C:\\Android\\Sdk\\build-tools\\35.0.0",
+    "gradle": "NOT installed / no ~/.gradle cache; the Lead project must use the Gradle wrapper (I did not install Gradle)"
+  }
+}

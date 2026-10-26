@@ -1,0 +1,43 @@
+# ── Build outputs / machine state ────────────────────────────────────────────
+build/
+app/build/
+.gradle/
+.kotlin/
+local.properties
+keystore.properties
+keystore/
+*.apk
+*.aab
+
+# ── Secrets / signing material ───────────────────────────────────────────────
+# The release keystore and its properties must never be published: anyone holding
+# them could sign an "update" for this application id.
+*.jks
+*.keystore
+keystore.properties
+
+# ── Heavy third-party binaries downloaded during verification ────────────────
+# Kept out of git (they are reproducible; their SHA-256 values are recorded in the
+# EVIDENCE manifests). The reports that cite them are committed.
+EVIDENCE/captures/tools/
+EVIDENCE/electron/shim/node_modules/
+EVIDENCE/tor-aar/*.aar
+EVIDENCE/tor-aar/x/
+EVIDENCE/research/raw/*.zip
+EVIDENCE/research/artifacts/*.aar
+
+# ── Regenerable test payloads (8 MiB fixture downloads) ──────────────────────
+# Only the SHA-256 assertions matter; the bytes are deterministic and rebuildable
+# from test-fixtures/fixture-server.js.
+EVIDENCE/**/*.bin
+EVIDENCE/electron/diff-workspace/
+
+# ── Oversized raw research dumps (>1 MB JSON snapshots of npm/Maven metadata) ─
+EVIDENCE/research/raw/npm-*.json
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+Thumbs.db
+.DS_Store

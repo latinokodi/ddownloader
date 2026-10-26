@@ -1,0 +1,449 @@
+{
+  "generated_at": "2026-10-26T15:10:04Z",
+  "tool": "scripts/a11y-audit.py",
+  "golden_dir": "F:\\PyApps\\ddandroid\\EVIDENCE\\screenshots\\golden",
+  "theme_file": "F:\\PyApps\\ddandroid\\app\\src\\main\\java\\pro\\tordownloader\\android\\ui\\theme\\Theme.kt",
+  "theme_colors": {
+    "Ink0": {
+      "hex": "#05060A",
+      "line": 31
+    },
+    "Ink1": {
+      "hex": "#0A0C12",
+      "line": 32
+    },
+    "Ink2": {
+      "hex": "#10131B",
+      "line": 33
+    },
+    "Ink3": {
+      "hex": "#171B25",
+      "line": 34
+    },
+    "Line": {
+      "hex": "#232936",
+      "line": 35
+    },
+    "LineSoft": {
+      "hex": "#171C26",
+      "line": 36
+    },
+    "TextHi": {
+      "hex": "#F3F4F8",
+      "line": 38
+    },
+    "TextMid": {
+      "hex": "#9BA5B7",
+      "line": 39
+    },
+    "TextLow": {
+      "hex": "#8590A3",
+      "line": 43
+    },
+    "Violet": {
+      "hex": "#7C5CFF",
+      "line": 45
+    },
+    "VioletDim": {
+      "hex": "#5B41C7",
+      "line": 46
+    },
+    "Cyan": {
+      "hex": "#22D3EE",
+      "line": 47
+    },
+    "Mint": {
+      "hex": "#34D399",
+      "line": 48
+    },
+    "Amber": {
+      "hex": "#FBBF24",
+      "line": 49
+    },
+    "Rose": {
+      "hex": "#F47171",
+      "line": 50
+    }
+  },
+  "density_dpi": 420.0,
+  "px_per_dp": 2.625,
+  "min_touch_px": 126.0,
+  "checks": {
+    "R1": "clickable node has an accessible name (content-desc or child text)",
+    "R2": "clickable touch target >= 48dp in both dimensions",
+    "R3": "image/icon node has a content-desc"
+  },
+  "screens": [
+    {
+      "screen": "discover",
+      "xml": "EVIDENCE\\screenshots\\golden\\discover.xml",
+      "node_count": 28,
+      "clickable_count": 6,
+      "icon_like_count": 0,
+      "clipped_clickables": [],
+      "violations": []
+    },
+    {
+      "screen": "downloads",
+      "xml": "EVIDENCE\\screenshots\\golden\\downloads.xml",
+      "node_count": 53,
+      "clickable_count": 9,
+      "icon_like_count": 0,
+      "clipped_clickables": [],
+      "violations": []
+    },
+    {
+      "screen": "logs",
+      "xml": "EVIDENCE\\screenshots\\golden\\logs.xml",
+      "node_count": 58,
+      "clickable_count": 11,
+      "icon_like_count": 0,
+      "clipped_clickables": [],
+      "violations": []
+    },
+    {
+      "screen": "search",
+      "xml": "EVIDENCE\\screenshots\\golden\\search.xml",
+      "node_count": 49,
+      "clickable_count": 11,
+      "icon_like_count": 0,
+      "clipped_clickables": [],
+      "violations": []
+    },
+    {
+      "screen": "settings",
+      "xml": "EVIDENCE\\screenshots\\golden\\settings.xml",
+      "node_count": 60,
+      "clickable_count": 14,
+      "icon_like_count": 0,
+      "clipped_clickables": [
+        {
+          "node": {
+            "class": "android.widget.EditText",
+            "resource_id": "",
+            "text": "",
+            "content_desc": "",
+            "bounds": "[89,1886][991,2054]",
+            "checkable": "false",
+            "enabled": "true",
+            "pkg": "pro.tordownloader.android.verify"
+          },
+          "bounds_px": {
+            "x1": 89,
+            "y1": 1886,
+            "x2": 991,
+            "y2": 2054,
+            "w": 902,
+            "h": 168,
+            "cx": 540,
+            "cy": 1970
+          },
+          "note": "partially visible (clipped by an ancestor); R1/R2 skipped because reported bounds are truncated"
+        },
+        {
+          "node": {
+            "class": "android.view.View",
+            "resource_id": "",
+            "text": "",
+            "content_desc": "",
+            "bounds": "[89,2059][298,2075]",
+            "checkable": "false",
+            "enabled": "true",
+            "pkg": "pro.tordownloader.android.verify"
+          },
+          "bounds_px": {
+            "x1": 89,
+            "y1": 2059,
+            "x2": 298,
+            "y2": 2075,
+            "w": 209,
+            "h": 16,
+            "cx": 193,
+            "cy": 2067
+          },
+          "note": "partially visible (clipped by an ancestor); R1/R2 skipped because reported bounds are truncated"
+        },
+        {
+          "node": {
+            "class": "android.view.View",
+            "resource_id": "",
+            "text": "",
+            "content_desc": "",
+            "bounds": "[319,2059][535,2075]",
+            "checkable": "false",
+            "enabled": "true",
+            "pkg": "pro.tordownloader.android.verify"
+          },
+          "bounds_px": {
+            "x1": 319,
+            "y1": 2059,
+            "x2": 535,
+            "y2": 2075,
+            "w": 216,
+            "h": 16,
+            "cx": 427,
+            "cy": 2067
+          },
+          "note": "partially visible (clipped by an ancestor); R1/R2 skipped because reported bounds are truncated"
+        }
+      ],
+      "violations": []
+    }
+  ],
+  "summary": {
+    "screens": 5,
+    "total_violations": 0,
+    "by_rule": {
+      "R1": 0,
+      "R2": 0,
+      "R3": 0
+    },
+    "clipped_clickables_skipped": 3,
+    "contrast_body_failures": [
+      {
+        "fg": "White",
+        "bg": "Cyan (decorative)",
+        "fg_hex": "#FFFFFF",
+        "bg_hex": "#22D3EE",
+        "ratio": 1.81,
+        "aa_body_4_5": false,
+        "aa_large_3_0": false,
+        "level": "FAIL (below AA large)",
+        "fg_line": null,
+        "bg_line": null
+      },
+      {
+        "fg": "White",
+        "bg": "Violet (decorative)",
+        "fg_hex": "#FFFFFF",
+        "bg_hex": "#7C5CFF",
+        "ratio": 4.35,
+        "aa_body_4_5": false,
+        "aa_large_3_0": true,
+        "level": "LARGE-ONLY (AA large passes, body fails)",
+        "fg_line": null,
+        "bg_line": null
+      }
+    ],
+    "contrast_large_failures": [
+      {
+        "fg": "White",
+        "bg": "Cyan (decorative)",
+        "fg_hex": "#FFFFFF",
+        "bg_hex": "#22D3EE",
+        "ratio": 1.81,
+        "aa_body_4_5": false,
+        "aa_large_3_0": false,
+        "level": "FAIL (below AA large)",
+        "fg_line": null,
+        "bg_line": null
+      }
+    ]
+  },
+  "contrast": [
+    {
+      "fg": "White",
+      "bg": "Cyan (decorative)",
+      "fg_hex": "#FFFFFF",
+      "bg_hex": "#22D3EE",
+      "ratio": 1.81,
+      "aa_body_4_5": false,
+      "aa_large_3_0": false,
+      "level": "FAIL (below AA large)",
+      "fg_line": null,
+      "bg_line": null
+    },
+    {
+      "fg": "White",
+      "bg": "Violet (decorative)",
+      "fg_hex": "#FFFFFF",
+      "bg_hex": "#7C5CFF",
+      "ratio": 4.35,
+      "aa_body_4_5": false,
+      "aa_large_3_0": true,
+      "level": "LARGE-ONLY (AA large passes, body fails)",
+      "fg_line": null,
+      "bg_line": null
+    },
+    {
+      "fg": "White",
+      "bg": "brandButton1",
+      "fg_hex": "#FFFFFF",
+      "bg_hex": "#6D4AE0",
+      "ratio": 5.67,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": null,
+      "bg_line": null
+    },
+    {
+      "fg": "TextLow",
+      "bg": "Ink2",
+      "fg_hex": "#8590A3",
+      "bg_hex": "#10131B",
+      "ratio": 5.76,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 43,
+      "bg_line": 33
+    },
+    {
+      "fg": "TextLow",
+      "bg": "Ink1",
+      "fg_hex": "#8590A3",
+      "bg_hex": "#0A0C12",
+      "ratio": 6.07,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 43,
+      "bg_line": 32
+    },
+    {
+      "fg": "TextLow",
+      "bg": "Ink0",
+      "fg_hex": "#8590A3",
+      "bg_hex": "#05060A",
+      "ratio": 6.28,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 43,
+      "bg_line": 31
+    },
+    {
+      "fg": "White",
+      "bg": "brandButton2",
+      "fg_hex": "#FFFFFF",
+      "bg_hex": "#4F46E5",
+      "ratio": 6.29,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": null,
+      "bg_line": null
+    },
+    {
+      "fg": "Rose",
+      "bg": "Ink2",
+      "fg_hex": "#F47171",
+      "bg_hex": "#10131B",
+      "ratio": 6.58,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 50,
+      "bg_line": 33
+    },
+    {
+      "fg": "TextMid",
+      "bg": "Ink2",
+      "fg_hex": "#9BA5B7",
+      "bg_hex": "#10131B",
+      "ratio": 7.48,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 39,
+      "bg_line": 33
+    },
+    {
+      "fg": "TextMid",
+      "bg": "Ink1",
+      "fg_hex": "#9BA5B7",
+      "bg_hex": "#0A0C12",
+      "ratio": 7.87,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 39,
+      "bg_line": 32
+    },
+    {
+      "fg": "TextMid",
+      "bg": "Ink0",
+      "fg_hex": "#9BA5B7",
+      "bg_hex": "#05060A",
+      "ratio": 8.16,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 39,
+      "bg_line": 31
+    },
+    {
+      "fg": "Mint",
+      "bg": "Ink2",
+      "fg_hex": "#34D399",
+      "bg_hex": "#10131B",
+      "ratio": 9.66,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 48,
+      "bg_line": 33
+    },
+    {
+      "fg": "Cyan",
+      "bg": "Ink2",
+      "fg_hex": "#22D3EE",
+      "bg_hex": "#10131B",
+      "ratio": 10.27,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 47,
+      "bg_line": 33
+    },
+    {
+      "fg": "Amber",
+      "bg": "Ink2",
+      "fg_hex": "#FBBF24",
+      "bg_hex": "#10131B",
+      "ratio": 11.12,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 49,
+      "bg_line": 33
+    },
+    {
+      "fg": "TextHi",
+      "bg": "Ink2",
+      "fg_hex": "#F3F4F8",
+      "bg_hex": "#10131B",
+      "ratio": 16.89,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 38,
+      "bg_line": 33
+    },
+    {
+      "fg": "TextHi",
+      "bg": "Ink1",
+      "fg_hex": "#F3F4F8",
+      "bg_hex": "#0A0C12",
+      "ratio": 17.79,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 38,
+      "bg_line": 32
+    },
+    {
+      "fg": "TextHi",
+      "bg": "Ink0",
+      "fg_hex": "#F3F4F8",
+      "bg_hex": "#05060A",
+      "ratio": 18.43,
+      "aa_body_4_5": true,
+      "aa_large_3_0": true,
+      "level": "PASS (AA body + large)",
+      "fg_line": 38,
+      "bg_line": 31
+    }
+  ]
+}

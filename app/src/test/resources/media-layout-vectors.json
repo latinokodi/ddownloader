@@ -1,0 +1,197 @@
+{
+  "generated_by": "electron/media-layout.ts (compiled, unmodified)",
+  "roots": {
+    "destination_folder": "D",
+    "movies_folder": "M",
+    "series_folder": "S",
+    "tmdb_api_key": ""
+  },
+  "cases": [
+    {
+      "input": "Breaking.Bad.2008.S01E02.1080p.WEB-DL.x264-GROUP",
+      "title": "Breaking Bad",
+      "year": 2008,
+      "season": 1,
+      "seriesFolder": "Breaking Bad (2008)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "Breaking Bad (2008)",
+      "overrideFolder": "Breaking Bad (2008)/Season 02"
+    },
+    {
+      "input": "Inception.2010.1080p.BluRay.x264-AMIABLE",
+      "title": "Inception",
+      "year": 2010,
+      "season": null,
+      "seriesFolder": "Inception (2010)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "Inception (2010)",
+      "overrideFolder": "Inception (2010)/Season 02"
+    },
+    {
+      "input": "La Casa de Papel 2017 1080p LATINO",
+      "title": "La Casa de Papel",
+      "year": 2017,
+      "season": null,
+      "seriesFolder": "La Casa de Papel (2017)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "La Casa de Papel (2017)",
+      "overrideFolder": "La Casa de Papel (2017)/Season 02"
+    },
+    {
+      "input": "1923.S02e01.2025.1080P-Dual-Lat.mkv",
+      "title": "1923",
+      "year": 2025,
+      "season": 2,
+      "seriesFolder": "1923 (2025)/Season 02",
+      "seriesSeason": 2,
+      "movieFolder": "1923 (2025)",
+      "overrideFolder": "1923 (2025)/Season 02"
+    },
+    {
+      "input": "1883.S01E03.2021.1080p.WEB-DL.x264-GROUP",
+      "title": "1883",
+      "year": 2021,
+      "season": 1,
+      "seriesFolder": "1883 (2021)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "1883 (2021)",
+      "overrideFolder": "1883 (2021)/Season 02"
+    },
+    {
+      "input": "La Casa de Papel 2017 T2E1 1080p LATINO",
+      "title": "La Casa de Papel",
+      "year": 2017,
+      "season": 2,
+      "seriesFolder": "La Casa de Papel (2017)/Season 02",
+      "seriesSeason": 2,
+      "movieFolder": "La Casa de Papel (2017)",
+      "overrideFolder": "La Casa de Papel (2017)/Season 02"
+    },
+    {
+      "input": "Breaking.Bad.2008.S02E05.1080p.WEB-DL.x264-GROUP",
+      "title": "Breaking Bad",
+      "year": 2008,
+      "season": 2,
+      "seriesFolder": "Breaking Bad (2008)/Season 02",
+      "seriesSeason": 2,
+      "movieFolder": "Breaking Bad (2008)",
+      "overrideFolder": "Breaking Bad (2008)/Season 02"
+    },
+    {
+      "input": "Show.Name.S01.1080p.WEB-DL.x264-GROUP",
+      "title": "Show Name",
+      "year": null,
+      "season": null,
+      "seriesFolder": "Show Name/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "Show Name",
+      "overrideFolder": "Show Name/Season 02"
+    },
+    {
+      "input": "Una Serie 2024 1080p LATINO",
+      "title": "Una Serie",
+      "year": 2024,
+      "season": null,
+      "seriesFolder": "Una Serie (2024)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "Una Serie (2024)",
+      "overrideFolder": "Una Serie (2024)/Season 02"
+    },
+    {
+      "input": "The.Matrix.1999.2160p.UHD.BluRay.REMUX.HDR.x265-TERMiNAL",
+      "title": "The Matrix",
+      "year": 1999,
+      "season": null,
+      "seriesFolder": "The Matrix (1999)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "The Matrix (1999)",
+      "overrideFolder": "The Matrix (1999)/Season 02"
+    },
+    {
+      "input": "Cien.Anos.de.Soledad.S01E01.2024.1080p.NF.WEB-DL.DDP5.1.Atmos.x264-ABC",
+      "title": "Cien Anos de Soledad",
+      "year": 2024,
+      "season": 1,
+      "seriesFolder": "Cien Anos de Soledad (2024)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "Cien Anos de Soledad (2024)",
+      "overrideFolder": "Cien Anos de Soledad (2024)/Season 02"
+    },
+    {
+      "input": "Suenos.de.Fuga.1994.WEB-DL.1080p-Dual-Lat",
+      "title": "Suenos de Fuga",
+      "year": 1994,
+      "season": null,
+      "seriesFolder": "Suenos de Fuga (1994)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "Suenos de Fuga (1994)",
+      "overrideFolder": "Suenos de Fuga (1994)/Season 02"
+    },
+    {
+      "input": "Pelicula (2021) 1080p",
+      "title": "Pelicula",
+      "year": 2021,
+      "season": null,
+      "seriesFolder": "Pelicula (2021)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "Pelicula (2021)",
+      "overrideFolder": "Pelicula (2021)/Season 02"
+    },
+    {
+      "input": "1923.S01.1080p",
+      "title": "1923",
+      "year": 1923,
+      "season": null,
+      "seriesFolder": "1923 (1923)/Season 01",
+      "seriesSeason": 1,
+      "movieFolder": "1923 (1923)",
+      "overrideFolder": "1923 (1923)/Season 02"
+    },
+    {
+      "input": "Some.Show.S02E10.720p.HDTV.x264",
+      "title": "Some Show",
+      "year": null,
+      "season": 2,
+      "seriesFolder": "Some Show/Season 02",
+      "seriesSeason": 2,
+      "movieFolder": "Some Show",
+      "overrideFolder": "Some Show/Season 02"
+    },
+    {
+      "input": "El.Encargado.S03E05.2024.LATINO.1080p",
+      "title": "El Encargado",
+      "year": 2024,
+      "season": 3,
+      "seriesFolder": "El Encargado (2024)/Season 03",
+      "seriesSeason": 3,
+      "movieFolder": "El Encargado (2024)",
+      "overrideFolder": "El Encargado (2024)/Season 02"
+    }
+  ],
+  "safeSegments": [
+    {
+      "input": "Safe:Name",
+      "output": "Safe_Name"
+    },
+    {
+      "input": "bad/name",
+      "output": "bad_name"
+    },
+    {
+      "input": "trailing...",
+      "output": "trailing"
+    },
+    {
+      "input": "...leading",
+      "output": "leading"
+    },
+    {
+      "input": "",
+      "output": "Unknown"
+    },
+    {
+      "input": "con:<>|?*",
+      "output": "con______"
+    }
+  ]
+}

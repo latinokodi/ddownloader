@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=TorDownloader Android, OU=Release, O=TorDownloader, L=Bogota, ST=Cundinamarca, C=CO
+Signer #1 certificate SHA-256 digest: 3f9b918f6ef44712b0d5cfb678ac0b09266d4ddcf23d00ee4d2dbdf1f37c83ba
+Signer #1 certificate SHA-1 digest: 14c8759bf8d0e338bb115a053d72dc207c91ea63
+Signer #1 certificate MD5 digest: 5006a952fdbcc26d4236b31ed28809cb
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 4096
+Signer #1 public key SHA-256 digest: 1c1aa26afd6c29573f00178cf7c2d4126925abfde3b56f236dd81229bed28a39
+Signer #1 public key SHA-1 digest: 0f49931f09a941d24e6a503040f9348ef258a0ff
+Signer #1 public key MD5 digest: 9d4c10b228935fdedc69518e9c0402f9

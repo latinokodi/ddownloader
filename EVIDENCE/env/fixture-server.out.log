@@ -1,0 +1,142 @@
+fixture-server listening on http://127.0.0.1:8787
+request log: F:\PyApps\ddandroid\EVIDENCE\env\fixture-requests-standalone.jsonl
+reference hashes:
+  plain.bin size=8388608 sha256=7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56
+  norange.bin size=8388608 sha256=c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488
+  flaky.bin size=8388608 sha256=bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa
+  empty.bin size=1000 sha256=f229154fb9bd64a1cff3487982c00195df4bc6ba34a0729408e00856869f4341
+[fixture] #1 GET /health range=- status=200 cr=- bytes=0
+[fixture] #2 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #3 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #4 GET /health range=- status=200 cr=- bytes=0
+[fixture] #5 GET /health range=- status=200 cr=- bytes=0
+[fixture] #6 GET /health range=- status=200 cr=- bytes=0
+[fixture] #7 GET /health range=- status=200 cr=- bytes=0
+[fixture] #8 GET /health range=- status=200 cr=- bytes=0
+[fixture] #9 GET /health range=- status=200 cr=- bytes=0
+[fixture] #10 GET /health range=- status=200 cr=- bytes=0
+[fixture] #11 GET /health range=- status=200 cr=- bytes=0
+[fixture] #12 GET /health range=- status=200 cr=- bytes=0
+[fixture] #13 GET /health range=- status=200 cr=- bytes=0
+[fixture] #14 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #15 GET /health range=- status=200 cr=- bytes=0
+[fixture] #16 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #17 GET /file/plain.bin range=- status=200 cr=- bytes=4390912
+[fixture] #18 GET /file/plain.bin range=bytes=4325376- status=206 cr=bytes 4325376-8388607/8388608 bytes=4063232
+[fixture] #19 GET /file/norange.bin range=- status=200 cr=- bytes=4063232
+[fixture] #20 GET /file/norange.bin range=bytes=4063232- status=200 cr=- bytes=1114112
+[fixture] #21 GET /file/flaky.bin range=- status=200 cr=- bytes=4194304 CUT
+[fixture] #22 GET /file/flaky.bin range=bytes=4194304- status=206 cr=bytes 4194304-8388607/8388608 bytes=4194304
+[fixture] #23 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #24 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #25 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #26 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #27 GET /file/plain.bin range=- status=200 cr=- bytes=4128768
+[fixture] #28 GET /file/plain.bin range=bytes=4128768- status=206 cr=bytes 4128768-8388607/8388608 bytes=4259840
+[fixture] #29 GET /file/norange.bin range=- status=200 cr=- bytes=3997696
+[fixture] #30 GET /file/norange.bin range=bytes=3932160- status=200 cr=- bytes=1114112
+[fixture] #31 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #32 GET /file/flaky.bin range=- status=200 cr=- bytes=8388608
+[fixture] #33 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #34 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #35 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #36 GET /health range=- status=200 cr=- bytes=0
+[fixture] #37 GET /health range=- status=200 cr=- bytes=0
+[fixture] #38 GET /health range=- status=200 cr=- bytes=0
+[fixture] #39 GET /health range=- status=200 cr=- bytes=0
+[fixture] #40 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #41 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #42 GET /health range=- status=200 cr=- bytes=0
+[fixture] #43 GET /health range=- status=200 cr=- bytes=0
+[fixture] #44 GET /health range=- status=200 cr=- bytes=0
+[fixture] #45 GET /health range=- status=200 cr=- bytes=0
+[fixture] #46 GET /file/plain.bin range=- status=200 cr=- bytes=2162688
+[fixture] #48 GET /file/plain.bin range=bytes=2097152- status=206 cr=bytes 2097152-8388607/8388608 bytes=6291456
+[fixture] #47 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #49 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #50 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #53 GET /health range=- status=200 cr=- bytes=0
+[fixture] #51 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #52 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #55 GET /health range=- status=200 cr=- bytes=0
+[fixture] #54 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #56 GET /health range=- status=200 cr=- bytes=0
+[fixture] #57 GET /file/plain.bin range=- status=200 cr=- bytes=2424832
+[fixture] #58 GET /file/plain.bin range=- status=200 cr=- bytes=3735552
+[fixture] #61 GET /file/plain.bin range=bytes=3343040- status=206 cr=bytes 3343040-8388607/8388608 bytes=5045568
+[fixture] #60 GET /file/plain.bin range=bytes=2301952- status=206 cr=bytes 2301952-8388607/8388608 bytes=6086656
+[fixture] #59 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #62 GET /file/norange.bin range=- status=200 cr=- bytes=3997696
+[fixture] #64 GET /file/norange.bin range=bytes=3278528- status=200 cr=- bytes=262144
+[fixture] #65 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #63 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #66 GET /file/flaky.bin range=- status=200 cr=- bytes=8388608
+[fixture] #67 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #69 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #70 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #68 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #71 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #72 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #73 GET /health range=- status=200 cr=- bytes=0
+[fixture] #74 GET /health range=- status=200 cr=- bytes=0
+[fixture] #76 GET /health range=- status=200 cr=- bytes=0
+[fixture] #75 GET /file/plain.bin range=- status=200 cr=- bytes=3145728
+[fixture] #79 GET /file/plain.bin range=bytes=3021856- status=206 cr=bytes 3021856-8388607/8388608 bytes=5366752
+[fixture] #77 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #78 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #80 GET /file/plain.bin range=- status=200 cr=- bytes=4325376
+[fixture] #82 GET /file/plain.bin range=bytes=4325376- status=206 cr=bytes 4325376-8388607/8388608 bytes=4063232
+[fixture] #83 GET /file/norange.bin range=- status=200 cr=- bytes=3538944
+[fixture] #84 GET /file/norange.bin range=bytes=3473408- status=200 cr=- bytes=196608
+[fixture] #81 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #85 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #86 GET /file/flaky.bin range=- status=200 cr=- bytes=8388608
+[fixture] #88 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #89 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #90 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #87 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #91 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #92 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #93 GET /health range=- status=200 cr=- bytes=0
+[fixture] #94 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #95 GET /file/plain.bin range=- status=200 cr=- bytes=4980736
+[fixture] #96 GET /file/plain.bin range=bytes=4915200- status=206 cr=bytes 4915200-8388607/8388608 bytes=3473408
+[fixture] #97 GET /file/norange.bin range=- status=200 cr=- bytes=4915200
+[fixture] #98 GET /file/norange.bin range=bytes=4859744- status=200 cr=- bytes=1114112
+[fixture] #99 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #100 GET /file/flaky.bin range=- status=200 cr=- bytes=8388608
+[fixture] #101 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #102 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #103 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #104 GET /health range=- status=200 cr=- bytes=0
+[fixture] #105 GET /health range=- status=200 cr=- bytes=0
+[fixture] #106 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #107 GET /health range=- status=200 cr=- bytes=0
+[fixture] #108 GET /health range=- status=200 cr=- bytes=0
+[fixture] #109 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #110 GET /file/plain.bin range=bytes=1703200- status=206 cr=bytes 1703200-8388607/8388608 bytes=1310720
+[fixture] #111 GET /health range=- status=200 cr=- bytes=0
+[fixture] #112 GET /health range=- status=200 cr=- bytes=0
+[fixture] #114 GET /file/plain.bin range=bytes=1572864- status=206 cr=bytes 1572864-8388607/8388608 bytes=6815744
+[fixture] #113 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #115 GET /health range=- status=200 cr=- bytes=0
+[fixture] #116 GET /health range=- status=200 cr=- bytes=0
+[fixture] #117 GET /file/plain.bin range=- status=200 cr=- bytes=2752512
+[fixture] #119 GET /file/plain.bin range=bytes=2697056- status=206 cr=bytes 2697056-8388607/8388608 bytes=5691552
+[fixture] #118 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #120 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #122 GET /file/plain.bin range=bytes=1572864- status=206 cr=bytes 1572864-8388607/8388608 bytes=6815744
+[fixture] #121 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #123 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #124 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #125 GET /health range=- status=200 cr=- bytes=0
+[fixture] #126 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #127 GET /file/plain.bin range=- status=200 cr=- bytes=4456448
+[fixture] #128 GET /file/plain.bin range=bytes=4442400- status=206 cr=bytes 4442400-8388607/8388608 bytes=3946208
+[fixture] #129 GET /file/norange.bin range=- status=200 cr=- bytes=4849664
+[fixture] #130 GET /file/norange.bin range=bytes=4784128- status=200 cr=- bytes=1048576
+[fixture] #131 GET /file/norange.bin range=- status=200 cr=- bytes=8388608
+[fixture] #132 GET /file/flaky.bin range=- status=200 cr=- bytes=8388608
+[fixture] #133 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #134 GET /file/empty.bin range=- status=200 cr=- bytes=0
+[fixture] #135 GET /file/empty.bin range=- status=200 cr=- bytes=0

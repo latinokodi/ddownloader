@@ -1,0 +1,10 @@
+[09:23:32.711] [INFO] lifecycle harness start  serial=emulator-5554  package=pro.tordownloader.android.debug  run=20261026T142332Z
+[09:23:32.762] adb -s emulator-5554 get-state
+  exit=0 out=device
+[09:23:32.806] adb shell getprop sys.boot_completed
+  exit=0 out=1
+[09:23:32.865] adb shell pm list packages pro.tordownloader.android.debug
+  exit=0 out=package:pro.tordownloader.android.debug
+[09:23:33.064] adb shell su 0 /data/local/tmp/curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://10.0.2.2:8787/health
+  exit=0 out=200
+[09:23:33.651] [INFO] preflight-only requested; not running scenarios

@@ -1,0 +1,19 @@
+fixture-server listening on http://127.0.0.1:8788
+request log: F:\PyApps\ddandroid\EVIDENCE\env\fixture-requests-lifecycle.jsonl
+reference hashes:
+  plain.bin size=8388608 sha256=7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56
+  norange.bin size=8388608 sha256=c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488
+  flaky.bin size=8388608 sha256=bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa
+  empty.bin size=1000 sha256=f229154fb9bd64a1cff3487982c00195df4bc6ba34a0729408e00856869f4341
+[fixture] #1 GET /health range=- status=200 cr=- bytes=0
+[fixture] #2 GET /health range=- status=200 cr=- bytes=0
+[fixture] #3 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #4 GET /health range=- status=200 cr=- bytes=0
+[fixture] #5 GET /health range=- status=200 cr=- bytes=0
+[fixture] #6 GET /file/plain.bin range=- status=200 cr=- bytes=2686976
+[fixture] #8 GET /file/plain.bin range=bytes=2621440- status=206 cr=bytes 2621440-8388607/8388608 bytes=5767168
+[fixture] #7 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #9 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #10 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #11 GET /file/plain.bin range=- status=200 cr=- bytes=8388608
+[fixture] #12 GET /file/norange.bin range=- status=200 cr=- bytes=8388608

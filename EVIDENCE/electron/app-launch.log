@@ -1,0 +1,10 @@
+
+> tordownloader-pro@1.0.18 start
+> electron .
+
+
+[Worker] Starting background worker (10s interval)
+[FlareSolverr] Starting: C:\Users\ferna\AppData\Roaming\tordownloader-pro\flaresolverr\flaresolverr\flaresolverr.exe
+[CF Fetcher] HTTP bridge listening on port 56042
+Skip checkForUpdates because application is not packed and dev update config is not forced
+[FlareSolverr] Ready on port 8191

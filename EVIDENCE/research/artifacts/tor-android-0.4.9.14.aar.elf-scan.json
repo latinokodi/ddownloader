@@ -1,0 +1,209 @@
+{
+  "aar_path": "artifacts\\tor-android-0.4.9.14.aar",
+  "aar_sha256": "28ff2bb6d4d42eabe57183dedd7a97fce77e8ce4b6f5af6fa03993b3ca054edd",
+  "abis": {
+    "arm64-v8a": {
+      "name": "jni/arm64-v8a/libtor.so",
+      "e_type": 3,
+      "e_machine": 183,
+      "e_phnum": 10,
+      "e_phentsize": 56,
+      "load_segments": [
+        {
+          "index": 2,
+          "p_offset": 0,
+          "p_vaddr": 0,
+          "p_filesz": 7145520,
+          "p_memsz": 7145520,
+          "p_align": 16384,
+          "p_align_hex": "0x4000",
+          "p_flags": 5,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 3,
+          "p_offset": 7145520,
+          "p_vaddr": 7161904,
+          "p_filesz": 368952,
+          "p_memsz": 370640,
+          "p_align": 16384,
+          "p_align_hex": "0x4000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 4,
+          "p_offset": 7514472,
+          "p_vaddr": 7547240,
+          "p_filesz": 64016,
+          "p_memsz": 92024,
+          "p_align": 16384,
+          "p_align_hex": "0x4000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        }
+      ],
+      "pt_load_count": 3,
+      "min_p_align": 16384,
+      "min_p_align_hex": "0x4000",
+      "all_loads_16kb_aligned": true,
+      "all_congruent": true,
+      "verdict_16kb": "PASS: every PT_LOAD p_align >= 0x4000 (16 KiB)",
+      "libtor_size_bytes": 7580256,
+      "libtor_sha256": "67ce86a6664c330f49037487f0931498e2a0f82099fbfaf3de7a62c32cf5e996"
+    },
+    "armeabi-v7a": {
+      "name": "jni/armeabi-v7a/libtor.so",
+      "elf_class": 32,
+      "e_type": 3,
+      "e_machine": 40,
+      "e_phnum": 10,
+      "e_phentsize": 32,
+      "load_segments": [
+        {
+          "index": 2,
+          "p_offset": 0,
+          "p_vaddr": 0,
+          "p_filesz": 6563024,
+          "p_memsz": 6563024,
+          "p_align": 4096,
+          "p_align_hex": "0x1000",
+          "p_flags": 5,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 3,
+          "p_offset": 6563024,
+          "p_vaddr": 6567120,
+          "p_filesz": 200796,
+          "p_memsz": 203568,
+          "p_align": 4096,
+          "p_align_hex": "0x1000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 4,
+          "p_offset": 6763824,
+          "p_vaddr": 6772016,
+          "p_filesz": 54560,
+          "p_memsz": 79677,
+          "p_align": 4096,
+          "p_align_hex": "0x1000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        }
+      ],
+      "pt_load_count": 3,
+      "min_p_align": 4096,
+      "min_p_align_hex": "0x1000",
+      "all_loads_16kb_aligned": false,
+      "all_congruent": true,
+      "note": "32-bit ABI: Android/Play 16 KB page-size requirement targets 64-bit ABIs.",
+      "libtor_size_bytes": 6819684,
+      "libtor_sha256": "a27f80fc60f96d953c8251e9a3ba007a7da0ba941c51968962b525141d416f7c"
+    },
+    "x86": {
+      "name": "jni/x86/libtor.so",
+      "elf_class": 32,
+      "e_type": 3,
+      "e_machine": 3,
+      "e_phnum": 10,
+      "e_phentsize": 32,
+      "load_segments": [
+        {
+          "index": 2,
+          "p_offset": 0,
+          "p_vaddr": 0,
+          "p_filesz": 6969168,
+          "p_memsz": 6969168,
+          "p_align": 4096,
+          "p_align_hex": "0x1000",
+          "p_flags": 5,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 3,
+          "p_offset": 6969168,
+          "p_vaddr": 6973264,
+          "p_filesz": 204936,
+          "p_memsz": 207024,
+          "p_align": 4096,
+          "p_align_hex": "0x1000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 4,
+          "p_offset": 7174104,
+          "p_vaddr": 7182296,
+          "p_filesz": 54544,
+          "p_memsz": 83812,
+          "p_align": 4096,
+          "p_align_hex": "0x1000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        }
+      ],
+      "pt_load_count": 3,
+      "min_p_align": 4096,
+      "min_p_align_hex": "0x1000",
+      "all_loads_16kb_aligned": false,
+      "all_congruent": true,
+      "note": "32-bit ABI: Android/Play 16 KB page-size requirement targets 64-bit ABIs.",
+      "libtor_size_bytes": 7229832,
+      "libtor_sha256": "982904d2fc050abc6d7deb4df93eb0ba9e501c3cecd8d30d155904bbb5cc6a97"
+    },
+    "x86_64": {
+      "name": "jni/x86_64/libtor.so",
+      "e_type": 3,
+      "e_machine": 62,
+      "e_phnum": 10,
+      "e_phentsize": 56,
+      "load_segments": [
+        {
+          "index": 2,
+          "p_offset": 0,
+          "p_vaddr": 0,
+          "p_filesz": 8000256,
+          "p_memsz": 8000256,
+          "p_align": 16384,
+          "p_align_hex": "0x4000",
+          "p_flags": 5,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 3,
+          "p_offset": 8000256,
+          "p_vaddr": 8016640,
+          "p_filesz": 378376,
+          "p_memsz": 380160,
+          "p_align": 16384,
+          "p_align_hex": "0x4000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        },
+        {
+          "index": 4,
+          "p_offset": 8378640,
+          "p_vaddr": 8411408,
+          "p_filesz": 65424,
+          "p_memsz": 94033,
+          "p_align": 16384,
+          "p_align_hex": "0x4000",
+          "p_flags": 6,
+          "congruent_off_vaddr": true
+        }
+      ],
+      "pt_load_count": 3,
+      "min_p_align": 16384,
+      "min_p_align_hex": "0x4000",
+      "all_loads_16kb_aligned": true,
+      "all_congruent": true,
+      "verdict_16kb": "PASS: every PT_LOAD p_align >= 0x4000 (16 KiB)",
+      "libtor_size_bytes": 8445824,
+      "libtor_sha256": "dc7f0fecc47ed73397b2f7928ddf2b87d18fac7c6ba1d00d72e3d7772e5eb480"
+    }
+  },
+  "aar_size_bytes": 12976254
+}

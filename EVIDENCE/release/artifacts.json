@@ -1,0 +1,143 @@
+{
+  "generatedUtc": "2026-10-26T15:24:29.1223011Z",
+  "tooling": {
+    "apksigner": "0.9",
+    "zipalign": "C:\\Android\\Sdk\\build-tools\\35.0.0\\zipalign.exe: unknown option -- -",
+    "buildTools": "35.0.0"
+  },
+  "checks": [
+    {
+      "check": "release apk signature verifies",
+      "result": "PASS",
+      "detail": {
+        "schemes": [
+          "v2"
+        ],
+        "signerSha256": "3f9b918f6ef44712b0d5cfb678ac0b09266d4ddcf23d00ee4d2dbdf1f37c83ba"
+      }
+    },
+    {
+      "check": "verify apk signature verifies",
+      "result": "PASS",
+      "detail": {
+        "apk": "F:\\PyApps\\ddandroid\\app\\build\\outputs\\apk\\verify\\app-verify.apk"
+      }
+    },
+    {
+      "check": "zipalign -c -P 16 (release)",
+      "result": "PASS",
+      "detail": {
+        "exit": 0,
+        "tail": [
+          " 2789260 resources.arsc (OK)",
+          "Verification succesful"
+        ]
+      }
+    },
+    {
+      "check": "packaged .so are 16 KB-page aligned (ELF PT_LOAD)",
+      "result": "PASS",
+      "detail": {
+        "abis": [
+          "arm64-v8a",
+          "armeabi-v7a",
+          "x86",
+          "x86_64"
+        ],
+        "libs": [
+          {
+            "file": "libandroidx.graphics.path.so",
+            "elf64": true,
+            "load_aligns": [
+              16384,
+              16384,
+              16384
+            ],
+            "min_align": 16384,
+            "ok_16k": true
+          },
+          {
+            "file": "libdatastore_shared_counter.so",
+            "elf64": true,
+            "load_aligns": [
+              16384,
+              16384
+            ],
+            "min_align": 16384,
+            "ok_16k": true
+          }
+        ],
+        "note": "see libs"
+      }
+    },
+    {
+      "check": "arm64-v8a ABI present",
+      "result": "PASS",
+      "detail": {
+        "abis": [
+          "arm64-v8a",
+          "armeabi-v7a",
+          "x86",
+          "x86_64"
+        ],
+        "has32Bit": [
+          "armeabi-v7a",
+          "x86"
+        ]
+      }
+    },
+    {
+      "check": "allowBackup is false",
+      "result": "PASS",
+      "detail": {
+        "raw": null
+      }
+    },
+    {
+      "check": "usesCleartextTraffic is false",
+      "result": "PASS",
+      "detail": {
+        "raw": null
+      }
+    },
+    {
+      "check": "networkSecurityConfig declared",
+      "result": "PASS",
+      "detail": {}
+    },
+    {
+      "check": "foregroundServiceType declared",
+      "result": "PASS",
+      "detail": {}
+    },
+    {
+      "check": "release has NO tddl harness intent-filter",
+      "result": "PASS",
+      "detail": {}
+    },
+    {
+      "check": "verify DOES expose the tddl harness",
+      "result": "PASS",
+      "detail": {}
+    }
+  ],
+  "sizes": {
+    "app-debug.apk": {
+      "bytes": 13599688,
+      "mb": 12.97,
+      "sha256": "d528ec5d53fa39d10d4375bdb291481798b39cb5368b042cec81e932491f71c7"
+    },
+    "app-release.apk": {
+      "bytes": 2982357,
+      "mb": 2.84,
+      "sha256": "e3e05eca8511723cd51cc489e0a01ecc2779b2cd70fde2b05cdf1e2e148a7250"
+    },
+    "app-verify.apk": {
+      "bytes": 3236821,
+      "mb": 3.09,
+      "sha256": "8636ec3384bbfe8b015ac4a8e20719c40651165fbcb8a39e4269ef210fe1e081"
+    }
+  },
+  "passCount": 11,
+  "failCount": 0
+}

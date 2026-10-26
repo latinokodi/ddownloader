@@ -1,0 +1,56 @@
+== preflight ==
+installed:     versionName=1.0.0     lastUpdateTime=2026-10-26 09:48:45
+fixture /health: 200
+
+== s1 fresh ==
+adb shell am force-stop pro.tordownloader.android.verify -> 
+adb shell pm clear pro.tordownloader.android.verify -> Success
+adb shell rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files/Download -> 
+adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS -> 
+adb logcat -c -> 
+adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D2097152&name=plain.bin&expected=8388608' -> Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... }
+adb pull /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/plain.bin F:\PyApps\ddandroid\EVIDENCE\differential\run-20261026T145402Z\s1\plain.bin -> /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/plain.bin: 1 file pulled, 0 skipped. 38.9 MB/s (8388608 bytes in 0.206s)
+  -> PASS: {"state":"COMPLETED","sha256":"7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56","expected":"7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56","requests":[{"seq":55,"ts":"2026-10-26T14:54:11.594Z","method":"GET","path":"/health","raw_url":"/health","range_header":null,"status":200,"content_range":null,"content_length_header":1304,"bytes_written":0,"cut":false,"remote_port":52550,"user_agent":"Mozilla/5.0 (Windows NT 10.0; Microsoft Windows 10.0.26200; es-CO) PowerShell/7.6.2","duration_ms":155,"__done":true},{"seq":54,"ts":"2026-10-26T14:54:07.715Z","method":"GET","path":"/file/plain.bin","raw_url":"/file/plain.bin?rate=2097152","range_header":null,"status":200,"content_range":null,"content_length_header":8388608,"bytes_written":8388608,"cut":false,"remote_port":53994,"user_agent":"TorDownloader-Android/1.0","duration_ms":5246,"rate":2097152,"__done":true},{"seq":56,"ts":"2026-10-26T14:54:13.042Z","method":"GET","path":"/health","raw_url":"/health","range_header":null,"status":200,"content_range":null,"content_length_header":1304,"bytes_written":0,"cut":false,"remote_port":52581,"user_agent":"curl/8.23.0","duration_ms":129,"__done":true}]}
+
+== s2 resume after process death ==
+adb shell am force-stop pro.tordownloader.android.verify -> 
+adb shell pm clear pro.tordownloader.android.verify -> Success
+adb shell rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files/Download -> 
+adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS -> 
+adb logcat -c -> 
+adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D2097152&name=plain.bin&expected=8388608' -> Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... }
+adb shell am force-stop pro.tordownloader.android.verify -> 
+adb shell am start -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity -> Starting: Intent { cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+adb pull /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/plain.bin F:\PyApps\ddandroid\EVIDENCE\differential\run-20261026T145402Z\s2\plain.bin -> /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/plain.bin: 1 file pulled, 0 skipped. 23.5 MB/s (8388608 bytes in 0.341s)
+  -> PASS: {"bytesBeforeKill":2424832,"resumedFromByte":3343040,"state":"COMPLETED","sha256":"7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56","expected":"7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56","requests":[{"seq":57,"ts":"2026-10-26T14:54:15.997Z","method":"GET","path":"/file/plain.bin","raw_url":"/file/plain.bin?rate=2097152","range_header":null,"status":200,"content_range":null,"content_length_header":8388608,"bytes_written":2424832,"cut":false,"remote_port":63046,"user_agent":"TorDownloader-Android/1.0","duration_ms":1633,"rate":2097152,"__done":true},{"seq":58,"ts":"2026-10-26T14:54:16.21Z","method":"GET","path":"/file/plain.bin","raw_url":"/file/plain.bin?rate=2097152","range_header":null,"status":200,"content_range":null,"content_length_header":8388608,"bytes_written":3735552,"cut":false,"remote_port":51993,"user_agent":"TorDownloader-Android/1.0","duration_ms":2508,"rate":2097152,"__done":true},{"seq":61,"ts":"2026-10-26T14:54:20.725Z","method":"GET","path":"/file/plain.bin","raw_url":"/file/plain.bin?rate=2097152","range_header":"bytes=3343040-","status":206,"content_range":"bytes 3343040-8388607/8388608","content_length_header":5045568,"bytes_written":5045568,"cut":false,"remote_port":51350,"user_agent":"TorDownloader-Android/1.0","duration_ms":2837,"rate":2097152,"__done":true},{"seq":60,"ts":"2026-10-26T14:54:20.256Z","method":"GET","path":"/file/plain.bin","raw_url":"/file/plain.bin?rate=2097152","range_header":"bytes=2301952-","status":206,"content_range":"bytes 2301952-8388607/8388608","content_length_header":6086656,"bytes_written":6086656,"cut":false,"remote_port":51343,"user_agent":"TorDownloader-Android/1.0","duration_ms":3636,"rate":2097152,"__done":true}]}
+
+== s3 server ignores Range ==
+adb shell am force-stop pro.tordownloader.android.verify -> 
+adb shell pm clear pro.tordownloader.android.verify -> Success
+adb shell rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files/Download -> 
+adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS -> 
+adb logcat -c -> 
+adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fnorange.bin%3Frate%3D2097152&name=norange.bin&expected=8388608' -> Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... }
+adb shell am force-stop pro.tordownloader.android.verify -> 
+adb shell am start -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity -> Starting: Intent { cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }
+adb pull /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/norange.bin F:\PyApps\ddandroid\EVIDENCE\differential\run-20261026T145402Z\s3\norange.bin -> /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/norange.bin: 1 file pulled, 0 skipped. 21.7 MB/s (8388608 bytes in 0.369s)
+  -> PASS: {"state":"COMPLETED","sha256":"c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488","expected":"c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488","requests":[{"seq":62,"ts":"2026-10-26T14:54:27.26Z","method":"GET","path":"/file/norange.bin","raw_url":"/file/norange.bin?rate=2097152","range_header":null,"status":200,"content_range":null,"content_length_header":8388608,"bytes_written":3997696,"cut":false,"remote_port":58018,"user_agent":"TorDownloader-Android/1.0","duration_ms":2217,"rate":2097152,"__done":true},{"seq":64,"ts":"2026-10-26T14:54:31.402Z","method":"GET","path":"/file/norange.bin","raw_url":"/file/norange.bin?rate=2097152","range_header":"bytes=3278528-","status":200,"content_range":null,"content_length_header":8388608,"bytes_written":262144,"cut":false,"remote_port":51900,"user_agent":"TorDownloader-Android/1.0","duration_ms":222,"rate":2097152,"__done":true},{"seq":65,"ts":"2026-10-26T14:54:31.656Z","method":"GET","path":"/file/norange.bin","raw_url":"/file/norange.bin?rate=2097152","range_header":null,"status":200,"content_range":null,"content_length_header":8388608,"bytes_written":8388608,"cut":false,"remote_port":51905,"user_agent":"TorDownloader-Android/1.0","duration_ms":5323,"rate":2097152,"__done":true}],"note":"electron/worker.ts would publish the truncated partial as complete; this port discards it and re-fetches from zero"}
+
+== s4 flaky cut, retry resumes ==
+adb shell am force-stop pro.tordownloader.android.verify -> 
+adb shell pm clear pro.tordownloader.android.verify -> Success
+adb shell rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files/Download -> 
+adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS -> 
+adb logcat -c -> 
+adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fflaky.bin%3Frate%3D2097152&name=flaky.bin&expected=8388608' -> Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... }
+adb pull /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/flaky.bin F:\PyApps\ddandroid\EVIDENCE\differential\run-20261026T145402Z\s4\flaky.bin -> /sdcard/Android/data/pro.tordownloader.android.verify/files/Download/flaky.bin: 1 file pulled, 0 skipped. 46.0 MB/s (8388608 bytes in 0.174s)
+  -> PASS: {"state":"COMPLETED","sha256":"bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa","expected":"bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa","requests":[{"seq":63,"ts":"2026-10-26T14:54:29.069Z","method":"GET","path":"/file/plain.bin","raw_url":"/file/plain.bin?rate=524288","range_header":null,"status":200,"content_range":null,"content_length_header":8388608,"bytes_written":8388608,"cut":false,"remote_port":58042,"user_agent":"TorDownloader-Android/1.0","duration_ms":17312,"rate":524288,"__done":true},{"seq":66,"ts":"2026-10-26T14:54:41.673Z","method":"GET","path":"/file/flaky.bin","raw_url":"/file/flaky.bin?rate=2097152","range_header":null,"status":200,"content_range":null,"content_length_header":8388608,"bytes_written":8388608,"cut":false,"remote_port":51981,"user_agent":"TorDownloader-Android/1.0","duration_ms":5358,"rate":2097152,"__done":true}]}
+
+== s5 empty body ==
+adb shell am force-stop pro.tordownloader.android.verify -> 
+adb shell pm clear pro.tordownloader.android.verify -> Success
+adb shell rm -rf /sdcard/Android/data/pro.tordownloader.android.verify/files/Download -> 
+adb shell pm grant pro.tordownloader.android.verify android.permission.POST_NOTIFICATIONS -> 
+adb logcat -c -> 
+adb shell am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fempty.bin&name=empty.bin&expected=1000' -> Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... }
+  -> PASS: {"state":"FAILED","error":"stream error at 0 bytes: ProtocolException: unexpected end of stream","published":null,"requests":[{"seq":67,"ts":"2026-10-26T14:54:49.733Z","method":"GET","path":"/file/empty.bin","raw_url":"/file/empty.bin","range_header":null,"status":200,"content_range":null,"content_length_header":1000,"bytes_written":0,"cut":false,"remote_port":60963,"user_agent":"TorDownloader-Android/1.0","duration_ms":0,"__done":true},{"seq":69,"ts":"2026-10-26T14:54:57.789Z","method":"GET","path":"/file/empty.bin","raw_url":"/file/empty.bin","range_header":null,"status":200,"content_range":null,"content_length_header":1000,"bytes_written":0,"cut":false,"remote_port":52198,"user_agent":"TorDownloader-Android/1.0","duration_ms":0,"__done":true},{"seq":70,"ts":"2026-10-26T14:55:07.829Z","method":"GET","path":"/file/empty.bin","raw_url":"/file/empty.bin","range_header":null,"status":200,"content_range":null,"content_length_header":1000,"bytes_written":0,"cut":false,"remote_port":53714,"user_agent":"TorDownloader-Android/1.0","duration_ms":1,"__done":true}]}

@@ -1,0 +1,241 @@
+{
+  "generated_at": "2026-10-26T15:16:00.7318506Z",
+  "tool": "scripts/device-lifecycle-test.ps1",
+  "tool_version": "1.0.0",
+  "serial": "emulator-5554",
+  "package": "pro.tordownloader.android.verify",
+  "service": "pro.tordownloader.android.download.DownloadService",
+  "run_dir": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T151338Z",
+  "transcript": "F:\\PyApps\\ddandroid\\EVIDENCE\\lifecycle\\run-20261026T151338Z\\adb-transcript.log",
+  "device": {
+    "adb_version": "Android Debug Bridge version 1.0.41\r\nVersion 37.0.1-15733141\r\nInstalled as C:\\Android\\Sdk\\platform-tools\\adb.exe\r\nRunning on Windows 10.0.26200",
+    "boot_completed": "1",
+    "android_release": "15",
+    "sdk": "35",
+    "abi": "x86_64"
+  },
+  "preflight": {
+    "ok": true,
+    "checks": [
+      {
+        "check": "adb_available",
+        "pass": true,
+        "blocking": true,
+        "detail": "Android Debug Bridge version 1.0.41\r / Version 37.0.1-15733141\r"
+      },
+      {
+        "check": "device_online",
+        "pass": true,
+        "blocking": true,
+        "detail": "device"
+      },
+      {
+        "check": "boot_completed",
+        "pass": true,
+        "blocking": true,
+        "detail": "1"
+      },
+      {
+        "check": "app_installed",
+        "pass": true,
+        "blocking": true,
+        "detail": "package:pro.tordownloader.android.verify | versionName=1.0.0\r     lastUpdateTime=2026-10-26 10:13:36"
+      },
+      {
+        "check": "run_as_available",
+        "pass": false,
+        "blocking": false,
+        "detail": "run-as refused (not debuggable or not installed for this user)"
+      },
+      {
+        "check": "partial_sampling_access",
+        "pass": true,
+        "blocking": false,
+        "detail": "method=root (run-as preferred, adb-root fallback; 'none' means partial sizes cannot be sampled)"
+      },
+      {
+        "check": "debug_deeplink_resolvable",
+        "pass": true,
+        "blocking": true,
+        "detail": "1 activities found:\r /   Activity #0:\r"
+      },
+      {
+        "check": "download_service_present",
+        "pass": true,
+        "blocking": false,
+        "detail": "declared in installed manifest: pro.tordownloader.android.download.DownloadService"
+      },
+      {
+        "check": "app_launches",
+        "pass": true,
+        "blocking": false,
+        "detail": "mCurrentFocus=Window{a2cce02 u0 pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity}"
+      },
+      {
+        "check": "fixture_server_host",
+        "pass": true,
+        "blocking": true,
+        "detail": "status=200 bytes=1304"
+      },
+      {
+        "check": "fixture_server_device",
+        "pass": true,
+        "blocking": true,
+        "detail": "http_code=200 via 10.0.2.2:8787"
+      }
+    ],
+    "blocked_reason": null,
+    "started_at": "2026-10-26T15:13:38.3902902Z",
+    "finished_at": "2026-10-26T15:13:42.3534939Z"
+  },
+  "reference": {
+    "plain.bin": {
+      "size": 8388608,
+      "sha256": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56"
+    },
+    "flaky.bin": {
+      "size": 8388608,
+      "sha256": "bac64e9df38a6e0a75b398bb04c33e44180e1d3375df32dd2bcad162607213fa"
+    },
+    "norange.bin": {
+      "size": 8388608,
+      "sha256": "c0db8a124f2728045e183abf438ede13dbc9271ad37d008bb85fef21383b7488"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "c",
+      "name": "network toggle (wifi+data off then on)",
+      "started_at": "2026-10-26T15:13:42.3750072Z",
+      "intent": "tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D1048576&name=plain.bin&expected=8388608",
+      "steps": [
+        {
+          "step": "clear_app_state",
+          "at": "2026-10-26T15:13:43.1518691Z",
+          "result": {
+            "pm_clear": "Success",
+            "pid": null,
+            "post_notifications_granted": true
+          }
+        },
+        {
+          "step": "am start",
+          "at": "2026-10-26T15:13:43.2304089Z",
+          "result": {
+            "command": "am start -a android.intent.action.VIEW -d 'tddl://download?url=http%3A%2F%2F10.0.2.2%3A8787%2Ffile%2Fplain.bin%3Frate%3D1048576&name=plain.bin&expected=8388608' -n pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity",
+            "exit": 0,
+            "output": "Starting: Intent { act=android.intent.action.VIEW dat=tddl://download/... cmp=pro.tordownloader.android.verify/pro.tordownloader.android.ui.MainActivity }"
+          }
+        },
+        {
+          "step": "network_off",
+          "at": "2026-10-26T15:13:45.9275014Z",
+          "result": {
+            "wifi": "",
+            "data": "",
+            "net": {
+              "wifi_on": "0",
+              "mobile_data": "0",
+              "deviceidle_deep": "ACTIVE",
+              "ipv4": [
+                "inet 127.0.0.1/8 scope host lo",
+                "inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0"
+              ]
+            }
+          }
+        },
+        {
+          "step": "sample_during_outage",
+          "at": "2026-10-26T15:13:56.7999704Z",
+          "result": {
+            "partials_at_off": [
+              {
+                "name": "04d9f1b6-plain.bin.part",
+                "size": 1703200
+              }
+            ],
+            "partials_after_10s": [
+              {
+                "name": "04d9f1b6-plain.bin.part",
+                "size": 1703200
+              }
+            ],
+            "net": {
+              "wifi_on": "0",
+              "mobile_data": "0",
+              "deviceidle_deep": "ACTIVE",
+              "ipv4": [
+                "inet 127.0.0.1/8 scope host lo",
+                "inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0"
+              ]
+            }
+          }
+        },
+        {
+          "step": "network_on",
+          "at": "2026-10-26T15:13:57.1399582Z",
+          "result": {
+            "wifi": "",
+            "data": ""
+          }
+        },
+        {
+          "step": "wait_final",
+          "at": "2026-10-26T15:16:00.5224893Z",
+          "result": {
+            "found": false,
+            "elapsed_s": 120.36
+          }
+        },
+        {
+          "step": "jobscheduler_state_after_timeout",
+          "at": "2026-10-26T15:16:00.6041830Z",
+          "result": {
+            "jobs": "<0>pro.tordownloader.android.verify::timeout-reg:\r\n      expirationTime=88583037, windowSizeMs=86400000, countLimit=3, countInWindow=0, inQuotaTime=0\r\n    <0>pro.tordownloader.android.verify::.schedulePersisted():\r\n      expirationTime=88583037, windowSizeMs=60000, countLimit=250, countInWindow=0, inQuotaTime=0\r\n    <0>pro.tordownloader.android.verify::anr:\r\n      expirationTime=88583037, windowSizeMs=21600000, countLimit=3, countInWindow=0, inQuotaTime=0\r\n    <0>pro.tordownloader.android.verify::timeout-total:\r\n      expirationTime=88583037, windowSizeMs=86400000, countLimit=10, countInWindow=0, inQuotaTime=0\r\n    <0>com.google.android.inputmethod.latin::timeout-reg:\r\n      expirationTime=86446581, windowSizeMs=86400000, countLimit=3, countInWindow=0, inQuotaTime=0\r\n    <0>com.google.android.inputmethod.latin::.schedulePersisted():\r\n--\r\n  JOB androidx.work.systemjobscheduler:u0a210/1: eb7cf96 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n    u0a210 tag=*job*/@androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n    Source: uid=u0a210 user=0 pkg=pro.tordownloader.android.verify\r\n    JobInfo:\r\n      Service: pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      Priority: 300 [DEFAULT]\r\n      Requires: charging=false batteryNotLow=false deviceIdle=false\r\n      Extras: mParcelledData.dataSize=248\r\n      Network type: NetworkRequest [ NONE id=0, [ Capabilities: INTERNET&TRUSTED&VALIDATED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10210 UnderlyingNetworks: Null] ]\r\n--\r\n    10210/pro.tordownloader.android.verify: {-21m41s686ms=8}\r\n    10192/com.google.android.devicelockcontroller: {-1h11m6s963ms=5}\r\n    10191/com.google.android.permissioncontroller: {-1h11m2s654ms=6}\r\n    10189/com.google.android.providers.media.module: {-1h11m18s850ms=132, -6m16s906ms=6}\r\n    10154/com.google.android.inputmethod.latin: {-1h11m18s757ms=55}\r\n--\r\n    JobStatus{eb7cf96 androidx.work.systemjobscheduler:u0a210/1 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService u=0 s=10210 TIME=+12m44s133ms:none NET satisfied:0x13600000 unsatisfied:0x80000000}: 27169474\r\n\r\nConnectivityController:\r\n  Aconfig flags:\r\n    com.android.server.job.relax_prefetch_connectivity_constraint_only_on_charger=true \r\n--\r\n    10210:pro.tordownloader.android.verify=false\r\n    10199:com.google.android.rkpdapp=false\r\n    10193:com.google.android.ext.services=false\r\n    10192:com.google.android.devicelockcontroller=false\r\n    10191:com.google.android.permissioncontroller=false\r\n--\r\n    #androidx.work.systemjobscheduler:u0a210/1 from u0a210 active: pro.tordownloader.android.verify [RUN_ANY_IN_BACKGROUND allowed] RUNNABLE\r\n    #androidx.work.systemjobscheduler:u0a199/2 from u0a199 idle: com.google.android.rkpdapp [RUN_ANY_IN_BACKGROUND allowed] RUNNABLE\r\n    ##u0a193/27 from u0a193 active: com.google.android.ext.services [RUN_ANY_IN_BACKGROUND allowed] RUNNABLE\r\n    ##u0a191/9 from u0a191 idle: com.google.android.permissioncontroller [RUN_ANY_IN_BACKGROUND allowed] RUNNABLE\r\n    ##u0a191/0 from u0a191 idle: com.google.android.permissioncontroller [RUN_ANY_IN_BACKGROUND allowed] RUNNABLE\r\n--\r\n    #androidx.work.systemjobscheduler:u0a210/1 from u0a210: pro.tordownloader.android.verify RUNNABLE\r\n    #androidx.work.systemjobscheduler:u0a199/2 from u0a199: com.google.android.rkpdapp RUNNABLE\r\n    ##u0a193/27 from u0a193: com.google.android.ext.services RUNNABLE\r\n    ##u0a191/9 from u0a191: com.google.android.permissioncontroller RUNNABLE\r\n    ##u0a191/0 from u0a191: com.google.android.permissioncontroller RUNNABLE\r\n--\r\n    TopAppTimer{<0>pro.tordownloader.android.verify} started at 4188195 (137152ms ago)\r\n      pro.tordownloader.android.ui.MainActivity\r\n    TopAppTimer{<0>com.android.settings} NOT active\r\n    TopAppTimer{<0>com.google.android.apps.nexuslauncher} NOT active\r\n    TopAppTimer{<0>com.google.android.googlesdksetup} NOT active\r\n--\r\n      <0>pro.tordownloader.android.verify\r\n        ACTIVE: expirationTime=88596767, allowedTimePerPeriodMs=600000, windowSizeMs=600000, jobCountLimit=75, sessionCountLimit=75, executionTimeInWindow=0, bgJobCountInWindow=0, executionTimeInMaxPeriod=0, bgJobCountInMaxPeriod=0, sessionCountInWindow=0, inQuotaTime=0, rateLimitJobCountExpirationTime=0, rateLimitJobCountWindow=0, rateLimitSessionCountExpirationTime=0, rateLimitSessionCountWindow=0\r\n      <0>com.google.android.inputmethod.latin\r\n        ACTIVE: expirationTime=86456222, allowedTimePerPeriodMs=600000, windowSizeMs=600000, jobCountLimit=75, sessionCountLimit=75, executionTimeInWindow=0, bgJobCountInWindow=0, executionTimeInMaxPeriod=0, bgJobCountInMaxPeriod=0, sessionCountInWindow=0, inQuotaTime=0, rateLimitJobCountExpirationTime=0, rateLimitJobCountWindow=0, rateLimitSessionCountExpirationTime=0, rateLimitSessionCountWindow=0\r\n    \r\n--\r\n      <0>pro.tordownloader.android.verify: ShrinkableDebits { debit tally: 0, bucket: 0 }\r\n      <0>com.google.android.inputmethod.latin: ShrinkableDebits { debit tally: 0, bucket: 0 }\r\n    \r\n    In quota alarms:\r\n      NOT WAITING\r\n--\r\n  0-ComponentInfo{pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService}: pro.tordownloader.android.verify\r\n  0-ComponentInfo{com.google.android.inputmethod.latin/androidx.work.impl.background.systemjob.SystemJobService}: com.google.android.inputmethod.latin\r\n  0-ComponentInfo{com.google.android.as/com.google.android.apps.miphone.aiai.fedass.ekho.service.EkhoTtlService}: com.google.android.as\r\n  0-ComponentInfo{com.google.android.providers.media.module/com.android.providers.media.IdleService}: com.google.android.providers.media.module\r\n  0-ComponentInfo{android/com.android.server.backup.KeyValueBackupJob}: system\r\n--\r\n  10210: {pro.tordownloader.android.verify}\r\n\r\nHistorical stats at 2026-10-26-09-04-34 (-1h11m25s475ms) over +30m3s140ms:\r\n  Max concurrency: 11 total, 1 foreground\r\n  \r\n--\r\n  u0a210 / pro.tordownloader.android.verify:\r\n    29x pending 2x active 2% 27x active-top\r\n    4x unknown:-1, 3x canceled, 22x successful_finish\r\n\r\n  Job history:\r\n--\r\n       -21m53s122ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -21m49s334ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -21m46s007ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -21m45s891ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -21m44s461ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -21m41s900ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService unexpectedly disconnected\r\n       -21m41s677ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -21m41s240ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService cancelled while waiting for bind\r\n       -21m34s917ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -21m34s637ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -21m33s394ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -21m31s061ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService unexpectedly disconnected\r\n       -21m20s823ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -21m20s762ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -21m19s018ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -21m14s358ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -21m11s944ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -21m11s896ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -21m10s920ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -21m08s650ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -17m10s376ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -17m10s365ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -17m09s563ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -17m07s204ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -17m02s167ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -17m02s073ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -17m01s245ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -16m59s019ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -16m52s449ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -16m52s285ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -16m51s019ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -16m48s611ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService unexpectedly disconnected\r\n       -16m48s562ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -16m48s202ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService cancelled while waiting for bind\r\n       -16m40s484ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -16m40s464ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -16m39s665ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -16m37s996ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -16m33s394ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -16m33s162ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -16m32s182ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -16m30s468ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -15m59s420ms   START: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService\r\n       -15m59s388ms    STOP: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService last work dequeued\r\n       -15m56s402ms   START: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService\r\n       -15m56s397ms    STOP: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService last work dequeued\r\n--\r\n       -13m13s243ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -13m11s561ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -13m07s533ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -13m07s458ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -13m06s872ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -13m05s584ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -12m59s521ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -12m59s491ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -12m58s774ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -12m57s116ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -12m47s353ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -12m47s274ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -12m46s368ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -12m43s664ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n       -12m40s237ms   START: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService\r\n       -12m40s193ms    STOP: #u0a189/-300 com.google.android.providers.media.module/com.android.providers.media.MediaService last work dequeued\r\n       -12m39s185ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n       -12m37s255ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n        -8m16s451ms   START: #u0a131/4096 com.google.android.partnersetup/.InstalledAppJobService\r\n        -8m16s448ms START-P: #1000/237039804 android/com.android.server.notification.NotificationHistoryJobService\r\n        -8m16s444ms  STOP-P: #1000/237039804 android/com.android.server.notification.NotificationHistoryJobService app called jobFinished\r\n        -8m16s243ms   START: #u0a131/1 com.google.android.partnersetup/.PhenotypeJobService\r\n--\r\n        -6m15s971ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n        -6m14s838ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n        -6m12s880ms   START: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService\r\n        -6m12s863ms    STOP: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService last work dequeued\r\n        -5m58s079ms   START: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService\r\n        -5m58s076ms    STOP: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService last work dequeued\r\n--\r\n        -2m17s086ms   START: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n        -2m15s854ms    STOP: #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService app called jobFinished\r\n        -2m14s579ms   START: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService\r\n        -2m14s555ms    STOP: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService onStartJob returned false\r\n        -1m58s692ms   START: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService\r\n        -1m58s687ms    STOP: #u0a140/1728 com.google.android.settings.intelligence/.modules.routines.impl.RoutinesJobIntentService last work dequeued\r\n--\r\n      f20b0a8 {androidx.work.systemjobscheduler} #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      u0a210 tag=*job*/@androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      Source: uid=u0a210 user=0 pkg=pro.tordownloader.android.verify\r\n      JobInfo:\r\n        Service: pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n        Priority: 400 [HIGH]\r\n        Flags: 2\r\n        Internal flags: 1 HAS_FOREGROUND_EXEMPTION\r\n        Requires: charging=false batteryNotLow=false deviceIdle=false\r\n--\r\n      4e4d837 {androidx.work.systemjobscheduler} #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      u0a210 tag=*job*/@androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      Source: uid=u0a210 user=0 pkg=pro.tordownloader.android.verify\r\n      JobInfo:\r\n        Service: pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n        Priority: 400 [HIGH]\r\n        Flags: 2\r\n        Internal flags: 1 HAS_FOREGROUND_EXEMPTION\r\n        Requires: charging=false batteryNotLow=false deviceIdle=false\r\n--\r\n      c2af6ca {androidx.work.systemjobscheduler} #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      u0a210 tag=*job*/@androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      Source: uid=u0a210 user=0 pkg=pro.tordownloader.android.verify\r\n      JobInfo:\r\n        Service: pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n        Priority: 400 [HIGH]\r\n        Flags: 2\r\n        Internal flags: 1 HAS_FOREGROUND_EXEMPTION\r\n        Requires: charging=false batteryNotLow=false deviceIdle=false\r\n--\r\n      d7806fe {androidx.work.systemjobscheduler} #u0a210/0 @androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      u0a210 tag=*job*/@androidx.work.systemjobscheduler@pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n      Source: uid=u0a210 user=0 pkg=pro.tordownloader.android.verify\r\n      JobInfo:\r\n        Service: pro.tordownloader.android.verify/androidx.work.impl.background.systemjob.SystemJobService\r\n        Priority: 400 [HIGH]\r\n        Flags: 2\r\n        Internal flags: 1 HAS_FOREGROUND_EXEMPTION\r\n        Requires: charging=false batteryNotLow=false deviceIdle=false",
+            "partials": [
+              {
+                "name": "04d9f1b6-plain.bin.part",
+                "size": 1703200
+              }
+            ],
+            "pid": 19378
+          }
+        }
+      ],
+      "partial_samples": [],
+      "assertions": [
+        {
+          "name": "completed_after_network_toggle",
+          "expected": "final file present",
+          "actual": false,
+          "pass": false,
+          "detail": "",
+          "skipped": false
+        },
+        {
+          "name": "final_sha256",
+          "expected": "7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56",
+          "actual": null,
+          "pass": false,
+          "detail": "",
+          "skipped": false
+        }
+      ],
+      "verdict": "FAIL",
+      "failure_reason": "completed_after_network_toggle: expected=final file present actual=False; final_sha256: expected=7ea22e5bbaf0d5711cd6681e5e3054f8fa6a1ed621787d0dc4c74e669fa41c56 actual=",
+      "final_files": [],
+      "pulled": [],
+      "skipped_assertions": [],
+      "exit_code": 2,
+      "finished_at": "2026-10-26T15:16:00.7189075Z"
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "blocked": 0
+  },
+  "verdict": "FAIL",
+  "exit_code": 2
+}

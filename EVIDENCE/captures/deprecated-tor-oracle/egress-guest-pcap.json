@@ -1,0 +1,192 @@
+{
+  "generated_at": "2026-10-26T14:18:22Z",
+  "tool": "scripts/verify_egress.py",
+  "source": {
+    "kind": "pcap-flows",
+    "path": "EVIDENCE\\captures\\guest-traffic-2026-10-26.flows.json",
+    "description": "pcap outbound flow aggregation: EVIDENCE\\captures\\guest-traffic-2026-10-26.flows.json"
+  },
+  "onionoo": {
+    "url": "https://onionoo.torproject.org/details?type=relay&running=true&fields=nickname,or_addresses,exit_addresses",
+    "path": "EVIDENCE\\captures\\onionoo-relays-20261026T141735Z.json",
+    "sha256": "e86cb43d986f095e549b9306f823b3964d0fa48341aabcfca8ae34658a9b487f",
+    "bytes": 847181,
+    "http_status": 200,
+    "fetched_at": "2026-10-26T14:17:35Z",
+    "from_cache": true,
+    "relay_count": 9164,
+    "unique_or_ips": 9722,
+    "exit_ips": 1169
+  },
+  "endpoint_count": 14,
+  "counts": {
+    "fixture": 1,
+    "UNKNOWN": 12,
+    "DNS": 1
+  },
+  "stats": {
+    "external": 13,
+    "tor": 0,
+    "non_tor": 12,
+    "dns": 1,
+    "loopback_or_fixture": 1
+  },
+  "endpoints": [
+    {
+      "ip": "10.0.2.2",
+      "port": 8787,
+      "classification": "fixture",
+      "evidence": {
+        "reason": "test fixture server (one of our own endpoints)"
+      },
+      "proto": "TCP",
+      "packets": 1091,
+      "bytes": 396
+    },
+    {
+      "ip": "142.251.151.119",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "UDP",
+      "packets": 25,
+      "bytes": 2404
+    },
+    {
+      "ip": "172.217.115.4",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "UDP",
+      "packets": 22,
+      "bytes": 10393
+    },
+    {
+      "ip": "116.202.120.181",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 42,
+      "bytes": 3620
+    },
+    {
+      "ip": "172.217.116.4",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 23,
+      "bytes": 1789
+    },
+    {
+      "ip": "172.217.112.4",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 15,
+      "bytes": 2259
+    },
+    {
+      "ip": "142.251.153.119",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 9,
+      "bytes": 885
+    },
+    {
+      "ip": "192.178.239.188",
+      "port": 5228,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 9,
+      "bytes": 884
+    },
+    {
+      "ip": "93.184.215.14",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 9,
+      "bytes": 0
+    },
+    {
+      "ip": "142.251.150.120",
+      "port": 80,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 5,
+      "bytes": 227
+    },
+    {
+      "ip": "172.217.113.4",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 10,
+      "bytes": 120
+    },
+    {
+      "ip": "172.217.119.4",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 4,
+      "bytes": 24
+    },
+    {
+      "ip": "10.0.2.3",
+      "port": 53,
+      "classification": "DNS",
+      "evidence": {
+        "reason": "port 53 -- DNS is NOT Tor and must not be tunnelled plaintext"
+      },
+      "proto": "UDP",
+      "packets": 28,
+      "bytes": 1169
+    },
+    {
+      "ip": "173.194.216.188",
+      "port": 5228,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      },
+      "proto": "TCP",
+      "packets": 1,
+      "bytes": 0
+    }
+  ],
+  "verdict": "NON-TOR EGRESS DETECTED: 12 endpoint(s) not in the Tor relay list",
+  "exit_code": 2
+}

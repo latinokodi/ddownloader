@@ -1,0 +1,191 @@
+[warning] RealDebridApi.kt:12 detekt.TooManyFunctions — Class 'RealDebridApi' with '12' functions detected. Defined threshold inside classes is set to '11'
+[warning] RealDebridApi.kt:33 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:33 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:39 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:39 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:53 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:53 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:53 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:59 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:59 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:65 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:65 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:72 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:72 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:78 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:78 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:102 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:102 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:102 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:107 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:107 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:107 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:112 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:112 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:112 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] RealDebridApi.kt:123 detekt.UnusedPrivateProperty — Private property `TAG` is unused.
+[warning] DownloadsDb.kt:63 detekt.TooManyFunctions — Class 'DownloadsDb' with '14' functions detected. Defined threshold inside classes is set to '11'
+[warning] SettingsRepository.kt:26 detekt.TooManyFunctions — Class 'SettingsRepository' with '15' functions detected. Defined threshold inside classes is set to '11'
+[warning] SettingsRepository.kt:81 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] SettingsRepository.kt:106 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadEngine.kt:61 detekt.CyclomaticComplexMethod — The function transfer appears to be too complex based on Cyclomatic Complexity (complexity: 34). Defined complexity threshold for methods is set to '15'
+[warning] DownloadEngine.kt:61 detekt.NestedBlockDepth — Function transfer is nested too deeply.
+[warning] DownloadEngine.kt:88 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] DownloadEngine.kt:173 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] DownloadEngine.kt:210 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] DownloadEngine.kt:61 detekt.ReturnCount — Function transfer has 10 return statements which exceeds the limit of 2.
+[warning] DownloadEngine.kt:97 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadEngine.kt:103 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadEngine.kt:109 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadEngine.kt:109 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadEngine.kt:113 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadEngine.kt:130 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadEngine.kt:138 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadManager.kt:157 detekt.CyclomaticComplexMethod — The function runOne appears to be too complex based on Cyclomatic Complexity (complexity: 35). Defined complexity threshold for methods is set to '15'
+[warning] DownloadManager.kt:43 detekt.TooManyFunctions — Class 'DownloadManager' with '16' functions detected. Defined threshold inside classes is set to '11'
+[warning] DownloadManager.kt:177 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] DownloadManager.kt:309 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] DownloadManager.kt:348 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] DownloadManager.kt:309 detekt.SwallowedException — The caught exception is swallowed. The original exception could be lost.
+[warning] DownloadManager.kt:369 detekt.FunctionNaming — Function names should match the pattern: [a-z][a-zA-Z0-9]*
+[warning] DownloadManager.kt:370 detekt.FunctionNaming — Function names should match the pattern: [a-z][a-zA-Z0-9]*
+[warning] DownloadManager.kt:91 detekt.ReturnCount — Function start has 3 return statements which exceeds the limit of 2.
+[warning] DownloadManager.kt:157 detekt.ReturnCount — Function runOne has 4 return statements which exceeds the limit of 2.
+[warning] DownloadManager.kt:205 detekt.LoopWithTooManyJumpStatements — The loop contains more than one break or continue statement. The code should be refactored to increase readability.
+[warning] DownloadManager.kt:83 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadManager.kt:259 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadService.kt:115 detekt.CyclomaticComplexMethod — The function buildNotification appears to be too complex based on Cyclomatic Complexity (complexity: 17). Defined complexity threshold for methods is set to '15'
+[warning] DownloadService.kt:39 detekt.TooManyFunctions — Class 'DownloadService' with '15' functions detected. Defined threshold inside classes is set to '11'
+[warning] DownloadService.kt:87 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] MediaLayout.kt:43 detekt.CyclomaticComplexMethod — The function parseReleaseName appears to be too complex based on Cyclomatic Complexity (complexity: 16). Defined complexity threshold for methods is set to '15'
+[warning] MediaLayout.kt:91 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] MediaLayout.kt:38 detekt.UnusedPrivateProperty — Private property `STOP_WORDS` is unused.
+[warning] Storage.kt:56 detekt.CyclomaticComplexMethod — The function publish appears to be too complex based on Cyclomatic Complexity (complexity: 16). Defined complexity threshold for methods is set to '15'
+[warning] Storage.kt:35 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Storage.kt:37 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Storage.kt:40 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Storage.kt:102 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] AppViewModel.kt:23 detekt.TooManyFunctions — Class 'AppViewModel' with '24' functions detected. Defined threshold inside classes is set to '11'
+[warning] AppViewModel.kt:94 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] AppViewModel.kt:110 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] AppViewModel.kt:228 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] Components.kt:198 detekt.CyclomaticComplexMethod — The function SessionHero appears to be too complex based on Cyclomatic Complexity (complexity: 15). Defined complexity threshold for methods is set to '15'
+[warning] Components.kt:1 detekt.TooManyFunctions — File 'F:\PyApps\ddandroid\app\src\main\java\pro\tordownloader\android\ui\components\Components.kt' with '14' functions detected. Defined threshold inside files is set to '11'
+[warning] Components.kt:156 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Components.kt:218 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Components.kt:226 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] DownloadsScreen.kt:100 detekt.CyclomaticComplexMethod — The function DownloadCard appears to be too complex based on Cyclomatic Complexity (complexity: 36). Defined complexity threshold for methods is set to '15'
+[warning] DownloadsScreen.kt:183 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] SettingsScreen.kt:44 detekt.LongMethod — The function SettingsScreen is too long (221). The maximum length is 140.
+[warning] CryptoBox.kt:62 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] CryptoBox.kt:80 detekt.TooGenericExceptionCaught — The caught exception is too generic. Prefer catching specific exceptions to the case that is currently handled.
+[warning] CryptoBox.kt:62 detekt.SwallowedException — The caught exception is swallowed. The original exception could be lost.
+[warning] CryptoBox.kt:80 detekt.SwallowedException — The caught exception is swallowed. The original exception could be lost.
+[warning] CryptoBox.kt:68 detekt.ReturnCount — Function decrypt has 3 return statements which exceeds the limit of 2.
+[warning] CryptoBox.kt:47 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] CometApi.kt:44 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] CometApi.kt:44 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] CometApi.kt:65 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] CometApi.kt:65 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TmdbApi.kt:64 detekt.ReturnCount — Function resolveTitle has 4 return statements which exceeds the limit of 2.
+[warning] TmdbApi.kt:34 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TmdbApi.kt:34 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TmdbApi.kt:41 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TmdbApi.kt:41 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TmdbApi.kt:53 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TmdbApi.kt:70 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TmdbApi.kt:83 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:41 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:41 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:51 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:51 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:64 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:64 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:72 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:72 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:95 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:95 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:95 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:111 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:111 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:119 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] TorBoxApi.kt:119 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Web.kt:96 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppLog.kt:101 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] AppLog.kt:101 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] AppLog.kt:101 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:29 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:30 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:30 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:30 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:31 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:31 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:31 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:47 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:48 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:49 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:51 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:52 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Fmt.kt:53 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:95 detekt.ThrowsCount — Too many throw statements in the function follow. The maximum number of allowed throw statements is 2.
+[warning] Net.kt:58 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:59 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:60 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:78 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:79 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:105 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:105 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:105 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:105 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Net.kt:105 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] HostAllowlist.kt:19 detekt.ReturnCount — Function isAllowed has 5 return statements which exceeds the limit of 2.
+[warning] ResumeWorker.kt:41 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] AppIcons.kt:21 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:33 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:39 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:45 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:51 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:57 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:63 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:70 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:76 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:88 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:124 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:130 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:136 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:142 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:148 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:154 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:160 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:166 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:178 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:190 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:196 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:202 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] AppIcons.kt:214 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] MainActivity.kt:125 detekt.ReturnCount — Function handleLaunchIntent has 4 return statements which exceeds the limit of 2.
+[warning] MainActivity.kt:186 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] MainActivity.kt:186 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] MainActivity.kt:325 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] MainActivity.kt:150 detekt.UnusedPrivateProperty — Private property `scope` is unused.
+[warning] SearchScreen.kt:153 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] Theme.kt:84 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] Theme.kt:85 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] Theme.kt:86 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] Theme.kt:87 detekt.MaxLineLength — Line detected, which is longer than the defined maximum line length in the code style.
+[warning] Theme.kt:31 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:32 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:33 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:34 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:35 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:36 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:38 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:39 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:40 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:42 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:43 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:44 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:45 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:46 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] Theme.kt:47 detekt.MagicNumber — This expression contains a magic number. Consider defining it to a well named constant.
+[warning] MediaLayoutParityTest.kt:34 detekt.UnusedPrivateMember — Private function `strOrNull` is unused.

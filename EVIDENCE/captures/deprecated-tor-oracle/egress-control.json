@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-10-26T14:17:49Z",
+  "tool": "scripts/verify_egress.py",
+  "source": {
+    "kind": "endpoints",
+    "path": "91.66.247.27:9006,10.0.2.3:53,10.0.2.2:8787,127.0.0.1:8191,94.140.4.10:443",
+    "description": "cli endpoints: 91.66.247.27:9006,10.0.2.3:53,10.0.2.2:8787,127.0.0.1:8191,94.140.4.10:443"
+  },
+  "onionoo": {
+    "url": "https://onionoo.torproject.org/details?type=relay&running=true&fields=nickname,or_addresses,exit_addresses",
+    "path": "EVIDENCE\\captures\\onionoo-relays-20261026T141735Z.json",
+    "sha256": "e86cb43d986f095e549b9306f823b3964d0fa48341aabcfca8ae34658a9b487f",
+    "bytes": 847181,
+    "http_status": 200,
+    "fetched_at": "2026-10-26T14:17:35Z",
+    "from_cache": true,
+    "relay_count": 9164,
+    "unique_or_ips": 9722,
+    "exit_ips": 1169
+  },
+  "endpoint_count": 5,
+  "counts": {
+    "tor-relay": 1,
+    "DNS": 1,
+    "fixture": 1,
+    "loopback": 1,
+    "UNKNOWN": 1
+  },
+  "stats": {
+    "external": 3,
+    "tor": 1,
+    "non_tor": 1,
+    "dns": 1,
+    "loopback_or_fixture": 2
+  },
+  "endpoints": [
+    {
+      "ip": "91.66.247.27",
+      "port": 9006,
+      "classification": "tor-relay",
+      "evidence": {
+        "reason": "exact ip:port match in onionoo or_addresses",
+        "nickname": "BaumiMiddleRelays",
+        "known_ports": [
+          9000,
+          9001,
+          9002,
+          9003,
+          9004,
+          9005,
+          9006,
+          9007
+        ]
+      }
+    },
+    {
+      "ip": "10.0.2.3",
+      "port": 53,
+      "classification": "DNS",
+      "evidence": {
+        "reason": "port 53 -- DNS is NOT Tor and must not be tunnelled plaintext"
+      }
+    },
+    {
+      "ip": "10.0.2.2",
+      "port": 8787,
+      "classification": "fixture",
+      "evidence": {
+        "reason": "test fixture server (one of our own endpoints)"
+      }
+    },
+    {
+      "ip": "127.0.0.1",
+      "port": 8191,
+      "classification": "loopback",
+      "evidence": {
+        "reason": "loopback address"
+      }
+    },
+    {
+      "ip": "94.140.4.10",
+      "port": 443,
+      "classification": "UNKNOWN",
+      "evidence": {
+        "reason": "not found in running Tor relay list (or_addresses/exit_addresses)"
+      }
+    }
+  ],
+  "verdict": "NON-TOR EGRESS DETECTED: 1 endpoint(s) not in the Tor relay list",
+  "exit_code": 2
+}
