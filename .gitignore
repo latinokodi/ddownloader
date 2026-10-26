@@ -41,3 +41,6 @@ EVIDENCE/research/raw/npm-*.json
 .vscode/
 Thumbs.db
 .DS_Store
+
+# Emulator AVDs kept on the same drive as the project, never committed.
+android-avd/
