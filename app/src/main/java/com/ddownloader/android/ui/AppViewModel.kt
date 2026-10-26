@@ -8,6 +8,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.ddownloader.android.api.CometApi
 import com.ddownloader.android.api.TmdbApi
+import com.ddownloader.android.api.TorBoxApi
 import com.ddownloader.android.core.AppLog
 import com.ddownloader.android.BuildConfig
 import com.ddownloader.android.data.AccountAuth
@@ -29,6 +33,8 @@ import com.ddownloader.android.download.DownloadManager
 import com.ddownloader.android.download.DownloadService
 import com.ddownloader.android.download.ResumeWorker
 import com.ddownloader.android.storage.MediaLayout
+
+private const val MAX_FILES_PER_TORRENT = 40
 
 class AppViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -67,6 +73,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     var discoverLoading by mutableStateOf(false)
     var discoverError by mutableStateOf<String?>(null)
     var discoverKind by mutableStateOf("movie")
+
+    // Shelf-based Discover (many categories, loaded in parallel)
+    data class Shelf(val title: String, val items: List<TmdbApi.Item>)
+
+    var shelves by mutableStateOf<List<Shelf>>(emptyList())
+    var shelvesLoading by mutableStateOf(false)
+    var shelvesError by mutableStateOf<String?>(null)
 
     fun toast(text: String) {
         message = text
@@ -295,6 +308,31 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /** Loads every shelf for [kind] in parallel; one failing shelf never blanks the page. */
+    fun loadShelves(kind: String) {
+        viewModelScope.launch {
+            shelvesLoading = true
+            shelvesError = null
+            shelves = emptyList()
+            try {
+                val specs = locator.tmdb.rowSpecs(kind)
+                val loaded = coroutineScope {
+                    specs.map { spec ->
+                        async { Shelf(spec.title, locator.tmdb.rowItems(spec, kind)) }
+                    }.awaitAll()
+                }
+                shelves = loaded.filter { it.items.isNotEmpty() }
+                if (shelves.isEmpty()) {
+                    shelvesError = "TMDB returned no titles. Check your API key in Settings."
+                }
+            } catch (t: Throwable) {
+                shelvesError = t.message ?: "Discover failed"
+            } finally {
+                shelvesLoading = false
+            }
+        }
+    }
+
     fun loadDiscover(kind: String) {
         viewModelScope.launch {
             discoverLoading = true
@@ -365,6 +403,11 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     // ── Queue actions ─────────────────────────────────────────────────────
     fun addUrl(url: String, name: String? = null, expectedSize: Long = 0L) {
+        // A pasted magnet is a first-class input for a debrid client.
+        if (url.trim().startsWith("magnet:", ignoreCase = true)) {
+            addMagnet(url.trim(), estimatedSize = expectedSize, name = name ?: "magnet")
+            return
+        }
         val clean = url.trim()
         if (clean.isEmpty()) return
         // Input validation: only http(s), a real host, and no embedded credentials
@@ -401,26 +444,49 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 if (settings.value.hasTorBox) {
                     val id = locator.torbox.addMagnet(magnet).getOrThrow()
-                    val torrents = locator.torbox.listTorrents().getOrNull().orEmpty()
-                    val torrent = torrents.firstOrNull { it.id == id }
-                    val file = torrent?.files?.maxByOrNull { it.size }
-                    if (torrent == null || file == null) {
-                        toast("TorBox accepted the magnet (id $id); file list not ready yet")
+                    // TorBox needs a few seconds to fetch metadata. Polling beats giving up:
+                    // the old single-shot lookup told the user "file list not ready yet".
+                    var files: List<TorBoxApi.TorrentFile> = emptyList()
+                    var torrentId: String = id
+                    for (attempt in 0 until 25) {
+                        val torrents = locator.torbox.listTorrents().getOrNull().orEmpty()
+                        val t = torrents.firstOrNull { it.id == id }
+                        if (t != null && !t.files.isNullOrEmpty()) {
+                            files = t.files
+                            torrentId = t.id
+                            break
+                        }
+                        delay(3000)
+                    }
+                    if (files.isEmpty()) {
+                        toast("TorBox accepted the magnet but never listed its files (id $id)")
                         return@launch
                     }
-                    locator.manager.enqueue(
-                        DownloadRecord(
-                            url = "",
-                            name = file.name.substringAfterLast('/'),
-                            expectedSize = file.size,
-                            service = "torbox",
-                            remoteId = torrent.id,
-                            fileId = file.id,
-                            state = TransferState.QUEUED,
+                    // Queue every video file, not just the biggest one: season packs are
+                    // the normal case for series and used to silently yield one episode.
+                    val videos = files
+                        .filter { it.size >= 20L * 1024 * 1024 }
+                        .ifEmpty { files }
+                        .sortedByDescending { it.size }
+                        .take(MAX_FILES_PER_TORRENT)
+                    videos.forEach { file ->
+                        locator.manager.enqueue(
+                            DownloadRecord(
+                                url = "",
+                                name = file.name.substringAfterLast('/'),
+                                expectedSize = file.size,
+                                service = "torbox",
+                                remoteId = torrentId,
+                                fileId = file.id,
+                                state = TransferState.QUEUED,
+                            )
                         )
-                    )
+                    }
                     DownloadService.start(getApplication())
-                    toast("Queued from TorBox")
+                    toast(
+                        if (videos.size == 1) "Queued 1 file from TorBox"
+                        else "Queued ${videos.size} files from TorBox",
+                    )
                 } else {
                     val id = locator.realdebrid.addMagnet(magnet).getOrThrow()
                     locator.manager.enqueue(

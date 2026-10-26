@@ -136,7 +136,7 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
                     value = vm.pastedLink,
                     onValueChange = { vm.pastedLink = it },
                     label = "Direct URL",
-                    placeholder = "https://… direct link",
+                    placeholder = "https://… link or magnet:…",
                 )
                 Spacer(Modifier.height(10.dp))
                 GhostButton(

@@ -113,6 +113,60 @@ class TmdbApi(private val settings: SettingsRepository) {
         } ?: emptyList()
     }
 
+    /** One horizontal shelf on Discover: a title plus the TMDB path that fills it. */
+    data class RowSpec(val title: String, val path: String, val extra: String = "")
+
+    /** Shelves for a type ("movie" | "tv"). Curated mainstream + genre rows. */
+    fun rowSpecs(type: String): List<RowSpec> = if (type == "tv") listOf(
+        RowSpec("Trending this week", "/trending/tv/week"),
+        RowSpec("Popular series", "/tv/popular"),
+        RowSpec("Top rated", "/tv/top_rated"),
+        RowSpec("Airing today", "/tv/airing_today"),
+        RowSpec("Drama", "/discover/tv", "&with_genres=18&sort_by=popularity.desc"),
+        RowSpec("Comedy", "/discover/tv", "&with_genres=35&sort_by=popularity.desc"),
+        RowSpec("Crime", "/discover/tv", "&with_genres=80&sort_by=popularity.desc"),
+        RowSpec("Sci-Fi & fantasy", "/discover/tv", "&with_genres=10765&sort_by=popularity.desc"),
+        RowSpec("Animation", "/discover/tv", "&with_genres=16&sort_by=popularity.desc"),
+        RowSpec("Mystery", "/discover/tv", "&with_genres=9648&sort_by=popularity.desc"),
+        RowSpec("Reality", "/discover/tv", "&with_genres=10764&sort_by=popularity.desc"),
+        RowSpec("Documentary", "/discover/tv", "&with_genres=99&sort_by=popularity.desc"),
+    ) else listOf(
+        RowSpec("Trending this week", "/trending/movie/week"),
+        RowSpec("Popular movies", "/movie/popular"),
+        RowSpec("Top rated", "/movie/top_rated"),
+        RowSpec("In cinemas", "/movie/now_playing"),
+        RowSpec("Coming soon", "/movie/upcoming"),
+        RowSpec("Action", "/discover/movie", "&with_genres=28&sort_by=popularity.desc"),
+        RowSpec("Comedy", "/discover/movie", "&with_genres=35&sort_by=popularity.desc"),
+        RowSpec("Horror", "/discover/movie", "&with_genres=27&sort_by=popularity.desc"),
+        RowSpec("Sci-Fi", "/discover/movie", "&with_genres=878&sort_by=popularity.desc"),
+        RowSpec("Animation", "/discover/movie", "&with_genres=16&sort_by=popularity.desc"),
+        RowSpec("Thriller", "/discover/movie", "&with_genres=53&sort_by=popularity.desc"),
+        RowSpec("Documentary", "/discover/movie", "&with_genres=99&sort_by=popularity.desc"),
+    )
+
+    /** Loads one shelf. Returns an empty list when TMDB has nothing (never throws). */
+    suspend fun rowItems(spec: RowSpec, type: String): List<Item> {
+        val o = get(spec.path, spec.extra) ?: return emptyList()
+        return parseResults(o, type)
+    }
+
+    private fun parseResults(o: JsonObject, type: String): List<Item> =
+        o.arr("results")?.mapNotNull { el ->
+            val r = el as? JsonObject ?: return@mapNotNull null
+            val mediaType = r.str("media_type") ?: type
+            Item(
+                id = r.int("id") ?: return@mapNotNull null,
+                title = r.str("title") ?: r.str("name").orEmpty(),
+                year = (r.str("release_date") ?: r.str("first_air_date"))?.take(4)?.toIntOrNull(),
+                overview = r.str("overview").orEmpty(),
+                posterPath = r.str("poster_path"),
+                imdbId = null,
+                mediaType = mediaType,
+                voteAverage = (r["vote_average"] as? kotlinx.serialization.json.JsonPrimitive)?.content?.toDoubleOrNull() ?: 0.0,
+            )
+        } ?: emptyList()
+
     /** IMDb id for a TMDB item (needed to ask Comet for streams). */
     suspend fun imdbId(tmdbId: Int, mediaType: String): String? {
         val kind = if (mediaType == "tv" || mediaType == "series") "tv" else "movie"

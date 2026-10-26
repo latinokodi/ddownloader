@@ -7,6 +7,24 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-26
+
+### Added
+- **Discover rebuilt as a shelf catalogue**: 12 categories per type — Trending this week, Popular,
+  Top rated, In cinemas / Airing today, Coming soon, plus genre shelves (Action, Comedy, Horror,
+  Sci-Fi, Animation, Thriller, Drama, Crime, Sci-Fi & fantasy, Mystery, Reality, Documentary).
+  Shelves load in parallel, show skeletons while loading, and one failed shelf never blanks the
+  page. Posters carry a rating badge; Movies / Series is a segmented control.
+- **Magnet links can be pasted** into the Search tab ("https://… link or magnet:…").
+- **Multi-file torrents queue every video file** (season packs now produce several downloads
+  instead of silently keeping only the biggest file).
+- TorBox gives the cloud up to ~75 s to list a torrent's files instead of failing on the first
+  lookup with "file list not ready yet".
+
+### Changed
+- Downloads/Copy: search placeholder mentions magnets; addUrl hands magnets to the debrid flow.
+
+
 ## [1.0.10] - 2026-10-26
 
 ### Changed

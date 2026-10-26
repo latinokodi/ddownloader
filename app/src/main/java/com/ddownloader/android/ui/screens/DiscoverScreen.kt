@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -29,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -36,20 +39,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.ddownloader.android.BuildConfig
+import com.ddownloader.android.api.TmdbApi
+import com.ddownloader.android.api.tmdbPoster
 import com.ddownloader.android.ui.AppViewModel
 import com.ddownloader.android.ui.components.EmptyState
 import com.ddownloader.android.ui.components.GhostButton
-import com.ddownloader.android.ui.components.SectionLabel
-import com.ddownloader.android.ui.components.StatusPill
 import com.ddownloader.android.ui.icons.AppIcons
 import com.ddownloader.android.ui.theme.TdColor
-import com.ddownloader.android.api.tmdbPoster
 
 /**
- * Discover: trending titles from TMDB, resolved to torrents through the embedded
- * Comet add-on. TMDB is only the metadata/catalogue source — the catalogue role
- * the old BetterPosters add-on used to play in the Electron app.
+ * Discover — a shelf-based catalogue.
+ *
+ * Twelve categories per type (trending, popular, top rated, in cinemas / airing today and
+ * genre rows), loaded in parallel so one slow category never blocks the page. Tapping a
+ * poster opens the Comet streams sheet, which is where a download starts.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,8 +60,8 @@ fun DiscoverScreen(vm: AppViewModel) {
     val settings by vm.settings.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    LaunchedEffect(Unit) {
-        if (settings.hasTmdb && vm.discoverItems.isEmpty()) vm.loadDiscover(vm.discoverKind)
+    LaunchedEffect(settings.hasTmdb, vm.discoverKind) {
+        if (settings.hasTmdb) vm.loadShelves(vm.discoverKind)
     }
 
     if (!settings.hasTmdb) {
@@ -66,84 +69,75 @@ fun DiscoverScreen(vm: AppViewModel) {
             EmptyState(
                 icon = AppIcons.Explore,
                 title = "Discover needs a TMDB key",
-                body = "The embedded Comet add-on resolves streams but has no catalogue of its own. " +
-                    "Add a free TMDB API key in Settings to browse trending titles here.",
+                body = "Add a free TMDB API key in Settings to browse curated rows here. " +
+                    "Search and direct links keep working without it.",
             )
         }
         return
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+    LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 14.dp, end = 14.dp, top = 8.dp, bottom = 24.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(bottom = 118.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
-        item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(3) }) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        item {
+            Row(
+                Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Column(Modifier.weight(1f)) {
-                    Text("Discover", style = MaterialTheme.typography.headlineMedium, color = TdColor.TextHi)
                     Text(
-                        "TMDB catalogue → Comet streams",
+                        "Discover",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = TdColor.TextHi,
+                    )
+                    Spacer(Modifier.height(2.dp))
+                    Text(
+                        "TMDB catalogue · Comet streams",
                         style = MaterialTheme.typography.labelSmall,
                         color = TdColor.TextLow,
                     )
                 }
-                GhostButton(
-                    text = if (vm.discoverKind == "movie") "Movies" else "Series",
-                    icon = if (vm.discoverKind == "movie") AppIcons.Movie else AppIcons.LiveTv,
-                ) {
-                    val next = if (vm.discoverKind == "movie") "tv" else "movie"
-                    vm.discoverKind = next
-                    vm.loadDiscover(next)
-                }
-            }
-        }
-        if (vm.discoverLoading) {
-            item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(3) }) {
-                Box(Modifier.fillMaxWidth().height(120.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = TdColor.Cyan, strokeWidth = 2.dp)
-                }
-            }
-        }
-        if (vm.discoverError != null) {
-            item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(3) }) {
-                Text(vm.discoverError!!, color = TdColor.Amber, style = MaterialTheme.typography.bodySmall)
-            }
-        }
-        items(vm.discoverItems, key = { "${it.mediaType}-${it.id}" }) { item ->
-            Column(
-                Modifier
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(TdColor.Ink2)
-                    .clickable { vm.openItem(item) },
-            ) {
-                AsyncImage(
-                    model = tmdbPoster(item.posterPath, "w342"),
-                    contentDescription = item.title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(2f / 3f)
-                        .clip(RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp)),
+                Spacer(Modifier.width(10.dp))
+                SegmentedType(
+                    isMovie = vm.discoverKind == "movie",
+                    onSelect = { kind ->
+                        if (kind != vm.discoverKind) {
+                            vm.discoverKind = kind
+                            vm.loadShelves(kind)
+                        }
+                    },
                 )
-                Column(Modifier.padding(8.dp)) {
-                    Text(
-                        item.title,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = TdColor.TextHi,
-                        fontWeight = FontWeight.Medium,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    Spacer(Modifier.height(4.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        item.year?.let { StatusPill("$it", TdColor.TextMid) }
-                        if (item.voteAverage > 0) {
-                            StatusPill(String.format(java.util.Locale.US, "%.1f", item.voteAverage), TdColor.Mint)
+            }
+        }
+
+        when {
+            vm.shelvesLoading && vm.shelves.isEmpty() -> {
+                items(4) { SkeletonShelf() }
+            }
+            vm.shelvesError != null -> {
+                item {
+                    Row(
+                        Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            vm.shelvesError.orEmpty(),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TdColor.Amber,
+                            modifier = Modifier.weight(1f),
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        GhostButton("Retry", icon = AppIcons.Refresh) {
+                            vm.loadShelves(vm.discoverKind)
                         }
                     }
+                }
+            }
+            else -> {
+                items(vm.shelves, key = { it.title }) { shelf ->
+                    ShelfRow(shelf) { item -> vm.openItem(item) }
                 }
             }
         }
@@ -162,5 +156,169 @@ fun DiscoverScreen(vm: AppViewModel) {
     }
 }
 
-@Suppress("unused")
-private val debugBadge: Boolean = BuildConfig.DEBUG
+/** Movies / Series switch, drawn as a small segmented control. */
+@Composable
+private fun SegmentedType(isMovie: Boolean, onSelect: (String) -> Unit) {
+    Row(
+        Modifier
+            .clip(RoundedCornerShape(14.dp))
+            .background(TdColor.Ink2)
+            .padding(3.dp),
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        SegmentButton("Movies", isMovie) { onSelect("movie") }
+        SegmentButton("Series", !isMovie) { onSelect("tv") }
+    }
+}
+
+@Composable
+private fun SegmentButton(label: String, active: Boolean, onClick: () -> Unit) {
+    Text(
+        label,
+        style = MaterialTheme.typography.labelMedium,
+        fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal,
+        color = if (active) TdColor.Ink0 else TdColor.TextMid,
+        modifier = Modifier
+            .clip(RoundedCornerShape(11.dp))
+            .background(if (active) TdColor.Cyan else TdColor.Ink2)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 14.dp, vertical = 8.dp),
+    )
+}
+
+/** One category: header plus a horizontally scrolling row of posters. */
+@Composable
+private fun ShelfRow(shelf: AppViewModel.Shelf, onOpen: (TmdbApi.Item) -> Unit) {
+    Column(Modifier.fillMaxWidth()) {
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                shelf.title,
+                style = MaterialTheme.typography.titleMedium,
+                color = TdColor.TextHi,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f),
+            )
+            Text(
+                "${shelf.items.size}",
+                style = MaterialTheme.typography.labelSmall,
+                color = TdColor.TextLow,
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            items(shelf.items, key = { "${it.mediaType}-${it.id}" }) { item ->
+                PosterCard(item) { onOpen(item) }
+            }
+        }
+    }
+}
+
+/** Poster with a rating badge and a two-line caption. */
+@Composable
+private fun PosterCard(item: TmdbApi.Item, onClick: () -> Unit) {
+    Column(
+        Modifier
+            .width(128.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick),
+    ) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(2f / 3f)
+                .clip(RoundedCornerShape(16.dp))
+                .background(TdColor.Ink3),
+        ) {
+            AsyncImage(
+                model = tmdbPoster(item.posterPath, "w342"),
+                contentDescription = item.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(44.dp)
+                    .align(Alignment.BottomCenter)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(Color.Transparent, TdColor.Ink0.copy(alpha = 0.65f)),
+                        ),
+                    ),
+            )
+            if (item.voteAverage > 0) {
+                Row(
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .clip(CircleShape)
+                        .background(TdColor.Ink0.copy(alpha = 0.72f))
+                        .padding(horizontal = 7.dp, vertical = 3.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Box(Modifier.size(5.dp).clip(CircleShape).background(TdColor.Mint))
+                    Spacer(Modifier.width(4.dp))
+                    Text(
+                        String.format(java.util.Locale.US, "%.1f", item.voteAverage),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TdColor.TextHi,
+                    )
+                }
+            }
+        }
+        Spacer(Modifier.height(7.dp))
+        Text(
+            item.title,
+            style = MaterialTheme.typography.bodySmall,
+            color = TdColor.TextHi,
+            fontWeight = FontWeight.Medium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(horizontal = 2.dp),
+        )
+        item.year?.let {
+            Text(
+                "$it",
+                style = MaterialTheme.typography.labelSmall,
+                color = TdColor.TextLow,
+                modifier = Modifier.padding(horizontal = 2.dp),
+            )
+        }
+    }
+}
+
+/** Placeholder shelf shown while the categories load. */
+@Composable
+private fun SkeletonShelf() {
+    Column(Modifier.fillMaxWidth()) {
+        Box(
+            Modifier
+                .padding(horizontal = 20.dp)
+                .height(14.dp)
+                .width(140.dp)
+                .clip(RoundedCornerShape(6.dp))
+                .background(TdColor.Ink3),
+        )
+        Spacer(Modifier.height(12.dp))
+        Row(
+            Modifier.padding(horizontal = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            repeat(4) {
+                Box(
+                    Modifier
+                        .width(128.dp)
+                        .aspectRatio(2f / 3f)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(TdColor.Ink2),
+                )
+            }
+        }
+    }
+}
