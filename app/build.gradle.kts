@@ -17,15 +17,15 @@ val keystoreProps = Properties().apply {
 }
 
 android {
-    namespace = "pro.tordownloader.android"
+    namespace = "com.ddownloader.android"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "pro.tordownloader.android"
+        applicationId = "com.ddownloader.android"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 3
+        versionName = "1.0.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -38,6 +38,8 @@ android {
         )
         buildConfigField("boolean", "ALLOW_LOOPBACK_CLEARTEXT", "true")
         buildConfigField("boolean", "VERIFY_HARNESS", "false")
+        // Self-update feed: this project's own GitHub Releases.
+        buildConfigField("String", "UPDATE_REPO", "\"latinokodi/ddownloader\"")
     }
 
     signingConfigs {

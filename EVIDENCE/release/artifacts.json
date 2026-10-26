@@ -1,5 +1,5 @@
 {
-  "generatedUtc": "2026-10-26T15:24:29.1223011Z",
+  "generatedUtc": "2026-10-26T15:53:25.8518753Z",
   "tooling": {
     "apksigner": "0.9",
     "zipalign": "C:\\Android\\Sdk\\build-tools\\35.0.0\\zipalign.exe: unknown option -- -",
@@ -29,7 +29,7 @@
       "detail": {
         "exit": 0,
         "tail": [
-          " 2789260 resources.arsc (OK)",
+          " 2855152 resources.arsc (OK)",
           "Verification succesful"
         ]
       }
@@ -128,14 +128,14 @@
       "sha256": "d528ec5d53fa39d10d4375bdb291481798b39cb5368b042cec81e932491f71c7"
     },
     "app-release.apk": {
-      "bytes": 2982357,
-      "mb": 2.84,
-      "sha256": "e3e05eca8511723cd51cc489e0a01ecc2779b2cd70fde2b05cdf1e2e148a7250"
+      "bytes": 3051741,
+      "mb": 2.91,
+      "sha256": "8961ca98602df3884575f6e8f6ca533a409b3616ca3a6c4c0b0a996f9c55d51f"
     },
     "app-verify.apk": {
-      "bytes": 3236821,
-      "mb": 3.09,
-      "sha256": "8636ec3384bbfe8b015ac4a8e20719c40651165fbcb8a39e4269ef210fe1e081"
+      "bytes": 3302809,
+      "mb": 3.15,
+      "sha256": "a9aff10245f1e60f4937761c03321df368e706c44ab629a840ed20a15bf190ad"
     }
   },
   "passCount": 11,

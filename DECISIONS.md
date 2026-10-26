@@ -1,4 +1,4 @@
-# DECISIONS — TorDownloader Android
+# DECISIONS — DDownloader Android
 
 Scope note that governs everything below: **the original app contains no Tor-network code
 at all.** In `tordownloaderElectron`, "tor" means *TorBox* (a debrid service). Verified by
@@ -16,7 +16,7 @@ taken on this machine (paths given inline).
 ## Decision A — **No Tor-network integration** (corrected 2026-10-26 by the project owner)
 
 **Choice: the Android app does not embed Tor, Orbot, Arti or any SOCKS layer.** "tor" in
-`TorDownloader`/`TorDownloader PRO` is **TorBox**, the debrid service. This is not a scope
+`DDownloader`/`the Electron app` is **TorBox**, the debrid service. This is not a scope
 reduction invented here — it is what the original is, and the owner confirmed it explicitly.
 
 ### Evidence that fixed the decision

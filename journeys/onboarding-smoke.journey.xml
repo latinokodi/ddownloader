@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DDownloader smoke journey — XML-specified UI journey (skill: android-ui-journey-testing).
+
+  Executed by scripts/run-journey.ps1, which drives the real app through adb and writes a
+  JSON outcome report. Each step has an action and, where relevant, the assertion that must
+  hold afterwards; a failing assertion fails the journey, it does not "continue anyway".
+-->
+<journey name="onboarding-smoke" package="com.ddownloader.android">
+    <description>
+        First launch must show the 4-step assistant; stepping through it with Continue must
+        reach the "Start using DDownloader" action; finishing must land on the main UI with
+        the Search/Discover/Downloads/Settings/Logs navigation present.
+    </description>
+
+    <preconditions>
+        <app_installed/>
+        <app_data_cleared/>
+    </preconditions>
+
+    <step id="1" action="launch" assert_text="SETUP 1/4"
+          note="assistant starts on the welcome page"/>
+
+    <step id="2" action="assert_text" text="HTTPS only"
+          note="welcome page makes the transport guarantee visible"/>
+
+    <step id="3" action="tap_text" text="Continue" assert_text="SETUP 2/4"
+          note="debrid token authorization page"/>
+
+    <step id="4" action="assert_text" text="TorBox API token"/>
+    <step id="5" action="assert_text" text="Real-Debrid API token"/>
+
+    <step id="6" action="tap_text" text="Continue" assert_text="SETUP 3/4"
+          note="optional TMDB key page"/>
+    <step id="7" action="assert_text" text="TMDB API key"/>
+
+    <step id="8" action="tap_text" text="Continue" assert_text="SETUP 4/4"
+          note="download folder page"/>
+    <step id="9" action="assert_text" text="Choose folder"/>
+
+    <step id="10" action="assert_text" text="Start using DDownloader"/>
+
+    <step id="11" action="tap_text" text="Start using DDownloader" assert_text="DDOWNLOADER"
+          note="finishing drops into the main UI"/>
+
+    <step id="12" action="assert_text" text="Downloads"/>
+    <step id="13" action="assert_text" text="Settings"/>
+
+    <postconditions>
+        <setting name="onboardingCompleted" value="true"/>
+    </postconditions>
+</journey>

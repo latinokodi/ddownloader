@@ -19,13 +19,13 @@
 
 .EXAMPLE
   pwsh -NoProfile -File scripts/device-differential.ps1
-  pwsh -NoProfile -File scripts/device-differential.ps1 -Package pro.tordownloader.android.verify
+  pwsh -NoProfile -File scripts/device-differential.ps1 -Package com.ddownloader.android.verify
   pwsh -NoProfile -File scripts/device-differential.ps1 -Only s2,s3
 #>
 [CmdletBinding()]
 param(
     [string]$Serial = 'emulator-5554',
-    [string]$Package = 'pro.tordownloader.android.debug',
+    [string]$Package = 'com.ddownloader.android.debug',
     [string]$FixtureBase = 'http://10.0.2.2:8787',
     [string[]]$Only = @('s1', 's2', 's3', 's4', 's5'),
     [int]$Rate = 2097152,
@@ -156,7 +156,7 @@ if ($Only -contains 's2') {
     [void](Adb @('shell', 'am', 'force-stop', $pkg))
     Start-Sleep -Seconds 1
     $firstReq = (Fixture-Requests | Select-Object -First 1)
-    [void](Adb @('shell', 'am', 'start', '-n', "$pkg/pro.tordownloader.android.ui.MainActivity"))
+    [void](Adb @('shell', 'am', 'start', '-n', "$pkg/com.ddownloader.android.ui.MainActivity"))
     $st = Log-Terminal 'plain.bin' $TimeoutSeconds
     $path = Output-File 'plain.bin'
     $sha = if ($path) { Pull-And-Hash $path (Join-Path $outDir 's2') } else { $null }
@@ -180,7 +180,7 @@ if ($Only -contains 's3') {
     Start-Sleep -Seconds 3
     [void](Adb @('shell', 'am', 'force-stop', $pkg))
     Start-Sleep -Seconds 1
-    [void](Adb @('shell', 'am', 'start', '-n', "$pkg/pro.tordownloader.android.ui.MainActivity"))
+    [void](Adb @('shell', 'am', 'start', '-n', "$pkg/com.ddownloader.android.ui.MainActivity"))
     $st = Log-Terminal 'norange.bin' $TimeoutSeconds
     $path = Output-File 'norange.bin'
     $sha = if ($path) { Pull-And-Hash $path (Join-Path $outDir 's3') } else { $null }

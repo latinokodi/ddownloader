@@ -1,4 +1,4 @@
-# SPEC — parity matrix (TorDownloader PRO · Electron → Android)
+# SPEC — parity matrix (the Electron app · Electron → Android)
 
 **Corrected premise (owner, 2026-10-26):** "tor" in this project means **TorBox**, the debrid
 service — not the Tor anonymity network. The original app contains no onion-routing code

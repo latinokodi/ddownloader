@@ -45,3 +45,38 @@ the tree) and **Lead-applied** (I read the `SKILL.md` and made the change myself
 
 Distinct skills: 6 (env-runner) + 6 (source-analyst) + 5 (evidence-researcher, one shared with
 source-analyst) + 5 (lead) = **21 distinct**, each with a file-level artifact above.
+
+
+---
+
+# Second audit — 10 additional skills (release / update / quality phase)
+
+Re-audited `F:\PyApps\agent-skills\.agent\skills` against the project as it stood after the
+DDownloader rename and the self-update requirement, and picked ten skills that had not been used.
+Each row names the artifact the skill changed — none were read-only.
+
+| # | skill | what it changed |
+|---|---|---|
+| 22 | `github-actions` | Added `.github/workflows/android-ci.yml` (JDK 21 → unit tests → lint → detekt → verify/debug APKs → OSV scan → artifact upload) and `.github/dependabot.yml` (weekly Gradle, monthly Actions). |
+| 23 | `semantic-versioning` | Wrote `VERSIONING.md` with an arithmetic `versionCode = MAJOR*10000 + MINOR*100 + PATCH` rule and a bump checklist; applied it: 1.0.0/1 → 1.0.1/2 → 1.0.2/3. |
+| 24 | `changelog-automation` | Created `CHANGELOG.md` (Keep a Changelog, user-facing phrasing) and reused its entries verbatim as GitHub Release notes instead of writing ad-hoc text. |
+| 25 | `deployment-procedures` | Wrote `RELEASING.md`: pre-flight gates, local signing (keystore never in CI), artifact verification, **update-path test before announcing**, publish, and a rollback table that acknowledges an APK cannot be downgraded. |
+| 26 | `pre-release-review` | Produced `PRE_RELEASE_REVIEW.md` — a read-only go/no-go audit with observed values (version bump, signing, manifest hardening, permissions, secrets, CI gates) and three explicitly accepted risks. |
+| 27 | `threat-modeling` | Wrote `THREAT-MODEL.md` (STRIDE) covering assets, five trust boundaries and the **update channel** specifically (signer equality, per-hop allowlist, checksum) plus what is out of scope. |
+| 28 | `performance-profiling` | Wrote `PERFORMANCE.md` with measured data: APK sizes (2.84/3.09/12.97 MB), cold-start `am start -W` numbers, real-network 2.98 MB download timing, and the font-subsetting opportunity. |
+| 29 | `dependency-scanning` | Wrote `DEPENDENCIES.md` (runtime dependency table with licences, scan results, supply-chain decisions) and wired the OSV scan + Dependabot into CI. |
+| 30 | `android-ui-journey-testing` | Added `journeys/onboarding-smoke.journey.xml` (13 steps with assertions) and `scripts/run-journey.ps1`, an XML-driven adb executor that writes `journey.json`; it immediately found a real harness gap (the POST_NOTIFICATIONS dialog covering the app after `pm clear`). |
+| 31 | `backup-recovery` | Implemented `data/SettingsBackup.kt` + Settings → “Backup & restore” (SAF export/import of non-secret settings; tokens deliberately excluded) so a reinstall or new device does not lose configuration. |
+
+Also fixed while applying these: every blocking network/IO call in `UpdateChecker`, `AccountAuth`
+and `SettingsBackup` now runs on `Dispatchers.IO` (the first device run threw
+`NetworkOnMainThreadException`), and the hero “Downloads” button now navigates.
+
+## Verification status of this batch
+
+| item | status |
+|---|---|
+| CI workflow, changelog, versioning, releasing, pre-release review, threat model, performance, dependencies | written and committed (CI not yet executed on GitHub) |
+| Backup & restore | implemented, unit-compiled; **not exercised on device** |
+| Journey runner | implemented and executed; found the permission-dialog gap; the suite itself was not yet green when the session stopped |
+| Self-update | implemented (feed → download → SHA-256 → signer check → installer), v1.0.1 and v1.0.2 published; **the in-app prompt did not appear on the emulator in the last test — unresolved** |

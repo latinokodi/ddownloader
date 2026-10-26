@@ -48,7 +48,7 @@ patch("data/SettingsRepository.kt", [
 
 # ── ServiceLocator: no TorController ────────────────────────────────────────
 patch("data/ServiceLocator.kt", [
-    ("import pro.tordownloader.android.tor.TorController\n", ""),
+    ("import com.ddownloader.android.tor.TorController\n", ""),
     ("    lateinit var tor: TorController\n        private set\n\n", ""),
     ("        tor = TorController(app)\n", ""),
 ])
@@ -92,7 +92,7 @@ patch("download/DownloadService.kt", [
 
 # ── AppViewModel: remove Tor state/actions ──────────────────────────────────
 patch("ui/AppViewModel.kt", [
-    ("import pro.tordownloader.android.tor.TorController\n", ""),
+    ("import com.ddownloader.android.tor.TorController\n", ""),
     ("    val torState: StateFlow<TorController.State> = locator.tor.state\n", ""),
     ("    val bootstrap: StateFlow<Int> = locator.tor.bootstrap\n", ""),
     ("""    // ── Tor ───────────────────────────────────────────────────────────────
@@ -149,7 +149,7 @@ patch("ui/AppViewModel.kt", [
 
 # ── MainActivity: top bar reflects the real pipeline, not a circuit ─────────
 patch("ui/MainActivity.kt", [
-    ("import pro.tordownloader.android.tor.TorController\n", ""),
+    ("import com.ddownloader.android.tor.TorController\n", ""),
     ("""    val torState by vm.torState.collectAsStateWithLifecycle()
     val active by vm.activeCount.collectAsStateWithLifecycle()""",
      """    val active by vm.activeCount.collectAsStateWithLifecycle()

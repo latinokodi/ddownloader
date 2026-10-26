@@ -143,7 +143,7 @@ def edit(rel, fn):
 
 
 def components(text):
-    text = text.replace("import pro.tordownloader.android.tor.TorController\n", "")
+    text = text.replace("import com.ddownloader.android.tor.TorController\n", "")
     start = text.find("/**\n * Hero card for the Tor circuit")
     if start < 0:
         start = text.find("/**\n * Hero card")
@@ -170,15 +170,15 @@ def search(text):
         "            )",
         "            SessionHero(\n"
         "                activeTransfers = active,\n"
-        "                queuedTransfers = records.count { it.state == pro.tordownloader.android.data.db.TransferState.QUEUED },\n"
-        "                completedTransfers = records.count { it.state == pro.tordownloader.android.data.db.TransferState.COMPLETED },\n"
+        "                queuedTransfers = records.count { it.state == com.ddownloader.android.data.db.TransferState.QUEUED },\n"
+        "                completedTransfers = records.count { it.state == com.ddownloader.android.data.db.TransferState.COMPLETED },\n"
         "                hasDebrid = settings.hasAnyDebrid,\n"
         "                onOpenDownloads = { },\n"
         "            )",
     )
     text = text.replace(
-        "import pro.tordownloader.android.ui.components.TorHero",
-        "import pro.tordownloader.android.ui.components.SessionHero",
+        "import com.ddownloader.android.ui.components.TorHero",
+        "import com.ddownloader.android.ui.components.SessionHero",
     )
     return text
 
@@ -216,7 +216,7 @@ PRIVACY_BLOCK = '''        // ── Privacy & security ────────
 
 
 def settings(text):
-    text = text.replace("import pro.tordownloader.android.tor.TorController\n", "")
+    text = text.replace("import com.ddownloader.android.tor.TorController\n", "")
     text = text.replace("    val torState by vm.torState.collectAsStateWithLifecycle()\n", "")
     start = text.find("        // ── Tor ─")
     end = text.find("        // ── Accounts ─")

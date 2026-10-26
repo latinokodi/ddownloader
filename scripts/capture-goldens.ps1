@@ -20,7 +20,7 @@
 
 param(
   [string]$Serial  = 'emulator-5554',
-  [string]$Package = 'pro.tordownloader.android.verify',
+  [string]$Package = 'com.ddownloader.android.verify',
   [string]$OutDir  = 'F:\PyApps\ddandroid\EVIDENCE\screenshots\golden',
   [int]$DensityDpi = 420,
   [int]$SettleMs   = 1200
@@ -107,7 +107,7 @@ function Find-DestinationNode {
 Write-Output "[i] launching $Package"
 AdbShell "am force-stop $Package" | Out-Null
 AdbShell "pm grant $Package android.permission.POST_NOTIFICATIONS" | Out-Null
-AdbShell "am start -W -n $Package/pro.tordownloader.android.ui.MainActivity" | Out-Null
+AdbShell "am start -W -n $Package/com.ddownloader.android.ui.MainActivity" | Out-Null
 Start-Sleep -Seconds 3
 $focus = AdbShell "dumpsys window | grep mCurrentFocus | head -1"
 Write-Output "[i] focus: $focus"

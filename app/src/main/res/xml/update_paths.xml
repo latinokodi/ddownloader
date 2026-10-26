@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Only the downloaded update APK is exposed through the FileProvider; nothing
+     else in app storage is reachable from other apps. -->
+<paths>
+    <cache-path name="updates" path="updates/" />
+</paths>

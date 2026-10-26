@@ -22,15 +22,15 @@
 
 param(
   [string]$Serial       = 'emulator-5554',
-  [string]$Package      = 'pro.tordownloader.android.debug',
-  [string]$Service      = 'pro.tordownloader.android.download.DownloadService',
+  [string]$Package      = 'com.ddownloader.android.debug',
+  [string]$Service      = 'com.ddownloader.android.download.DownloadService',
   [string]$OutRoot      = 'F:\PyApps\ddandroid\EVIDENCE\lifecycle',
   [string]$FixtureLog   = 'F:\PyApps\ddandroid\EVIDENCE\env\fixture-requests-standalone.jsonl',
   [string]$FixtureHost  = '10.0.2.2',
   [int]$FixturePort     = 8787,
   [string]$ApkPath      = '',       # optional: installed/build APK for the manifest preflight check
   [string]$Aapt2        = 'C:\Android\Sdk\build-tools\35.0.0\aapt2.exe',
-  [string]$Activity     = 'pro.tordownloader.android.ui.MainActivity',
+  [string]$Activity     = 'com.ddownloader.android.ui.MainActivity',
   [string]$ToolsDir     = 'F:\PyApps\ddandroid\EVIDENCE\captures\tools',
   [string[]]$Only       = @(),      # e.g. -Only a,c ; empty = all
   [int]$CompleteTimeoutSeconds = 120,

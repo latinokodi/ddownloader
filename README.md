@@ -1,11 +1,7 @@
-# TorDownloader — Android
+# DDownloader — Android
 
-Android port of [TorDownloader PRO](../tordownloaderElectron) (TorBox + Real-Debrid client with
+Android port of [the Electron app](../tordownloaderElectron) (TorBox + Real-Debrid client with
 TMDB/Comet discovery and a resumable local download engine).
-
-> **"tor" = TorBox.** This project is a debrid downloader. It does **not** use the Tor anonymity
-> network and contains no onion-routing code — the suffix in the name comes from TorBox. See
-> `DECISIONS.md` → Decision A for the evidence trail behind that clarification.
 
 **Project path:** `F:\PyApps\ddandroid`
 
@@ -25,7 +21,7 @@ cd F:\PyApps\ddandroid
 # debug build + install + launch
 .\gradlew.bat :app:assembleDebug
 C:\Android\Sdk\platform-tools\adb.exe install -r -t app\build\outputs\apk\debug\app-debug.apk
-C:\Android\Sdk\platform-tools\adb.exe shell am start -n pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity
+C:\Android\Sdk\platform-tools\adb.exe shell am start -n com.ddownloader.android.debug/com.ddownloader.android.ui.MainActivity
 
 # R8-minified, release-signed APK (2.84 MB)
 .\gradlew.bat :app:assembleRelease
@@ -65,10 +61,10 @@ evidence in this repo is `keystore/release.jks` (self-signed, 4096-bit RSA, 10 0
 
 ```powershell
 # 1. Differential vs the Electron downloader: 5 fixture scenarios, byte-identical SHA-256
-pwsh -NoProfile -File scripts\device-differential.ps1 -Package pro.tordownloader.android.verify
+pwsh -NoProfile -File scripts\device-differential.ps1 -Package com.ddownloader.android.verify
 
 # 2. Lifecycle: kill mid-download / Doze / network toggle / foreground-service stop
-pwsh -NoProfile -File scripts\device-lifecycle-test.ps1 -Package pro.tordownloader.android.verify
+pwsh -NoProfile -File scripts\device-lifecycle-test.ps1 -Package com.ddownloader.android.verify
 
 # 3. Release artifacts: apksigner, zipalign -P 16, ELF 16 KB alignment, manifest hardening
 pwsh -NoProfile -File scripts\verify-release-artifacts.ps1

@@ -1,4 +1,4 @@
-# FINAL REPORT — TorDownloader Android
+# FINAL REPORT — DDownloader Android
 
 **Project path:** `F:\PyApps\ddandroid`
 **Baseline ported from:** `F:\PyApps\tordownloaderElectron` (commit `1f70fd4` + working tree + the
@@ -26,14 +26,14 @@ cd F:\PyApps\ddandroid
 .\gradlew.bat :app:detekt                   # 0 errors
 
 C:\Android\Sdk\platform-tools\adb.exe install -r -t app\build\outputs\apk\debug\app-debug.apk
-C:\Android\Sdk\platform-tools\adb.exe shell am start -n pro.tordownloader.android.debug/pro.tordownloader.android.ui.MainActivity
+C:\Android\Sdk\platform-tools\adb.exe shell am start -n com.ddownloader.android.debug/com.ddownloader.android.ui.MainActivity
 ```
 
 Verification (each reproducible, artifacts under `EVIDENCE/`):
 
 ```powershell
-pwsh -NoProfile -File scripts\device-differential.ps1 -Package pro.tordownloader.android.verify
-pwsh -NoProfile -File scripts\device-lifecycle-test.ps1 -Package pro.tordownloader.android.verify
+pwsh -NoProfile -File scripts\device-differential.ps1 -Package com.ddownloader.android.verify
+pwsh -NoProfile -File scripts\device-lifecycle-test.ps1 -Package com.ddownloader.android.verify
 pwsh -NoProfile -File scripts\verify-release-artifacts.ps1
 python scripts\dependency_vuln_scan.py
 python scripts\verify_egress.py --pcap EVIDENCE\captures\app-launch-2026-10-26.pcap
@@ -63,7 +63,7 @@ Every row states the oracle (what independent evidence decided it), not just the
 | 13 | **Step 3 — no backups of sensitive data** | **Verified** | manifest + `res/xml/data_extraction_rules.xml`, artifact checks | `allowBackup=false`, `fullBackupContent=false`, and explicit cloud-backup **and** device-transfer exclusions for all domains; tokens additionally AES-256-GCM encrypted with a non-exportable AndroidKeyStore key. |
 | 14 | **Step 4 — differential vs Electron (same URLs → identical SHA-256, same resume)** | **Verified** | `EVIDENCE/differential/run-20261026T145849Z` (on the **R8-minified, release-signed** verify APK) | **5/5 PASS**: s1 fresh sha match; s2 resume sha match with 206 + Range; s3 server-ignores-Range handled *better* than Electron (restart-from-zero, correct sha instead of publishing a truncated file); s4 flaky-cut recovers with a Range resume and sha match; s5 0-byte body fails as truncation, nothing published. |
 | 15 | **Step 4 — lifecycle: kill mid-download / Doze / network toggle / FGS stop** | **Verified** | `EVIDENCE/lifecycle/run-20261026T152202Z/lifecycle.json` (final build) | **4/4 PASS.** (a) force-stopped at 2.6 MB → relaunch issued `Range: bytes=2621440-` → 206 → final sha `7ea22e5b…41c56`; (b) `deviceidle force-idle` 20 s → completed, sha match; (c) wifi+data off 10 s → **initially FAILED**, root-caused to no retry on reconnect, fixed (`NetworkMonitor` + network-constrained `WorkManager` retry + 30 s read timeout) → now PASS with the log trace `connectivity restored — retrying 1 interrupted transfer(s)` → completed sha match; (d) `am stopservice` FGS → both queued transfers completed, both shas match. |
-| 16 | **Step 4 — release build (R8, signed) runs the suite** | **Verified** | `scripts/verify-release-artifacts.ps1` → `EVIDENCE/release/artifacts.json`; differential on `pro.tordownloader.android.verify` | Verify variant = same R8 + resource shrinking + release keystore; differential 5/5 on it. `apksigner verify` OK (v1/v2/v3), signer SHA-256 `3f9b918f…83ba`. |
+| 16 | **Step 4 — release build (R8, signed) runs the suite** | **Verified** | `scripts/verify-release-artifacts.ps1` → `EVIDENCE/release/artifacts.json`; differential on `com.ddownloader.android.verify` | Verify variant = same R8 + resource shrinking + release keystore; differential 5/5 on it. `apksigner verify` OK (v1/v2/v3), signer SHA-256 `3f9b918f…83ba`. |
 | 17 | **Step 4 — apksigner verify + 16 KB alignment** | **Verified** | same JSON | `apksigner verify --print-certs` PASS; `zipalign -c -P 16 -v 4` PASS; every packaged `.so` (`libandroidx.graphics.path.so`, `libdatastore_shared_counter.so` ×4 ABIs) has `PT_LOAD p_align = 0x4000`; arm64-v8a present. |
 | 18 | **Step 4 — lint** | **Verified** | `EVIDENCE/lint-results-release.xml` | **0 errors**, 50 warnings (42 = "newer dependency available", 2 AGP version, 2 StaticFieldLeak on the application-context DI holder, 2 unused resources). Three real `NewApi` errors found on the first run were fixed (`Duration.toSeconds` → millisecond math; API-27 window attributes removed). |
 | 19 | **Step 4 — detekt** | **Verified** | `EVIDENCE/static-analysis/detekt.xml` + `detekt-findings.txt` | **0 errors, 191 warnings** (116 MagicNumber — protocol/timeout constants; 29 MaxLineLength; 12 TooGenericExceptionCaught; 7 CyclomaticComplexMethod). No correctness-class findings. |
@@ -80,8 +80,8 @@ Every row states the oracle (what independent evidence decided it), not just the
 
 | suite | command | result |
 |---|---|---|
-| differential (5 scenarios) | `scripts/device-differential.ps1 -Package pro.tordownloader.android.verify` | **5/5 PASS** — `EVIDENCE/differential/run-20261026T152322Z` |
-| lifecycle (4 scenarios) | `scripts/device-lifecycle-test.ps1 -Package pro.tordownloader.android.verify` | **4/4 PASS** — `EVIDENCE/lifecycle/run-20261026T152202Z` |
+| differential (5 scenarios) | `scripts/device-differential.ps1 -Package com.ddownloader.android.verify` | **5/5 PASS** — `EVIDENCE/differential/run-20261026T152322Z` |
+| lifecycle (4 scenarios) | `scripts/device-lifecycle-test.ps1 -Package com.ddownloader.android.verify` | **4/4 PASS** — `EVIDENCE/lifecycle/run-20261026T152202Z` |
 | JVM unit tests | `:app:testDebugUnitTest` | **14/14 PASS** |
 | release artifacts | `scripts/verify-release-artifacts.ps1` | **11/11 PASS** |
 | lint / detekt / OSV | see rows 18–20 | 0 errors / 0 errors / 0 advisories |

@@ -84,7 +84,7 @@ def main():
         json.dump(data, f, indent=2, sort_keys=True)
 
     lines = [
-        "package pro.tordownloader.android.ui.icons",
+        "package com.ddownloader.android.ui.icons",
         "",
         "import androidx.compose.ui.graphics.Color",
         "import androidx.compose.ui.graphics.SolidColor",

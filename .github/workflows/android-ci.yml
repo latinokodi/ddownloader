@@ -1,0 +1,92 @@
+name: Android CI
+
+# Android CI — build, analyse and produce an installable APK on every push/tag.
+#
+# Signing: the release keystore is NEVER committed. The workflow signs with a debug
+# key so CI can still produce a runnable artifact; real releases are built and signed
+# locally following RELEASING.md (which is also what keeps the self-updater's
+# signature check meaningful).
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('gradle/libs.versions.toml', '**/*.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: gradle-
+
+      - name: Unit tests
+        run: ./gradlew :app:testDebugUnitTest --no-daemon --stacktrace
+
+      - name: Lint (fails on errors)
+        run: ./gradlew :app:lintRelease --no-daemon
+
+      - name: detekt
+        run: ./gradlew :app:detekt --no-daemon
+
+      - name: Assemble (release-equivalent verify build)
+        run: ./gradlew :app:assembleVerify :app:assembleDebug --no-daemon
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            app/build/reports/lint-results-release.html
+            app/build/reports/lint-results-release.xml
+            app/build/reports/detekt/
+            app/build/test-results/testDebugUnitTest/
+          if-no-files-found: ignore
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: apks
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/apk/verify/app-verify.apk
+          if-no-files-found: error
+
+      - name: Dependency vulnerability scan (OSV)
+        if: github.event_name != 'pull_request'
+        run: |
+          ./gradlew :app:dependencies --configuration releaseRuntimeClasspath --no-daemon > deps.txt
+          python3 scripts/dependency_vuln_scan.py
+
+      # The verify APK keeps the automation harness; the real, release-signed APK is
+      # produced locally with keystore.properties (see RELEASING.md) and attached to a
+      # GitHub Release, which is what the in-app updater consumes.
