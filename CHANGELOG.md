@@ -7,6 +7,15 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.0.6] - 2026-10-26
+
+### Changed
+- TorBox account linking now shows the **short link `https://tor.box/link`** instead of the
+  long `https://torbox.app/oauth/device?app=DDownloader` URL returned by the API. The shortlink
+  redirects to the same device page; the long URL is still logged (tag `DeviceAuth`) for
+  diagnostics but is no longer presented to the user.
+
+
 ## [1.0.5] - 2026-10-26
 
 ### Changed

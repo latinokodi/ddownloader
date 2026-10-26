@@ -281,4 +281,34 @@ INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
 INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
 INFO         | IPv4 server found: 192.168.0.244
 INFO         | Ignore IPv6 address: b8d1:c5bf:bb01:0:b0c9:c5bf:bb01:0
-INFO   
+INFO         | Ignore IPv6 address: b8d1:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: b8d1:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: 48da:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: 48da:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: 48da:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: d8e2:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: d8e2:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: d8e2:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | IPv4 server found: 192.168.0.244
+INFO         | Ignore IPv6 address: b8d1:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: b8d1:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: b8d1:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: 48da:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: 48da:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: 48da:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: d8e2:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: d8e2:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: d8e2:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Ignore IPv6 address: f0e8:c5bf:bb01:0:b0c9:c5bf:bb01:0
+INFO         | Wait for emulator (pid 34680) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+WARNING      | Not saving state: RAM not mapped as shared
+INFO         | Saving snapshot 'default_boot' took 1 ms
+WARNING      | Emulator client has not yet been configured.. Call configure me first!
+INFO         | removeAll
+WARNING      | Netsim Wifi dns:///localhost:61651 is gone due to Stream removed (CANCELLED)

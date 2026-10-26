@@ -3364,4 +3364,135 @@ DEBUG   | ColorBuffer 1509, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 1
 DEBUG   | ColorBuffer 1511, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
 DEBUG   | ColorBuffer 1512, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
 VERBOSE | Created RenderThread. Active RenderThreads: 26
-DEBUG 
+DEBUG   | Exited a RenderThread @0000024DE6F33630
+VERBOSE | Destroyed RenderThread. Active RenderThreads: 25
+DEBUG   | Exited a RenderThread @0000024DEF85C790
+VERBOSE | Destroyed RenderThread. Active RenderThreads: 24
+DEBUG   | Started new RenderThread (total 24) @0000024EB5B525B0
+DEBUG   | ColorBuffer 1515, 1x1, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 32, type: 0, props: 15 / 1]
+VERBOSE | Created RenderThread. Active RenderThreads: 25
+DEBUG   | Started new RenderThread (total 25) @0000024EB5B526C0
+DEBUG   | ColorBuffer 1516, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1518, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1519, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | Waiting for exit signal RenderThread @0000024EB5B525B0
+DEBUG   | Waiting for exit signal RenderThread @0000024EB5B526C0
+DEBUG   | ColorBuffer 1520, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1522, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1523, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1524, 864x1920, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 6635536, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1525, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1527, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1528, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+VERBOSE | Created RenderThread. Active RenderThreads: 26
+DEBUG   | Exited a RenderThread @0000024EB5B525B0
+VERBOSE | Destroyed RenderThread. Active RenderThreads: 25
+DEBUG   | Exited a RenderThread @0000024EB5B526C0
+VERBOSE | Destroyed RenderThread. Active RenderThreads: 24
+DEBUG   | Started new RenderThread (total 24) @0000024EB5B53050
+DEBUG   | ColorBuffer 1531, 1x1, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 32, type: 0, props: 15 / 1]
+VERBOSE | Created RenderThread. Active RenderThreads: 25
+DEBUG   | Started new RenderThread (total 25) @0000024E8EB4C5F0
+DEBUG   | ColorBuffer 1532, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1534, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | ColorBuffer 1535, 1080x2400, VK_FORMAT_R8G8B8A8_UNORM, Memory [size: 10368016, type: 0, props: 15 / 1]
+DEBUG   | Emulator killed by console kill command.
+
+INFO         | Wait for emulator (pid 32144) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+
+WARNING      | Not saving state: RAM not mapped as shared
+INFO         | Saving snapshot 'default_boot' took 3 ms
+DEBUG   | Error reading from client fd: error
+DEBUG   | Done with QEMU main loop
+DEBUG   | Uninitializing VirtualSceneManager
+INFO         | removeAll
+DEBUG   | Waiting for exit signal RenderThread @0000024B4B613850
+DEBUG   | Waiting for exit signal RenderThread @0000024B4B613DA0
+DEBUG   | Waiting for exit signal RenderThread @0000024B4B096DD0
+DEBUG   | Waiting for exit signal RenderThread @0000024B4B0939C0
+DEBUG   | Waiting for exit signal RenderThread @0000024B4B096000
+DEBUG   | Waiting for exit signal RenderThread @0000024B59FC83F0
+DEBUG   | Waiting for exit signal RenderThread @0000024B59FC81D0
+DEBUG   | Waiting for exit signal RenderThread @0000024B4C65DC00
+DEBUG   | Waiting for exit signal RenderThread @0000024B583525D0
+DEBUG   | Waiting for exit signal RenderThread @0000024B4B090170
+DEBUG   | Waiting for exit signal RenderThread @0000024B5E9DF5E0
+DEBUG   | Waiting for exit signal RenderThread @0000024B5E296990
+DEBUG   | Waiting for exit signal RenderThread @0000024B5EE00E40
+DEBUG   | Waiting for exit signal RenderThread @0000024B59FC82E0
+DEBUG   | Waiting for exit signal RenderThread @0000024C8FD3D840
+DEBUG   | Waiting for exit signal RenderThread @0000024C94AC11B0
+DEBUG   | Waiting for exit signal RenderThread @0000024B5EE01170
+DEBUG   | Waiting for exit signal RenderThread @0000024EB5B53050
+DEBUG   | Waiting for exit signal RenderThread @0000024E8EB4C5F0
+DEBUG   | Waiting for exit signal RenderThread @0000024B56FA3460
+DEBUG   | Waiting for exit signal RenderThread @0000024B5E296AA0
+DEBUG   | Waiting for exit signal RenderThread @0000024CE41B9100
+DEBUG   | Waiting for exit signal RenderThread @0000024B5F61A7F0
+DEBUG   | Waiting for exit signal RenderThread @0000024C8FD3DA60
+DEBUG   | Exited a RenderThread @0000024B4B613850
+DEBUG   | Waiting for exit signal RenderThread @0000024D3F6669C0
+DEBUG   | Exited a RenderThread @0000024B4B613DA0
+DEBUG   | Exited a RenderThread @0000024B4B096DD0
+DEBUG   | Exited a RenderThread @0000024B4B0939C0
+DEBUG   | Exited a RenderThread @0000024B4B096000
+DEBUG   | Exited a RenderThread @0000024B4B090170
+DEBUG   | Exited a RenderThread @0000024B59FC83F0
+DEBUG   | Exited a RenderThread @0000024B59FC81D0
+DEBUG   | Exited a RenderThread @0000024B583525D0
+DEBUG   | Exited a RenderThread @0000024B5E296990
+DEBUG   | Exited a RenderThread @0000024B5E296AA0
+DEBUG   | Exited a RenderThread @0000024B5E9DF5E0
+DEBUG   | Exited a RenderThread @0000024B5EE00E40
+DEBUG   | Exited a RenderThread @0000024B5EE01170
+DEBUG   | Exited a RenderThread @0000024B59FC82E0
+DEBUG   | Exited a RenderThread @0000024C8FD3D840
+DEBUG   | Exited a RenderThread @0000024C8FD3DA60
+DEBUG   | Exited a RenderThread @0000024B4C65DC00
+DEBUG   | Exited a RenderThread @0000024B5F61A7F0
+DEBUG   | Exited a RenderThread @0000024C94AC11B0
+DEBUG   | Exited a RenderThread @0000024B56FA3460
+DEBUG   | Exited a RenderThread @0000024D3F6669C0
+DEBUG   | Exited a RenderThread @0000024CE41B9100
+DEBUG   | Exited a RenderThread @0000024EB5B53050
+DEBUG   | Exited a RenderThread @0000024E8EB4C5F0
+DEBUG   | No client connected yet.
+DEBUG   | User configuration saved to C:\Users\ferna\.android\avd\..\avd\dd35.avd\emulator-user.ini
+DEBUG   | sending STOP to modem simulator host server
+DEBUG   | received exit request from parent process
+WARNING      | Netsim Wifi dns:///localhost:61651 is gone due to Stream removed (CANCELLED)
+DEBUG   | requested to exit now
+DEBUG   | waiting for monitor thread to join
+INFO         | emuDirName: 'C:\Android\Sdk\emulator'
+INFO         | try dir C:\Android\Sdk\emulator
+INFO         | Trying emulator path 'C:\Android\Sdk\emulator\qemu\windows-x86_64\qemu-system-x86_64-headless.exe'
+INFO         | Found target-specific 64-bit emulator binary: C:\Android\Sdk\emulator\qemu\windows-x86_64\qemu-system-x86_64-headless.exe
+INFO         | Adding library search path: 'C:\Android\Sdk\emulator\lib64'
+INFO         | Adding library search path: 'C:\Android\Sdk\emulator\lib64\gles_swiftshader'
+INFO         | Adding library search path: 'C:\Android\Sdk\emulator\lib64\vulkan'
+INFO         | Quoted param: [C:\Android\Sdk\emulator\qemu\windows-x86_64\qemu-system-x86_64-headless.exe]
+INFO         | Quoted param: [-avd]
+INFO         | Quoted param: [dd35]
+INFO         | Quoted param: [-no-window]
+INFO         | Quoted param: [-no-audio]
+INFO         | Quoted param: [-no-boot-anim]
+INFO         | Quoted param: [-no-snapshot]
+INFO         | Quoted param: [-gpu]
+INFO         | Quoted param: [swiftshader_indirect]
+INFO         | Quoted param: [-accel]
+INFO         | Quoted param: [on]
+INFO         | Quoted param: [-verbose]
+DEBUG   | emulator: Running :C:\Android\Sdk\emulator\qemu\windows-x86_64\qemu-system-x86_64-headless.exe
+DEBUG   | qemu backend: argv[00] = "C:\Android\Sdk\emulator\qemu\windows-x86_64\qemu-system-x86_64-headless.exe"
+DEBUG   | qemu backend: argv[01] = "-avd"
+DEBUG   | qemu backend: argv[02] = "dd35"
+DEBUG   | qemu backend: argv[03] = "-no-window"
+DEBUG   | qemu backend: argv[04] = "-no-audio"
+DEBUG   | qemu backend: argv[05] = "-no-boot-anim"
+DEBUG   | qemu backend: argv[06] = "-no-snapshot"
+DEBUG   | qemu backend: argv[07] = "-gpu"
+DEBUG   | qemu backend: argv[08] = "swiftshader_indirect"
+DEBUG   | qemu backend: argv[09] = "-accel"
+DEBUG   | qemu backend: argv[10] = "on"
+DEBUG   | qemu backend: argv[11] = "-verbose"
+DEBUG   | Concatenated backend parameters:  C:\Android\Sdk\emulator\qemu\windows-x86_64\qemu-system-x86_64-headless.exe -avd dd35 -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -accel on -verbose

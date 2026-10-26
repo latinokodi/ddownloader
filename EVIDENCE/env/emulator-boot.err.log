@@ -66,3 +66,4 @@ netsim I 10-26 14:03:51.421 netsimd.rs:386 - Args {
         wifi_mode: None,
     },
 }
+pc_memory_init: above 4g size: 40000000

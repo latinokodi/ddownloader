@@ -6,8 +6,9 @@ Accounts are authorized with a **link and a code**, never with a pasted API toke
 
 1. Settings → Debrid accounts → **Link** on the TorBox row.
 2. The app calls `GET https://api.torbox.app/v1/api/user/auth/device/start?app=DDownloader`
-   and shows the 6-digit `code` plus `https://torbox.app/oauth/device?app=DDownloader`.
-3. Open the link, type the code, approve.
+   and shows the 6-digit `code` plus the short link `https://tor.box/link`.
+3. Open the short link (`https://tor.box/link` -> `torbox.app/oauth/device`), type the code, approve.
+   The API also returns a `verification_url` with `?app=`; the app logs it but shows the short link.
 4. The dialog polls `POST /v1/api/user/auth/device/token { device_code }`; on success the
    issued token is encrypted with the Android Keystore key and stored. It is never shown.
 

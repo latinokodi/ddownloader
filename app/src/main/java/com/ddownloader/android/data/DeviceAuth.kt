@@ -87,6 +87,7 @@ class DeviceAuth(private val settings: SettingsRepository) {
             error("TorBox did not issue a code (HTTP ${res.code})")
         }
         val d = o["data"]?.jsonObject ?: error("unexpected TorBox response")
+        AppLog.d(TAG, "torbox verification_url (not shown): ${d.str("verification_url")}")
         Prompt(
             provider = Provider.TORBOX,
             deviceCode = d.str("device_code") ?: error("no device_code"),
@@ -94,7 +95,9 @@ class DeviceAuth(private val settings: SettingsRepository) {
             // The API hands back the page that accepts the code, e.g.
             // https://torbox.app/oauth/device?app=DDownloader (the app name prefills the page).
             // tor.box/link is the same page behind a shortlink, used only as a fallback.
-            verificationUrl = d.str("verification_url")?.takeIf { it.isNotBlank() } ?: TORBOX_SHORTLINK,
+            // Owner preference: present the SHORT link; tor.box/link redirects to the same
+            // device page. The long URL from the API is only logged (see above).
+            verificationUrl = TORBOX_SHORTLINK,
             expiresInSeconds = d.str("expires_in")?.toIntOrNull() ?: 600,
             intervalSeconds = d.str("interval")?.toIntOrNull()?.coerceIn(2, 30) ?: 5,
         )
