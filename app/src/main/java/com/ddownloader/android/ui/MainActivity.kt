@@ -171,12 +171,26 @@ private fun AppRootContent(
     settings: com.ddownloader.android.data.SettingsRepository.Settings,
 ) {
     if (!settings.onboardingCompleted) {
+        // The assistant needs the same snackbar plumbing as the main UI: without it every
+        // toast raised during setup (bad TMDB key, link errors, "resuming N downloads")
+        // was silently dropped and buttons looked dead.
+        val setupSnackbar = remember { SnackbarHostState() }
+        LaunchedEffect(vm.message) {
+            vm.message?.let {
+                setupSnackbar.showSnackbar(it)
+                vm.consumeMessage()
+            }
+        }
         TdBackground {
-            // Composed here as well: a new release should be announced even while the
-            // assistant is still on screen.
-            UpdateDialog(vm)
-            LinkAccountDialog(vm)
-            OnboardingScreen(vm)
+            Box(Modifier.fillMaxSize()) {
+                UpdateDialog(vm)
+                LinkAccountDialog(vm)
+                OnboardingScreen(vm)
+                SnackbarHost(
+                    hostState = setupSnackbar,
+                    modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 84.dp),
+                )
+            }
         }
         return
     }

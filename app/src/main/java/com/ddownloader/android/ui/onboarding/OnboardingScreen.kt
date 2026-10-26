@@ -314,31 +314,55 @@ private fun ProviderLinkRow(
 
 @Composable
 private fun TmdbPage(vm: AppViewModel, tmdb: String, onTmdb: (String) -> Unit) {
+    val t = LocalStrings.current
+    val tmdbState by vm.tmdbKeyState.collectAsStateWithLifecycle()
     Column(Modifier.fillMaxWidth().padding(top = 20.dp)) {
         PageHeader(
-            "Optional:\nTMDB key",
-            "A free TMDB API key unlocks Discover and title search. The app asks TMDB for " +
-                "metadata only; streams come from the embedded Comet add-on.",
+            t.tmdbTitle,
+            t.tmdbBody,
         )
         GlassCard {
-            SectionLabel("Metadata")
+            SectionLabel(t.metadataLabel)
             Spacer(Modifier.height(8.dp))
             TdTextField(
                 value = tmdb,
-                onValueChange = onTmdb,
-                label = "TMDB API key",
+                onValueChange = {
+                    onTmdb(it)
+                    vm.resetTmdbState()
+                },
+                label = t.tmdbLabel,
                 placeholder = "themoviedb.org \u2192 Settings \u2192 API Key",
                 secret = true,
             )
             Spacer(Modifier.height(10.dp))
-            GhostButton("Validate & save", icon = AppIcons.Key) { vm.saveTmdbKey(tmdb.trim()) }
-            Spacer(Modifier.height(8.dp))
-            Text(
-                "You can add this later in Settings \u2014 direct links in the Search tab work without it.",
-                style = MaterialTheme.typography.bodySmall,
-                color = TdColor.TextLow,
-            )
+            GhostButton(
+                if (tmdbState is AppViewModel.TmdbUi.Checking) t.checking else t.validateSave,
+                icon = AppIcons.Key,
+                enabled = tmdbState !is AppViewModel.TmdbUi.Checking,
+            ) { vm.saveTmdbKey(tmdb.trim()) }
+            Spacer(Modifier.height(10.dp))
+            when (val st = tmdbState) {
+                is AppViewModel.TmdbUi.Checking -> StatusLine(t.checking, TdColor.Cyan)
+                is AppViewModel.TmdbUi.Valid -> StatusLine(t.tmdbValid, TdColor.Mint)
+                is AppViewModel.TmdbUi.Invalid -> StatusLine(st.reason, TdColor.Rose)
+                AppViewModel.TmdbUi.Idle -> StatusLine(t.tmdbRequiredHint, TdColor.TextLow)
+            }
         }
+    }
+}
+
+/** One-line status under an action. */
+@Composable
+private fun StatusLine(text: String, color: androidx.compose.ui.graphics.Color) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            Modifier
+                .size(8.dp)
+                .clip(CircleShape)
+                .background(color),
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(text, style = MaterialTheme.typography.bodySmall, color = color)
     }
 }
 

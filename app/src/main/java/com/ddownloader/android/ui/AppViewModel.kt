@@ -528,20 +528,40 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /** Observable result of "Validate & save" so the button has visible feedback. */
+    sealed interface TmdbUi {
+        data object Idle : TmdbUi
+        data object Checking : TmdbUi
+        data object Valid : TmdbUi
+        data class Invalid(val reason: String) : TmdbUi
+    }
+
+    private val _tmdbKeyState = MutableStateFlow<TmdbUi>(TmdbUi.Idle)
+    val tmdbKeyState: StateFlow<TmdbUi> = _tmdbKeyState.asStateFlow()
+
     fun saveTmdbKey(key: String) {
         viewModelScope.launch {
             if (key.isBlank()) {
                 locator.settings.setTmdbApiKey("")
+                _tmdbKeyState.value = TmdbUi.Idle
                 toast("TMDB key cleared")
                 return@launch
             }
-            if (locator.tmdb.validate(key)) {
+            _tmdbKeyState.value = TmdbUi.Checking
+            val valid = locator.tmdb.validate(key)
+            if (valid) {
                 locator.settings.setTmdbApiKey(key)
+                _tmdbKeyState.value = TmdbUi.Valid
                 toast("TMDB key validated and saved")
             } else {
+                _tmdbKeyState.value = TmdbUi.Invalid("TMDB did not accept that key (check it at themoviedb.org → Settings → API)")
                 toast("TMDB rejected that key")
             }
         }
+    }
+
+    fun resetTmdbState() {
+        _tmdbKeyState.value = TmdbUi.Idle
     }
 
     fun setOutputTree(uri: String) {

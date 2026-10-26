@@ -118,6 +118,10 @@ data class Strings(
     val requiredDebrid: String,
     val requiredTmdb: String,
     val required: String,
+    val metadataLabel: String,
+    val validateSave: String,
+    val tmdbValid: String,
+    val tmdbRequiredHint: String,
 )
 
 private val EN = Strings(
@@ -157,9 +161,9 @@ private val EN = Strings(
         "type the code. One account is enough; both works too. Nothing to copy or paste.",
     debridNote = "The code screen finishes on its own once you authorize. Credentials stay " +
         "encrypted on this device and are never shown.",
-    tmdbTitle = "Optional:\nTMDB key", tmdbBody = "A free TMDB API key unlocks Discover and title search. " +
+    tmdbTitle = "Required:\nTMDB key", tmdbBody = "A free TMDB API key unlocks Discover and title search. " +
         "The app asks TMDB for metadata only; streams come from the embedded Comet add-on.",
-    tmdbNote = "You can add this later in Settings — direct links in the Search tab work without it.",
+    tmdbNote = "Required for search and Discover. You can replace it later in Settings.",
     folderTitle = "Where should\nfiles go?", folderBody = "Pick a folder once and Android remembers the " +
         "permission. Without a choice, files land in this app's own Download folder.",
     folderReady = "Ready. You can change everything later in Settings.",
@@ -178,6 +182,10 @@ private val EN = Strings(
     requiredDebrid = "Required: link at least one debrid account to continue.",
     requiredTmdb = "Required: a valid TMDB API key is needed to continue.",
     required = "REQUIRED",
+    metadataLabel = "TMDB API key",
+    validateSave = "Validate & save",
+    tmdbValid = "Key validated — saved",
+    tmdbRequiredHint = "Required: this key unlocks search and Discover.",
 )
 
 private val ES = Strings(
@@ -217,9 +225,9 @@ private val ES = Strings(
         "escribe el código. Con una cuenta basta; también puedes vincular las dos. Nada que copiar ni pegar.",
     debridNote = "La pantalla del código termina sola cuando autorizas. Las credenciales quedan cifradas " +
         "en este dispositivo y nunca se muestran.",
-    tmdbTitle = "Opcional:\nclave TMDB", tmdbBody = "Una clave gratuita de TMDB activa Descubrir y la búsqueda " +
+    tmdbTitle = "Obligatorio:\nclave TMDB", tmdbBody = "Una clave gratuita de TMDB activa Descubrir y la búsqueda " +
         "de títulos. La app solo pide metadatos; los streams vienen del complemento Comet incluido.",
-    tmdbNote = "Puedes añadirla luego en Ajustes: los enlaces directos de la pestaña Buscar funcionan sin ella.",
+    tmdbNote = "Obligatoria para la búsqueda y Descubrir. Puedes cambiarla luego en Ajustes.",
     folderTitle = "¿Dónde van\nlos archivos?", folderBody = "Elige una carpeta una vez y Android recordará el " +
         "permiso. Sin elección, los archivos van a la carpeta Download de la propia app.",
     folderReady = "Listo. Puedes cambiar todo más tarde en Ajustes.",
@@ -238,6 +246,10 @@ private val ES = Strings(
     requiredDebrid = "Obligatorio: vincula al menos una cuenta debrid para continuar.",
     requiredTmdb = "Obligatorio: se necesita una clave TMDB válida para continuar.",
     required = "OBLIGATORIO",
+    metadataLabel = "Clave de API de TMDB",
+    validateSave = "Validar y guardar",
+    tmdbValid = "Clave validada — guardada",
+    tmdbRequiredHint = "Obligatorio: esta clave activa la búsqueda y Descubrir.",
 )
 
 val StringsEN: Strings = EN

@@ -7,6 +7,24 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.0.8] - 2026-10-26
+
+### Fixed
+- **TorBox linking works.** The device-token endpoint answers HTTP 200 while the user has not
+  authorized yet and reports the state in the body (`success:false`, `error:DEVICE_CODE_NOT_USED`
+  / `ITEM_NOT_FOUND` / `DEVICE_CODE_USED`). The poller treated any 200 as authorized and then
+  failed with "authorized but returned no token". It now branches on the body, and extracts the
+  credential from any of the shapes the API may use (top level, `data`, nested, `data` as a
+  string, arrays, single opaque string).
+- **"Validate & save" for the TMDB key actually validates.** The check ran blocking network I/O
+  inside a main-thread coroutine, threw `NetworkOnMainThreadException`, and the surrounding
+  `runCatching` reported every key as invalid. It now runs on `Dispatchers.IO`, and the result is
+  shown inline (checking / validated / rejected with reason) instead of only as a toast.
+- **The setup assistant had no snackbar host**, so every message raised during setup was
+  silently dropped and controls looked dead. It now hosts a snackbar like the main UI.
+- TMDB step copy said "Optional"; it is required, and now says so.
+
+
 ## [1.0.6] - 2026-10-26
 
 ### Changed

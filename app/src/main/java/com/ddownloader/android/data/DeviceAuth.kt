@@ -2,6 +2,9 @@ package com.ddownloader.android.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import com.ddownloader.android.api.Web
 import com.ddownloader.android.api.str
@@ -110,26 +113,89 @@ class DeviceAuth(private val settings: SettingsRepository) {
         } catch (t: Throwable) {
             return Outcome.Failed(t.message ?: "network error")
         }
-        return when {
-            res.code == 200 -> {
-                val o = runCatching { Web.json.parseToJsonElement(res.body).jsonObject }.getOrNull()
-                val data = o?.get("data")?.jsonObject
-                // The credential may be returned as `token` or `api_key` depending on the app.
-                val token = data?.str("token") ?: data?.str("api_key")
-                if (token.isNullOrBlank()) {
-                    Outcome.Failed("TorBox authorized but returned no token")
-                } else {
-                    AppLog.i(TAG, "torbox device authorized (token received, ${token.length} chars)")
-                    Outcome.Linked(Provider.TORBOX, "TorBox account", token)
-                }
+        val root = runCatching { Web.json.parseToJsonElement(res.body).jsonObject }.getOrNull()
+        val success = root?.str("success")?.toBooleanStrictOrNull() ?: (res.code in 200..299)
+        val errorCode = root?.str("error").orEmpty()
+        // The API answers 200 even while the user has not authorized yet, and describes
+        // the state in `error`: DEVICE_CODE_NOT_USED = keep polling, ITEM_NOT_FOUND =
+        // expired, DEVICE_CODE_USED = already collected. Treating any 200 as success was
+        // the bug that produced "authorized but returned no token".
+        val dataKeys = (root?.get("data") as? kotlinx.serialization.json.JsonObject)?.keys?.joinToString(",")
+        AppLog.d(TAG, "torbox device token: http=${res.code} success=$success error=${errorCode.blank() } dataKeys=$dataKeys")
+
+        if (res.code in 200..299 && success) {
+            val token = extractToken(root)
+            if (!token.isNullOrBlank()) {
+                AppLog.i(TAG, "torbox device authorized (token ${token.length} chars)")
+                return Outcome.Linked(Provider.TORBOX, "TorBox account", token)
             }
-            res.code == 400 || res.code == 403 || res.code == 404 || res.code == 428 -> {
-                // 404/400 while pending is what the API returns before the code is entered.
-                Outcome.Pending
-            }
-            else -> Outcome.Failed("HTTP ${res.code}")
+            AppLog.w(TAG, "torbox authorized but no token found; data keys=$dataKeys body=${res.body.take(200)}")
+            return Outcome.Failed(
+                "TorBox authorized the device but the response had no token " +
+                    "(keys: ${dataKeys ?: "none"}). Send the Logs screen output and this gets fixed.",
+            )
+        }
+
+        return when (errorCode.uppercase()) {
+            "DEVICE_CODE_NOT_USED" -> Outcome.Pending
+            "ITEM_NOT_FOUND" -> Outcome.Failed("The code expired before it was authorized — start again.")
+            "DEVICE_CODE_USED" -> Outcome.Failed("That code was already collected — start again to get a new one.")
+            "" -> if (res.code in 400..499) Outcome.Failed("TorBox returned HTTP ${res.code}") else Outcome.Pending
+            else -> Outcome.Failed("TorBox returned $errorCode")
         }
     }
+
+    /**
+     * Finds the credential wherever the provider put it. The API documents no 200 schema,
+     * so this walks the response instead of assuming one shape: known key names first
+     * (at the top level and inside `data`), then any token-shaped string, then a recursive
+     * search for token-ish keys. `data` may also be the token itself as a plain string.
+     */
+    private fun extractToken(root: JsonObject?): String? {
+        if (root == null) return null
+        val tokenKeys = listOf("token", "api_key", "apikey", "access_token", "accessToken", "session_token")
+
+        fun primitive(o: JsonObject?, key: String): String? =
+            (o?.get(key) as? JsonPrimitive)?.contentOrNull?.trim()?.takeIf { it.isNotEmpty() }
+
+        // 1) top level
+        tokenKeys.forEach { k -> primitive(root, k)?.let { return it } }
+        // 2) direct child of data (object, or data itself as a string)
+        when (val data = root["data"]) {
+            is JsonPrimitive -> data.contentOrNull?.trim()
+                ?.takeIf { it.length >= 16 && it.none(Char::isWhitespace) }?.let { return it }
+            is JsonObject -> {
+                tokenKeys.forEach { k -> primitive(data, k)?.let { return it } }
+                // 3) one level deeper: data.<something>.token / .api_key
+                data.values.forEach { v ->
+                    (v as? JsonObject)?.let { inner ->
+                        tokenKeys.forEach { k -> primitive(inner, k)?.let { return it } }
+                    }
+                }
+                // 4) recursive search for a token-ish key anywhere under data
+                fun walk(o: JsonObject, depth: Int): String? {
+                    if (depth > 3) return null
+                    tokenKeys.forEach { k -> primitive(o, k)?.let { return it } }
+                    o.values.forEach { v -> (v as? JsonObject)?.let { r -> walk(r, depth + 1)?.let { return it } } }
+                    return null
+                }
+                walk(data, 0)?.let { return it }
+                // 5) last resort: the only long opaque string in data
+                val candidates = data.values.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+                    .filter { it.length in 24..512 && it.none(Char::isWhitespace) }
+                if (candidates.size == 1) return candidates.first()
+            }
+            is kotlinx.serialization.json.JsonArray -> {
+                data.forEach { el ->
+                    (el as? JsonPrimitive)?.contentOrNull?.takeIf { it.length >= 16 }?.let { return it }
+                }
+            }
+            else -> Unit
+        }
+        return null
+    }
+
+    private fun String.blank(): String = if (isEmpty()) "-" else this
 
     // ── Real-Debrid ────────────────────────────────────────────────────────
     private fun startRealDebrid(): Result<Prompt> = runCatching {

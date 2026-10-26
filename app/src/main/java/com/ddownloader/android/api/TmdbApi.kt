@@ -3,6 +3,8 @@ package com.ddownloader.android.api
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import com.ddownloader.android.core.AppLog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.ddownloader.android.data.SettingsRepository
 
 /**
@@ -36,10 +38,20 @@ class TmdbApi(private val settings: SettingsRepository) {
         }.onFailure { AppLog.w(TAG, "$path failed: ${it.message}") }.getOrNull()
     }
 
-    fun validate(key: String): Boolean = runCatching {
-        val res = Web.get("https://api.themoviedb.org/3/configuration?api_key=$key")
-        res.code in 200..299 && res.body.contains("images")
-    }.getOrDefault(false)
+    /**
+     * Validates a candidate key against TMDB.
+     *
+     * Suspend + Dispatchers.IO on purpose: this used to be a blocking call made from a
+     * viewModelScope coroutine (Main), so it threw NetworkOnMainThreadException, and the
+     * surrounding runCatching reported every key as invalid.
+     */
+    suspend fun validate(key: String): Boolean = withContext(Dispatchers.IO) {
+        runCatching {
+            val res = Web.get("https://api.themoviedb.org/3/configuration?api_key=$key")
+            AppLog.i(TAG, "tmdb key validation: HTTP ${res.code}")
+            res.code in 200..299 && res.body.contains("images")
+        }.getOrDefault(false)
+    }
 
     suspend fun search(query: String, kind: String = "multi"): List<Item> {
         val o = get("/search/$kind", "&query=${java.net.URLEncoder.encode(query, "UTF-8")}&include_adult=false")
