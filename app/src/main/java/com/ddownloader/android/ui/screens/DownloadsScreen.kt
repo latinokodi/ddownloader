@@ -57,7 +57,7 @@ fun DownloadsScreen(vm: AppViewModel) {
             EmptyState(
                 icon = AppIcons.CloudDownload,
                 title = "No transfers yet",
-                body = "Queue a direct link from Search, or link a debrid account to pull torrents through TorBoxBox or Real-Debrid.",
+                body = "Queue a direct link from Search, or link a debrid account to pull torrents through TorBox or Real-Debrid.",
             )
         }
         return

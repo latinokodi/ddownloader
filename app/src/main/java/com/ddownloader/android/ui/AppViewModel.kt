@@ -301,6 +301,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     if (items.isEmpty()) searchError = "No results for \"$q\"."
                 }
             } catch (t: Throwable) {
+                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
                 searchError = t.message ?: "Search failed"
             } finally {
                 searching = false
@@ -326,6 +327,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     shelvesError = "TMDB returned no titles. Check your API key in Settings."
                 }
             } catch (t: Throwable) {
+                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
                 shelvesError = t.message ?: "Discover failed"
             } finally {
                 shelvesLoading = false
@@ -342,6 +344,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 discoverItems = items
                 if (items.isEmpty()) discoverError = "TMDB returned no titles (check the API key)."
             } catch (t: Throwable) {
+                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
                 discoverError = t.message ?: "Discover failed"
             } finally {
                 discoverLoading = false
@@ -387,6 +390,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Queue a Comet stream. Debrid is required to turn an infoHash into bytes. */
     fun downloadStream(stream: CometApi.Stream) {
+        AppLog.i("Pipeline", "downloadStream tapped: name=${stream.name} size=${stream.videoSize}")
         val magnet = stream.magnet()
         if (magnet == null) {
             toast("Stream has no infoHash — cannot convert to a magnet")
@@ -396,6 +400,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             toast("Link a TorBox or Real-Debrid account to download torrents")
             return
         }
+        AppLog.i("Pipeline", "magnet built (${magnet.length} chars) — handing to the debrid flow")
         toast("Magnet resolved — add it through your debrid account")
         addMagnet(magnet, estimatedSize = stream.videoSize ?: 0L, name = stream.displayName())
         closeStreamSheet()
@@ -435,6 +440,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun addMagnet(magnet: String, estimatedSize: Long = 0L, name: String = "magnet") {
+        AppLog.i("Pipeline", "addMagnet: start (hasDebrid=${settings.value.hasAnyDebrid}, torbox=${settings.value.hasTorBox})")
         if (!settings.value.hasAnyDebrid) {
             toast("No debrid account linked")
             return
@@ -444,6 +450,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             try {
                 if (settings.value.hasTorBox) {
                     val id = locator.torbox.addMagnet(magnet).getOrThrow()
+                    AppLog.i("Pipeline", "torbox createtorrent accepted, id=$id")
                     // TorBox needs a few seconds to fetch metadata. Polling beats giving up:
                     // the old single-shot lookup told the user "file list not ready yet".
                     var files: List<TorBoxApi.TorrentFile> = emptyList()
@@ -454,11 +461,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                         if (t != null && !t.files.isNullOrEmpty()) {
                             files = t.files
                             torrentId = t.id
+                            AppLog.i("Pipeline", "torbox files ready after ${attempt * 3}s: ${files.size} file(s)")
                             break
                         }
                         delay(3000)
                     }
                     if (files.isEmpty()) {
+                        AppLog.w("Pipeline", "torbox never listed files for id=$id")
                         toast("TorBox accepted the magnet but never listed its files (id $id)")
                         return@launch
                     }
@@ -482,6 +491,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                             )
                         )
                     }
+                    AppLog.i("Pipeline", "enqueued ${videos.size} file(s) from torrent $torrentId")
                     DownloadService.start(getApplication())
                     toast(
                         if (videos.size == 1) "Queued 1 file from TorBox"
@@ -503,6 +513,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     toast("Queued from Real-Debrid")
                 }
             } catch (t: Throwable) {
+                AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
                 toast("Could not add magnet: ${t.message}")
             } finally {
                 busy = false

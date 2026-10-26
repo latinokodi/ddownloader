@@ -107,14 +107,30 @@ class TorBoxApi(private val settings: SettingsRepository) {
 
     /** GET /torrents/requestdl → signed direct URL. */
     suspend fun requestDownloadLink(torrentId: String, fileId: String): Result<String> = runCatching {
+        // TorBox validates these as typed query params; surface the API's own 422 detail
+        // instead of a bare status code, otherwise a wrong id type is undebuggable.
         val res = Web.get(
             api(
                 "/torrents/requestdl",
-                mapOf("torrent_id" to torrentId, "file_id" to fileId, "zip_link" to "false"),
+                // TorBox requires the API token as a *query parameter* here as well as the
+                // Authorization header; without it the endpoint answers 422
+                // {"loc":["query","token"],"msg":"Field required"}.
+                mapOf(
+                    "token" to token(),
+                    "torrent_id" to torrentId,
+                    "file_id" to fileId,
+                    "zip_link" to "false",
+                ),
             ),
             headers = auth(),
         )
-        if (res.code !in 200..299) error("HTTP ${res.code}")
+        if (res.code !in 200..299) {
+            AppLog.w(
+                "TorBox",
+                "requestdl failed: HTTP ${res.code} torrent_id=$torrentId file_id=$fileId body=${res.body.take(300)}",
+            )
+            error("HTTP ${res.code}: ${res.body.take(200)}")
+        }
         val root = Web.json.parseToJsonElement(res.body).jsonObject
         root["data"] as? kotlinx.serialization.json.JsonPrimitive
             ?: error("no url")

@@ -7,6 +7,23 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-10-26
+
+### Fixed
+- **TorBox downloads actually resolve and transfer.** Two real defects found by running a
+  magnet through the whole pipeline on a device:
+  1. `/torrents/requestdl` requires the API token as a **query parameter** as well as the
+     Authorization header; without it TorBox answers `422 {"loc":["query","token"]}`.
+  2. The CDN allowlist did not cover TorBox's regional CDN domains (`store-018.weur.tb-cdn.st`),
+     so a correctly resolved link was refused with "non-allowlisted host". The suffix list now
+     covers `tb-cdn.st`, `tb-cdn.com`, `torbox.dev` and the Real-Debrid CDN domains.
+- `requestdl` failures now log the API's own error body, so a 422 names the missing field.
+
+### Added
+- `Pipeline` log lines at each stage (magnet → createtorrent → file list → enqueue → transfer
+  completion), which is what made the two defects above findable.
+
+
 ## [1.1.0] - 2026-10-26
 
 ### Added

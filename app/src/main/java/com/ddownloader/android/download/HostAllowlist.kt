@@ -10,11 +10,18 @@ package com.ddownloader.android.download
  */
 object HostAllowlist {
 
+    /**
+     * TorBox hands out signed URLs on regional CDN hostnames such as
+     * `store-018.weur.tb-cdn.st`. The allowlist is a suffix list, so it has to cover the
+     * CDN *domains* the provider actually uses — keeping it too narrow makes every
+     * transfer fail with "Refusing to download from non-allowlisted host" (found by
+     * running a real download, not by reading the code).
+     */
     private val TORBOX = listOf(
         "dl.torbox.app", "cdn.torbox.app", "torbox.app", "media.torbox.app",
-        "tb-cdn.io", "tb-cdn.cx",
+        "tb-cdn.io", "tb-cdn.cx", "tb-cdn.st", "tb-cdn.com", "torbox.dev",
     )
-    private val REALDEBRID = listOf("real-debrid.com", "rd.nu")
+    private val REALDEBRID = listOf("real-debrid.com", "rd.nu", "rdb.so", "rd-cdn.com", "debrid.link")
 
     fun isAllowed(service: String, host: String?): Boolean {
         if (host.isNullOrBlank()) return false

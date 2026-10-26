@@ -44,3 +44,8 @@ Thumbs.db
 
 # Emulator AVDs kept on the same drive as the project, never committed.
 android-avd/
+
+# Downloaded media used as evidence stays outside the repo; hashes are recorded instead.
+*.mp4
+EVIDENCE/**/*.mp4
+
