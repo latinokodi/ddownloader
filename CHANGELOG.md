@@ -7,6 +7,14 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.3.3] - 2026-10-26
+
+### Fixed
+- The top bar rendered the literal `secureSession` instead of "SECURE SESSION": the English value
+  was accidentally set to the field name itself when the new keys were added. 1.3.2 shipped with
+  this typo; the English label is restored.
+
+
 ## [1.3.2] - 2026-10-26
 
 ### Changed — the whole UI now follows the language setting
