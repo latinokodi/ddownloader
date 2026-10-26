@@ -300,3 +300,42 @@ fun ValidationLine(text: String, color: androidx.compose.ui.graphics.Color, modi
         Text(text, style = MaterialTheme.typography.bodySmall, color = color)
     }
 }
+
+
+/**
+ * Quiet action that lives on a card header line ("Re-check", "Refresh").
+ *
+ * A full-size GhostButton on the same row as a 26 dp icon label made the header look unbalanced:
+ * the button carried its own border and 44 dp height, so it floated above the card copy instead of
+ * sitting on the header baseline. This is text + glyph only, sized to the header.
+ */
+@Composable
+fun CardAction(
+    text: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    onClick: () -> Unit,
+) {
+    val interaction = androidx.compose.runtime.remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+    androidx.compose.foundation.layout.Row(
+        androidx.compose.ui.Modifier
+            .pressEffect(interaction, pressedScale = 0.94f)
+            .clip(RoundedCornerShape(9.dp))
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(horizontal = 8.dp, vertical = 5.dp),
+        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+    ) {
+        androidx.compose.material3.Icon(
+            icon,
+            contentDescription = null,
+            tint = TdColor.TextLow,
+            modifier = androidx.compose.ui.Modifier.size(13.dp),
+        )
+        Text(
+            text,
+            style = MaterialTheme.typography.labelSmall,
+            color = TdColor.TextLow,
+            fontWeight = FontWeight.SemiBold,
+        )
+    }
+}

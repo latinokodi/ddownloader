@@ -40,6 +40,7 @@ import com.ddownloader.android.data.ServiceLocator
 import com.ddownloader.android.data.SettingsBackup
 import com.ddownloader.android.ui.AppViewModel
 import com.ddownloader.android.ui.components.DividerLine
+import com.ddownloader.android.ui.components.CardAction
 import com.ddownloader.android.ui.components.GhostButton
 import com.ddownloader.android.ui.components.AuroraCard
 import com.ddownloader.android.ui.components.MetricRow
@@ -141,10 +142,13 @@ fun SettingsScreen(vm: AppViewModel) {
         // ── Debrid accounts ────────────────────────────────────────────────
         item {
             AuroraCard {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     SettingsSection(AppIcons.Shield, t.accounts, TdColor.Violet)
                     Spacer(Modifier.weight(1f))
-                    GhostButton(t.recheck, icon = AppIcons.Refresh) { vm.checkAccounts() }
+                    CardAction(t.recheck, AppIcons.Refresh) { vm.checkAccounts() }
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(

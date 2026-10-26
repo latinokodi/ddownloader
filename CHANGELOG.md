@@ -7,6 +7,14 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.4.4] - 2026-10-26
+
+### Changed
+- **Card headers no longer misalign.** "Re-check" in Debrid accounts was a 44 dp bordered button on
+  the same line as a 26 dp icon label, so it floated above the copy and looked bolted on. It is now
+  a quiet `CardAction` (glyph + small label, no chrome) sized to the header, aligned to its baseline.
+
+
 ## [1.4.1] - 2026-10-26
 
 ### Fixed
