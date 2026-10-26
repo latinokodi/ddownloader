@@ -93,34 +93,30 @@ fun shimmerBrush(
 @Composable
 fun Modifier.aurora(intensity: Float = 1f, enabled: Boolean = true): Modifier {
     if (!enabled) return this.background(TdColor.Ink0)
-    val transition = rememberInfiniteTransition(label = "aurora")
+    // One slow, very low-contrast glow from the top-right. No rainbow: the previous three-colour
+    // aurora competed with the content and read as decoration rather than depth.
+    val transition = rememberInfiniteTransition(label = "ambient")
     val t by transition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(9000), RepeatMode.Reverse),
-        label = "aurora-phase",
+        animationSpec = infiniteRepeatable(tween(14000), RepeatMode.Reverse),
+        label = "ambient-phase",
     )
-    val a = (0.22f * intensity)
-    val brush = Brush.radialGradient(
+    val glow = Brush.radialGradient(
         colors = listOf(
-            TdColor.Violet.copy(alpha = a),
-            TdColor.Cyan.copy(alpha = a * 0.55f),
+            TdColor.Primary.copy(alpha = 0.10f * intensity),
+            TdColor.Primary.copy(alpha = 0.03f * intensity),
             Color.Transparent,
         ),
-        center = Offset(1200f - 500f * t, 120f + 260f * t),
-        radius = 1100f,
+        center = Offset(1350f + 120f * t, -180f + 90f * t),
+        radius = 1250f,
     )
-    val second = Brush.radialGradient(
-        colors = listOf(TdColor.Cyan.copy(alpha = a * 0.45f), Color.Transparent),
-        center = Offset(180f + 260f * t, 420f - 140f * t),
-        radius = 780f,
+    val base = Brush.verticalGradient(
+        colors = listOf(TdColor.Ink1, TdColor.Ink0),
     )
-    return this
-        .background(TdColor.Ink0)
-        .background(second)
-        .background(brush)
+    return this.background(base).background(glow)
 }
 
 /** Standard card radius used everywhere, so surfaces read as one system. */
-val CardRadius = 22.dp
-val PillRadius = 999.dp
+val CardRadius = 14.dp
+val PillRadius = 6.dp

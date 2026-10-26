@@ -7,6 +7,26 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-26
+
+### Changed — design system rebuilt ("Graphite")
+- **Palette**: neutral graphite surfaces (#0D1117 → #1F2732) with a single azure accent (#4C82F7) for
+  actions and live state, indigo for brand marks, and neutral signal colours. The violet→cyan
+  gradient that appeared on every surface is gone; the accent now means "you can act on this".
+- **Typography**: one face (Inter) for all UI text — the geometric display font and the shouted
+  gradient wordmark were the least professional elements. Mono (JetBrains Mono) is kept only for
+  labels and telemetry, where digits must not dance. Tighter scale: 34/28/22/19/18/15/13.5/12.
+- **Radii**: 22–24 dp everywhere → 8–16 dp. Cards are flat graphite with a hairline border and a
+  2 dp accent keyline instead of a gradient border.
+- **Buttons**: primary is 42 dp with a 10 dp radius and a solid ramp (white text stays AA at 5.1:1);
+  secondary/ghost is transparent with a hairline border, no fill; pills are 6 dp chips without
+  borders.
+- **Home**: the "DOWNLOAD ANYTHING" hero is replaced by a page header (title + one orientation
+  line), three flat shortcut cards with live counts, and a compact status strip.
+- **Backdrop**: the three-colour aurora became one very slow, low-contrast azure glow.
+- All features, screens, flows, translations and states are unchanged.
+
+
 ## [1.4.4] - 2026-10-26
 
 ### Changed

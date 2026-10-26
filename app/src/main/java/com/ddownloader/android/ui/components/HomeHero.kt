@@ -1,12 +1,11 @@
 package com.ddownloader.android.ui.components
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,36 +13,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.ddownloader.android.ui.i18n.LocalStrings
 import com.ddownloader.android.ui.icons.AppIcons
-import com.ddownloader.android.ui.theme.CardRadius
-import com.ddownloader.android.ui.theme.Motion
 import com.ddownloader.android.ui.theme.TdColor
 import com.ddownloader.android.ui.theme.pressEffect
 
 /**
- * The first thing you see. Deliberately loud: a two-line gradient wordmark, then the three things
- * a user does on a downloader (paste, browse, queue) as large tiles rather than buried cards.
+ * Page header for the Search tab.
  *
- * Everything animates in once (`riseIn`) and reacts to touch, so the screen has a pulse without
- * costing a frame budget.
+ * A tool's home screen should answer "what do I do here" in one line, not shout a slogan. So: the
+ * tab title, one sentence of orientation, and three flat shortcut cards with live counts. The
+ * wordmark lives in the top bar; repeating it here was the least professional part of the old
+ * design.
  */
 @Composable
 fun HomeHero(
@@ -56,162 +51,119 @@ fun HomeHero(
     onOpenDiscover: () -> Unit,
     onPaste: () -> Unit,
 ) {
-    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
+    val str = LocalStrings.current
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-        Spacer(Modifier.height(10.dp))
-
-        Spacer(Modifier.height(22.dp))
-
+        Spacer(Modifier.height(6.dp))
         Text(
-            str.heroLine1,
-            style = MaterialTheme.typography.displayMedium.copy(
-                brush = Brush.linearGradient(listOf(TdColor.TextHi, TdColor.TextHi.copy(alpha = 0.72f))),
-            ),
-            fontWeight = FontWeight.Black,
-            letterSpacing = (-1).sp,
+            str.search,
+            style = MaterialTheme.typography.headlineMedium,
+            color = TdColor.TextHi,
         )
-        Text(
-            str.heroLine2,
-            style = MaterialTheme.typography.displayMedium.copy(
-                brush = Brush.linearGradient(listOf(TdColor.Cyan, TdColor.Violet)),
-            ),
-            fontWeight = FontWeight.Black,
-            letterSpacing = (-1).sp,
-        )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(3.dp))
         Text(
             str.heroSub,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             color = TdColor.TextMid,
         )
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(14.dp))
 
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            ActionTile(
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Shortcut(
                 icon = AppIcons.CloudDownload,
                 label = str.tilePaste,
-                hint = str.tilePasteHint,
-                accent = TdColor.Cyan,
                 value = null,
                 modifier = Modifier.weight(1f),
                 onClick = onPaste,
             )
-            ActionTile(
+            Shortcut(
                 icon = AppIcons.Download,
                 label = str.tileTransfers,
-                hint = if (active > 0) "$active ${str.tileRunning}" else str.tileQueue,
-                accent = TdColor.Violet,
-                value = if (queued + active > 0) "${queued + active}" else null,
+                value = if (active + queued > 0) "${active + queued}" else null,
+                accent = if (active > 0) TdColor.Primary else TdColor.TextMid,
                 modifier = Modifier.weight(1f),
                 onClick = onOpenDownloads,
             )
-            ActionTile(
+            Shortcut(
                 icon = AppIcons.Explore,
                 label = str.discover,
-                hint = if (hasTmdb) str.tileDiscoverHint else str.needsTmdbShort,
-                accent = if (hasTmdb) TdColor.Mint else TdColor.Amber,
                 value = null,
                 modifier = Modifier.weight(1f),
                 onClick = onOpenDiscover,
             )
         }
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(10.dp))
 
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            MiniStat("$completed", str.statDone, TdColor.Mint)
-            MiniStat(if (hasDebrid) str.statLinked else str.statNone, str.statDebrid, if (hasDebrid) TdColor.Mint else TdColor.Amber)
-            MiniStat(if (hasTmdb) str.statSet else str.statMissing, str.statTmdb, if (hasTmdb) TdColor.Mint else TdColor.Amber)
-            MiniStat(str.statKeystore, "tokens", TdColor.TextMid)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                "$completed ${str.statDone}",
+                style = MaterialTheme.typography.labelSmall,
+                color = TdColor.TextLow,
+            )
+            Dot()
+            Text(
+                if (hasDebrid) str.statLinked else str.statNone,
+                style = MaterialTheme.typography.labelSmall,
+                color = if (hasDebrid) TdColor.Mint else TdColor.Amber,
+            )
+            Dot()
+            Text(
+                if (hasTmdb) "TMDB" else str.needsTmdbShort,
+                style = MaterialTheme.typography.labelSmall,
+                color = if (hasTmdb) TdColor.Mint else TdColor.Amber,
+            )
         }
     }
 }
 
 @Composable
-private fun ActionTile(
+private fun Dot() {
+    Text(
+        "·",
+        style = MaterialTheme.typography.labelSmall,
+        color = TdColor.Line,
+        modifier = Modifier.padding(horizontal = 6.dp),
+    )
+}
+
+@Composable
+private fun Shortcut(
     icon: ImageVector,
     label: String,
-    hint: String,
-    accent: Color,
     value: String?,
     modifier: Modifier = Modifier,
+    accent: Color = TdColor.TextMid,
     onClick: () -> Unit,
 ) {
     val interaction = remember { MutableInteractionSource() }
-    Box(
+    Row(
         modifier
-            .pressEffect(interaction)
-            .clip(RoundedCornerShape(CardRadius))
-            .background(Brush.verticalGradient(listOf(TdColor.Ink1, TdColor.Ink2)))
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
+            .pressEffect(interaction, pressedScale = 0.97f)
+            .clip(RoundedCornerShape(10.dp))
+            .background(TdColor.Ink1)
+            .border(BorderStroke(1.dp, TdColor.Line), RoundedCornerShape(10.dp))
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
+            .padding(horizontal = 11.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        // accent wash in the corner so each tile reads at a glance
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .height(74.dp)
-                .background(
-                    Brush.verticalGradient(
-                        listOf(accent.copy(alpha = 0.16f), Color.Transparent),
-                    ),
-                ),
+        Icon(icon, contentDescription = null, tint = accent, modifier = Modifier.size(15.dp))
+        Text(
+            label,
+            style = MaterialTheme.typography.labelMedium,
+            color = TdColor.TextMid,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f, fill = false),
         )
-        Column(Modifier.padding(14.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    Modifier
-                        .size(30.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(accent.copy(alpha = 0.18f)),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(icon, contentDescription = null, tint = accent, modifier = Modifier.size(17.dp))
-                }
-                Spacer(Modifier.weight(1f))
-                if (value != null) {
-                    Text(
-                        value,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = accent,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-            }
-            Spacer(Modifier.height(12.dp))
+        if (value != null) {
             Text(
-                label,
-                style = MaterialTheme.typography.titleSmall,
-                color = TdColor.TextHi,
+                value,
+                style = MaterialTheme.typography.labelSmall,
+                color = accent,
                 fontWeight = FontWeight.SemiBold,
             )
-            Text(hint, style = MaterialTheme.typography.labelSmall, color = TdColor.TextLow)
         }
     }
-}
-
-@Composable
-private fun MiniStat(value: String, label: String, accent: Color) {
-    Row(
-        Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(TdColor.Ink1.copy(alpha = 0.8f))
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(value, style = MaterialTheme.typography.labelSmall, color = accent, fontWeight = FontWeight.SemiBold)
-        Spacer(Modifier.width(4.dp))
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TdColor.TextLow)
-    }
-}
-
-/** Fade+rise entrance used by the hero so the screen assembles instead of appearing. */
-@Composable
-fun riseIn(enabled: Boolean): Float {
-    val progress by animateFloatAsState(
-        targetValue = if (enabled) 1f else 0f,
-        animationSpec = tween(Motion.SLOW),
-        label = "rise",
-    )
-    return progress
 }

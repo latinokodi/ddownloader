@@ -52,36 +52,26 @@ import com.ddownloader.android.ui.theme.shimmerBrush
 @Composable
 fun AuroraCard(
     modifier: Modifier = Modifier,
-    accent: Color = TdColor.Cyan,
+    accent: Color = TdColor.Primary,
     contentPadding: androidx.compose.ui.unit.Dp = 16.dp,
     content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit,
 ) {
+    // Flat graphite surface with a hairline border and a 2 dp accent keyline on top: the accent
+    // identifies the card's domain without tinting the whole area.
     Box(
         modifier
             .clip(RoundedCornerShape(CardRadius))
-            .background(
-                Brush.verticalGradient(
-                    listOf(TdColor.Ink1, TdColor.Ink2),
-                ),
-            )
-            .border(
-                BorderStroke(
-                    1.dp,
-                    Brush.linearGradient(
-                        listOf(
-                            accent.copy(alpha = 0.42f),
-                            TdColor.Line.copy(alpha = 0.35f),
-                            accent.copy(alpha = 0.12f),
-                        ),
-                    ),
-                ),
-                RoundedCornerShape(CardRadius),
-            ),
+            .background(TdColor.Ink2)
+            .border(BorderStroke(1.dp, TdColor.Line), RoundedCornerShape(CardRadius)),
     ) {
-        // ColumnScope + padding mirror the old GlassCard contract: callers stack children
-        // inside the card, so dropping the scope silently destroyed every replaced screen.
+        androidx.compose.foundation.layout.Box(
+            androidx.compose.ui.Modifier
+                .fillMaxWidth()
+                .height(2.dp)
+                .background(Brush.horizontalGradient(listOf(accent.copy(alpha = 0.85f), accent.copy(alpha = 0.05f)))),
+        )
         androidx.compose.foundation.layout.Column(
-            Modifier.padding(contentPadding),
+            Modifier.padding(contentPadding).padding(top = 2.dp),
             content = content,
         )
     }
@@ -146,10 +136,10 @@ fun StatTile(
 ) {
     Column(
         modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(TdColor.Ink1.copy(alpha = 0.85f))
-            .border(BorderStroke(1.dp, accent.copy(alpha = 0.22f)), RoundedCornerShape(16.dp))
-            .padding(horizontal = 14.dp, vertical = 10.dp),
+            .clip(RoundedCornerShape(10.dp))
+            .background(TdColor.Ink1)
+            .border(BorderStroke(1.dp, TdColor.Line), RoundedCornerShape(10.dp))
+            .padding(horizontal = 12.dp, vertical = 9.dp),
     ) {
         Text(
             value,
@@ -221,9 +211,8 @@ fun Pill(text: String, color: Color, modifier: Modifier = Modifier) {
     Row(
         modifier
             .clip(RoundedCornerShape(PillRadius))
-            .background(color.copy(alpha = 0.14f))
-            .border(BorderStroke(1.dp, color.copy(alpha = 0.38f)), RoundedCornerShape(PillRadius))
-            .padding(horizontal = 9.dp, vertical = 3.dp),
+            .background(color.copy(alpha = 0.12f))
+            .padding(horizontal = 7.dp, vertical = 3.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
