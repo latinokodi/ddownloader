@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -106,13 +107,34 @@ fun OnboardingScreen(vm: AppViewModel) {
                 color = TdColor.TextLow,
             )
             Spacer(Modifier.weight(1f))
-            GhostButton(t.skip, icon = AppIcons.Close) { vm.completeOnboarding() }
+            // Setup is mandatory, so there is no "skip": this shows what is still missing.
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RequirementDot("1", settings.hasAnyDebrid)
+                Spacer(Modifier.width(6.dp))
+                RequirementDot("2", settings.hasTmdb)
+                Spacer(Modifier.width(10.dp))
+                com.ddownloader.android.ui.i18n.Language.entries.forEach { lang ->
+                    val active = settings.language == lang.tag
+                    Text(
+                        if (lang.tag == "es") "ES" else "EN",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (active) TdColor.Ink0 else TdColor.TextMid,
+                        modifier = Modifier
+                            .padding(horizontal = 2.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(if (active) TdColor.Cyan else TdColor.Ink3)
+                            .clickable { vm.setLanguage(lang.tag) }
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                    )
+                }
+            }
         }
 
         HorizontalPager(
             state = pager,
             modifier = Modifier.weight(1f),
             verticalAlignment = Alignment.Top,
+            userScrollEnabled = false,
         ) { page ->
             when (page) {
                 0 -> WelcomePage()
@@ -148,16 +170,35 @@ fun OnboardingScreen(vm: AppViewModel) {
             }
         }
 
+        val step = pager.currentPage
+        val canAdvance = when (step) {
+            0 -> true
+            1 -> settings.hasAnyDebrid
+            2 -> settings.hasTmdb
+            else -> settings.hasAnyDebrid && settings.hasTmdb
+        }
         GradientButton(
-            text = if (pager.currentPage == 3) t.startUsing else t.continueLabel,
-            icon = if (pager.currentPage == 3) AppIcons.CheckCircle else AppIcons.PlayArrow,
+            text = if (step == 3) t.startUsing else t.continueLabel,
+            icon = if (step == 3) AppIcons.CheckCircle else AppIcons.PlayArrow,
             modifier = Modifier.fillMaxWidth(),
+            enabled = canAdvance,
         ) {
-            if (pager.currentPage == 3) {
+            if (step == 3) {
                 vm.completeOnboarding()
             } else {
-                scope.launch { pager.animateScrollToPage(pager.currentPage + 1) }
+                scope.launch { pager.animateScrollToPage(step + 1) }
             }
+        }
+        if (!canAdvance) {
+            Spacer(Modifier.height(8.dp))
+            Text(
+                when (step) {
+                    1 -> t.requiredDebrid
+                    else -> t.requiredTmdb
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = TdColor.Amber,
+            )
         }
         Spacer(Modifier.height(18.dp))
     }
@@ -378,6 +419,25 @@ private fun TokenState(state: AccountAuth.AccountState, hint: String) {
             style = MaterialTheme.typography.bodySmall,
             color = if (state is AccountAuth.AccountState.Rejected) TdColor.Rose else TdColor.TextMid,
             fontWeight = FontWeight.Normal,
+        )
+    }
+}
+
+
+/** Requirement indicator in the assistant header: filled once satisfied. */
+@Composable
+private fun RequirementDot(number: String, done: Boolean) {
+    Box(
+        Modifier
+            .size(20.dp)
+            .clip(CircleShape)
+            .background(if (done) TdColor.Mint else TdColor.Ink3),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            if (done) "\u2713" else number,
+            style = MaterialTheme.typography.labelSmall,
+            color = if (done) TdColor.Ink0 else TdColor.TextMid,
         )
     }
 }

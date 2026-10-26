@@ -115,6 +115,9 @@ data class Strings(
     val httpsOnly: String,
     val tokensInKeystore: String,
     val noAccount: String,
+    val requiredDebrid: String,
+    val requiredTmdb: String,
+    val required: String,
 )
 
 private val EN = Strings(
@@ -172,6 +175,9 @@ private val EN = Strings(
     pasteLink = "PASTE A LINK", directUrl = "Direct URL", queueDownload = "Queue download",
     readyToSetup = "READY TO SET UP", linkAccountHint = "Link a debrid account in Settings",
     httpsOnly = "HTTPS only", tokensInKeystore = "tokens in Keystore", noAccount = "NO ACCOUNT",
+    requiredDebrid = "Required: link at least one debrid account to continue.",
+    requiredTmdb = "Required: a valid TMDB API key is needed to continue.",
+    required = "REQUIRED",
 )
 
 private val ES = Strings(
@@ -229,6 +235,9 @@ private val ES = Strings(
     pasteLink = "PEGAR UN ENLACE", directUrl = "URL directa", queueDownload = "Añadir descarga",
     readyToSetup = "LISTO PARA CONFIGURAR", linkAccountHint = "Vincula una cuenta debrid en Ajustes",
     httpsOnly = "solo HTTPS", tokensInKeystore = "credenciales en Keystore", noAccount = "SIN CUENTA",
+    requiredDebrid = "Obligatorio: vincula al menos una cuenta debrid para continuar.",
+    requiredTmdb = "Obligatorio: se necesita una clave TMDB válida para continuar.",
+    required = "OBLIGATORIO",
 )
 
 val StringsEN: Strings = EN

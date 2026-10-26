@@ -507,8 +507,22 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /**
+     * Setup is mandatory: at least one linked debrid account **and** a validated TMDB
+     * key. The assistant also disables its buttons, but the rule is enforced here so a
+     * stale UI state cannot skip it.
+     */
     fun completeOnboarding() {
         viewModelScope.launch {
+            val cfg = locator.settings.current()
+            if (!cfg.hasAnyDebrid) {
+                toast("Link at least one debrid account to continue")
+                return@launch
+            }
+            if (!cfg.hasTmdb) {
+                toast("Enter a valid TMDB API key to continue")
+                return@launch
+            }
             locator.settings.setOnboardingCompleted(true)
             toast("Setup complete")
         }

@@ -7,6 +7,22 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-10-26
+
+### Changed
+- **Setup is mandatory.** The first-run assistant no longer has a "Skip" path: it requires
+  at least one linked debrid account *and* a validated TMDB API key before the app can be used.
+  - "Continue" is disabled on the debrid step until an account is linked, and on the TMDB step
+    until the key has been validated against `api.themoviedb.org/3/configuration`.
+  - The rule is also enforced in `AppViewModel.completeOnboarding()`, so a stale UI state cannot
+    bypass it, and the assistant no longer allows swiping between steps.
+  - The header shows two requirement dots that fill in as each requirement is met, plus the
+    EN/ES language switch, so the mandatory step is also the place to change language.
+
+### Fixed
+- Onboarding copy said "optional" for the TMDB key; it is required now.
+
+
 ## [1.0.3] - 2026-10-26
 
 ### Changed
