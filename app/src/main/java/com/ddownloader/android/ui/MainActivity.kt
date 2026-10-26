@@ -27,6 +27,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -241,53 +242,184 @@ private fun AppRootContent(
                 )
             },
         ) { inner ->
-            // Studio layout: persistent left rail, content in the remaining pane. No bottom bar,
-            // no top chrome — the rail carries identity, navigation and state.
-            Row(
+            // Mobile-first: phones get a single pane with a bottom bar; only wide windows get the
+            // studio rail. The rail is 212 dp, which on a 411 dp phone would eat half the screen.
+            BoxWithConstraints(
                 Modifier
                     .fillMaxSize()
                     .padding(inner)
-                    .statusBarsPadding()
+                    .statusBarsPadding(),
             ) {
-                NavRail(
-                    selected = if (showLogs) null else tab,
-                    pending = pendingCount,
-                    active = active,
-                    hasDebrid = settings.hasAnyDebrid,
-                    onSelect = {
-                        showLogs = false
-                        tab = it
-                    },
-                    onLogs = { showLogs = true },
-                )
-                Box(Modifier.weight(1f)) {
-                    AnimatedContent(
-                        targetState = if (showLogs) null else tab,
-                        transitionSpec = {
-                            (slideInHorizontally(
-                                animationSpec = tween(Motion.MEDIUM, easing = Motion.emphasized),
-                            ) { it / 14 } + fadeIn(tween(Motion.MEDIUM)))
-                                .togetherWith(fadeOut(tween(Motion.FAST)))
-                        },
-                        label = "screen",
-                    ) { target ->
-                        if (target == null) {
-                            ContentPane { LogsScreen(vm) }
-                        } else {
-                            when (target) {
-                                Tab.SEARCH -> ContentPane {
-                                    SearchScreen(vm) {
-                                        showLogs = false
-                                        tab = Tab.DOWNLOADS
-                                    }
-                                }
-                                Tab.DISCOVER -> ContentPane { DiscoverScreen(vm) }
-                                Tab.DOWNLOADS -> ContentPane { DownloadsScreen(vm) }
-                                Tab.SETTINGS -> ContentPane { SettingsScreen(vm) }
-                            }
+                val compact = maxWidth < 700.dp
+                if (compact) {
+                    Column(Modifier.fillMaxSize()) {
+                        Box(Modifier.weight(1f)) {
+                            ScreenContent(
+                                vm = vm,
+                                tab = tab,
+                                showLogs = showLogs,
+                                onOpenDownloads = {
+                                    showLogs = false
+                                    tab = Tab.DOWNLOADS
+                                },
+                            )
+                        }
+                        CompactBar(
+                            selected = if (showLogs) null else tab,
+                            pending = pendingCount,
+                            onSelect = {
+                                showLogs = false
+                                tab = it
+                            },
+                            onLogs = { showLogs = true },
+                        )
+                    }
+                } else {
+                    Row(Modifier.fillMaxSize()) {
+                        NavRail(
+                            selected = if (showLogs) null else tab,
+                            pending = pendingCount,
+                            active = active,
+                            hasDebrid = settings.hasAnyDebrid,
+                            onSelect = {
+                                showLogs = false
+                                tab = it
+                            },
+                            onLogs = { showLogs = true },
+                        )
+                        Box(Modifier.weight(1f)) {
+                            ScreenContent(
+                                vm = vm,
+                                tab = tab,
+                                showLogs = showLogs,
+                                onOpenDownloads = {
+                                    showLogs = false
+                                    tab = Tab.DOWNLOADS
+                                },
+                            )
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScreenContent(
+    vm: AppViewModel,
+    tab: Tab,
+    showLogs: Boolean,
+    onOpenDownloads: () -> Unit,
+) {
+    AnimatedContent(
+        targetState = if (showLogs) null else tab,
+        transitionSpec = {
+            (slideInHorizontally(
+                animationSpec = tween(Motion.MEDIUM, easing = Motion.emphasized),
+            ) { it / 14 } + fadeIn(tween(Motion.MEDIUM)))
+                .togetherWith(fadeOut(tween(Motion.FAST)))
+        },
+        label = "screen",
+    ) { target ->
+        if (target == null) {
+            ContentPane { LogsScreen(vm) }
+        } else {
+            when (target) {
+                Tab.SEARCH -> ContentPane { SearchScreen(vm, onOpenDownloads) }
+                Tab.DISCOVER -> ContentPane { DiscoverScreen(vm) }
+                Tab.DOWNLOADS -> ContentPane { DownloadsScreen(vm) }
+                Tab.SETTINGS -> ContentPane { SettingsScreen(vm) }
+            }
+        }
+    }
+}
+
+/** Phone navigation: flat bar, amber indicator, no floating pill. */
+@Composable
+private fun CompactBar(
+    selected: Tab?,
+    pending: Int,
+    onSelect: (Tab) -> Unit,
+    onLogs: () -> Unit,
+) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
+    Column {
+        Box(Modifier.fillMaxWidth().height(1.dp).background(TdColor.Line))
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(TdColor.Ink1)
+                .navigationBarsPadding()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val items = listOf(
+                Triple(Tab.SEARCH, AppIcons.Search, str.search),
+                Triple(Tab.DISCOVER, AppIcons.Explore, str.discover),
+                Triple(Tab.DOWNLOADS, AppIcons.Download, str.downloads),
+                Triple(Tab.SETTINGS, AppIcons.Settings, str.settings),
+            )
+            items.forEach { (t, icon, label) ->
+                val isActive = selected == t
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .clickable { onSelect(t) }
+                        .padding(vertical = 4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Box {
+                        Icon(
+                            icon,
+                            contentDescription = null,
+                            tint = if (isActive) TdColor.Primary else TdColor.TextLow,
+                            modifier = Modifier.size(20.dp),
+                        )
+                        if (t == Tab.DOWNLOADS && pending > 0) {
+                            Text(
+                                "$pending",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = TdColor.Ink0,
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .offset(x = 9.dp, y = (-5).dp)
+                                    .clip(RoundedCornerShape(2.dp))
+                                    .background(TdColor.Primary)
+                                    .padding(horizontal = 4.dp),
+                            )
+                        }
+                    }
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        label,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (isActive) TdColor.Primary else TdColor.TextLow,
+                        maxLines = 1,
+                    )
+                }
+            }
+            Column(
+                Modifier
+                    .weight(1f)
+                    .clickable { onLogs() }
+                    .padding(vertical = 4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Icon(
+                    AppIcons.Terminal,
+                    contentDescription = null,
+                    tint = if (selected == null) TdColor.Primary else TdColor.TextLow,
+                    modifier = Modifier.size(20.dp),
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    str.logs,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (selected == null) TdColor.Primary else TdColor.TextLow,
+                    maxLines = 1,
+                )
             }
         }
     }

@@ -7,6 +7,17 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-10-26
+
+### Changed — mobile-first, adaptive layout
+- The studio rail is now **wide-window only** (>= 700 dp). Phones get a single pane with a flat
+  bottom bar (amber indicator, queue badge, logs) — the rail would have consumed 52% of a 411 dp
+  phone's width.
+- `ScreenContent` extracted so both layouts share one screen switch; `ContentPane` still caps and
+  left-aligns content on wide windows.
+- Verified on a 1080x2400 phone (411 dp) and on the 1920x1080 tablet window.
+
+
 ## [1.6.1] - 2026-10-26
 
 ### Changed — "Studio" layout, a structural rebuild
