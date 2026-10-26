@@ -32,6 +32,7 @@ import com.ddownloader.android.ui.theme.TdColor
  */
 @Composable
 fun UpdateDialog(vm: AppViewModel) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val stateFlow = vm.updateState.collectAsStateWithLifecycle()
     val state = stateFlow.value
     if (state is AppViewModel.UpdateUi.Idle) return
@@ -44,11 +45,11 @@ fun UpdateDialog(vm: AppViewModel) {
         title = {
             Text(
                 when (state) {
-                    is AppViewModel.UpdateUi.Available -> "Update available · v${state.release.version}"
-                    is AppViewModel.UpdateUi.Downloading -> "Downloading update…"
-                    is AppViewModel.UpdateUi.Ready -> "Ready to install · v${state.release.version}"
+                    is AppViewModel.UpdateUi.Available -> str.updateAvailable.format(state.release.version)
+                    is AppViewModel.UpdateUi.Downloading -> str.downloadingUpdate
+                    is AppViewModel.UpdateUi.Ready -> str.readyToInstall.format(state.release.version)
                     is AppViewModel.UpdateUi.Checking -> "Checking for updates…"
-                    is AppViewModel.UpdateUi.Error -> "Update check failed"
+                    is AppViewModel.UpdateUi.Error -> str.updateCheckFailed.format("")
                     AppViewModel.UpdateUi.Idle -> ""
                 },
                 style = MaterialTheme.typography.headlineSmall,
@@ -60,8 +61,7 @@ fun UpdateDialog(vm: AppViewModel) {
                 when (state) {
                     is AppViewModel.UpdateUi.Available -> {
                         Text(
-                            "You have v${vm.currentVersion}. The new build is signed with the same key, " +
-                                "so installing it keeps all your settings, tokens and queue.",
+                            str.updateYouHave.format(vm.currentVersion),
                             style = MaterialTheme.typography.bodySmall,
                             color = TdColor.TextMid,
                         )
@@ -79,7 +79,7 @@ fun UpdateDialog(vm: AppViewModel) {
                         if (state.release.sizeBytes > 0) {
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                "Download size: ${Fmt.bytes(state.release.sizeBytes)}",
+                                str.downloadSize.format(Fmt.bytes(state.release.sizeBytes)),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = TdColor.TextLow,
                             )
@@ -102,8 +102,7 @@ fun UpdateDialog(vm: AppViewModel) {
                     }
                     is AppViewModel.UpdateUi.Ready -> {
                         Text(
-                            "Checksum and signature verified. Android's installer will ask you to confirm — " +
-                                "your data is preserved because the application id and signing key are unchanged.",
+                            str.verifiedNote,
                             style = MaterialTheme.typography.bodySmall,
                             color = TdColor.TextMid,
                         )
@@ -125,10 +124,10 @@ fun UpdateDialog(vm: AppViewModel) {
         },
         confirmButton = {
             when (state) {
-                is AppViewModel.UpdateUi.Available -> GradientButton("Update now", icon = null) {
+                is AppViewModel.UpdateUi.Available -> GradientButton(str.updateNow, icon = null) {
                     vm.downloadUpdate()
                 }
-                is AppViewModel.UpdateUi.Ready -> GradientButton("Install", icon = null) {
+                is AppViewModel.UpdateUi.Ready -> GradientButton(str.installLabel, icon = null) {
                     vm.installUpdate()
                 }
                 is AppViewModel.UpdateUi.Error -> GradientButton("Retry", icon = null) {
@@ -139,7 +138,7 @@ fun UpdateDialog(vm: AppViewModel) {
         },
         dismissButton = {
             if (state !is AppViewModel.UpdateUi.Downloading) {
-                GhostButton("Later") { vm.laterUpdate() }
+                GhostButton(str.later) { vm.laterUpdate() }
             }
         },
     )
@@ -148,6 +147,7 @@ fun UpdateDialog(vm: AppViewModel) {
 /** Compact banner used at the top of the app when an update is pending. */
 @Composable
 fun UpdateBanner(vm: AppViewModel) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val stateFlow = vm.updateState.collectAsStateWithLifecycle()
     val state = stateFlow.value
     val release = (state as? AppViewModel.UpdateUi.Available)?.release ?: return
@@ -157,7 +157,7 @@ fun UpdateBanner(vm: AppViewModel) {
             .padding(horizontal = 16.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        GradientButton("Update to v${release.version}", Modifier.weight(1f)) { vm.downloadUpdate() }
-        GhostButton("Later") { vm.laterUpdate() }
+        GradientButton(str.updateAvailable.format(release.version), Modifier.weight(1f)) { vm.downloadUpdate() }
+        GhostButton(str.later) { vm.laterUpdate() }
     }
 }

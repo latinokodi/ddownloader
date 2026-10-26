@@ -291,10 +291,11 @@ private fun TopBar(
     onLogs: () -> Unit,
 ) {
     val gradients = LocalTdGradients.current
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val (dot, label) = when {
-        activeDownloads > 0 -> TdColor.Cyan to "TRANSFERRING"
-        hasDebrid -> TdColor.Mint to "SECURE SESSION"
-        else -> TdColor.TextLow to "NO ACCOUNT"
+        activeDownloads > 0 -> TdColor.Cyan to str.stDownloading.uppercase()
+        hasDebrid -> TdColor.Mint to str.secureSession
+        else -> TdColor.TextLow to str.noDebridLinked
     }
     Row(
         Modifier
@@ -329,7 +330,7 @@ private fun TopBar(
                 StatusDot(dot)
                 Spacer(Modifier.width(5.dp))
                 Text(
-                    text = label + if (activeDownloads > 0) " • $activeDownloads ACTIVE" else "",
+                    text = label + if (activeDownloads > 0) " · $activeDownloads" else "",
                     style = MaterialTheme.typography.labelSmall,
                     color = TdColor.TextLow,
                 )
@@ -340,7 +341,7 @@ private fun TopBar(
         // (uiautomator flagged the clickable node as having no accessible name).
         IconButton(
             onClick = onLogs,
-            modifier = Modifier.semantics { contentDescription = "Open logs" },
+            modifier = Modifier.semantics { contentDescription = str.logs },
         ) {
             Icon(AppIcons.Terminal, contentDescription = null, tint = TdColor.TextMid)
         }

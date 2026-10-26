@@ -41,6 +41,12 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     private val locator = ServiceLocator
 
     val settings = locator.settings.settings
+    // Copy for user-facing messages follows the persisted language, so a toast raised from the
+    // ViewModel is in the same language as the screen that triggered it.
+    private val str get() = com.ddownloader.android.ui.i18n.stringsFor(
+        com.ddownloader.android.ui.i18n.Language.fromTag(settings.value.language),
+    )
+
     val records: StateFlow<List<DownloadRecord>> = locator.db.records
     val live: StateFlow<Map<String, DownloadManager.Live>> = locator.manager.live
     val activeCount: StateFlow<Int> = locator.manager.activeCount
@@ -173,7 +179,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 DeviceAuth.Provider.REALDEBRID -> locator.settings.setRealDebridToken("")
             }
             locator.accounts.refresh()
-            toast("${provider.label} unlinked")
+            toast(str.unlinkedItem.format(provider.label))
         }
     }
 
@@ -209,7 +215,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             locator.settings.setLastUpdateCheckAt(System.currentTimeMillis())
             _updateState.value = when (result) {
                 is UpdateChecker.Result.UpToDate -> {
-                    if (manual) toast("You are on the latest version (v$currentVersion)")
+                    if (manual) toast(str.latestVersion.format(currentVersion))
                     UpdateUi.Idle
                 }
                 is UpdateChecker.Result.Available -> {
@@ -220,7 +226,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     }
                 }
                 is UpdateChecker.Result.Failed -> {
-                    if (manual) toast("Update check failed: ${result.reason}")
+                    if (manual) toast(str.updateCheckFailed.format(result.reason))
                     UpdateUi.Idle
                 }
             }
@@ -243,7 +249,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     _updateState.value = UpdateUi.Ready(release, res.apk, res.sha256)
                 is UpdateInstaller.DownloadResult.Failed -> {
                     _updateState.value = UpdateUi.Error(res.reason)
-                    toast("Update failed: ${res.reason}")
+                    toast(str.updateFailed.format(res.reason))
                 }
             }
         }
@@ -252,7 +258,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun installUpdate() {
         val ready = _updateState.value as? UpdateUi.Ready ?: return
         locator.updateInstaller.install(ready.apk)
-            .onFailure { toast("Could not start the installer: ${it.message}") }
+            .onFailure { toast(str.installerFailed.format(it.message ?: "")) }
     }
 
     /** "Later": remember this version so the prompt does not reappear every launch. */
@@ -279,7 +285,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             val resumed = locator.manager.resumeInterrupted()
             if (resumed > 0) {
                 DownloadService.start(getApplication())
-                toast("Resuming $resumed interrupted download(s)")
+                toast(str.resumeInterrupted.format(resumed))
             }
         }
     }
@@ -393,15 +399,15 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         AppLog.i("Pipeline", "downloadStream tapped: name=${stream.name} size=${stream.videoSize}")
         val magnet = stream.magnet()
         if (magnet == null) {
-            toast("Stream has no infoHash — cannot convert to a magnet")
+            toast(str.noInfoHash)
             return
         }
         if (!settings.value.hasAnyDebrid) {
-            toast("Link a TorBox or Real-Debrid account to download torrents")
+            toast(str.noDebrid)
             return
         }
         AppLog.i("Pipeline", "magnet built (${magnet.length} chars) — handing to the debrid flow")
-        toast("Magnet resolved — add it through your debrid account")
+        toast(str.magnetResolved)
         addMagnet(magnet, estimatedSize = stream.videoSize ?: 0L, name = stream.displayName())
         closeStreamSheet()
     }
@@ -420,11 +426,11 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         val parsed = runCatching { java.net.URI(clean) }.getOrNull()
         val scheme = parsed?.scheme?.lowercase()
         if (scheme != "http" && scheme != "https") {
-            toast("Only http(s) links can be downloaded")
+            toast(str.onlyHttps)
             return
         }
         if (parsed?.userInfo != null || parsed.host.isNullOrBlank()) {
-            toast("That link is not a valid download URL")
+            toast(str.invalidUrl)
             return
         }
         val record = DownloadRecord(
@@ -436,13 +442,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         )
         locator.manager.enqueue(record)
         DownloadService.start(getApplication())
-        toast("Queued ${record.name}")
+        toast(str.queuedItem.format(record.name))
     }
 
     fun addMagnet(magnet: String, estimatedSize: Long = 0L, name: String = "magnet") {
         AppLog.i("Pipeline", "addMagnet: start (hasDebrid=${settings.value.hasAnyDebrid}, torbox=${settings.value.hasTorBox})")
         if (!settings.value.hasAnyDebrid) {
-            toast("No debrid account linked")
+            toast(str.noDebrid)
             return
         }
         viewModelScope.launch {
@@ -468,7 +474,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     }
                     if (files.isEmpty()) {
                         AppLog.w("Pipeline", "torbox never listed files for id=$id")
-                        toast("TorBox accepted the magnet but never listed its files (id $id)")
+                        toast(str.magnetNoFiles.format(id))
                         return@launch
                     }
                     // Queue every video file, not just the biggest one: season packs are
@@ -510,11 +516,11 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                         )
                     )
                     DownloadService.start(getApplication())
-                    toast("Queued from Real-Debrid")
+                    toast(str.queuedFromRd)
                 }
             } catch (t: Throwable) {
                 AppLog.e("Pipeline", "addMagnet failed: ${t.javaClass.simpleName}: ${t.message}", t)
-                toast("Could not add magnet: ${t.message}")
+                toast(str.couldNotAddMagnet.format(t.message ?: ""))
             } finally {
                 busy = false
             }
@@ -530,7 +536,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun clearCompleted() {
         locator.manager.clearCompleted()
-        toast("Cleared finished transfers")
+        toast(str.clearedFinished)
     }
 
     // ── Settings ──────────────────────────────────────────────────────────
@@ -544,14 +550,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             locator.settings.setTorboxToken(token)
             if (token.isBlank()) {
                 locator.accounts.refresh()
-                toast("TorBox token cleared")
+                toast(str.tokenCleared)
                 return@launch
             }
             when (val s = locator.accounts.validateTorBox()) {
-                is AccountAuth.AccountState.Authorized -> toast("TorBox authorized: ${s.account} (${s.detail})")
-                is AccountAuth.AccountState.Rejected -> toast("TorBox rejected that token: ${s.reason}")
-                is AccountAuth.AccountState.Unverified -> toast("Token saved — not verified (${s.reason})")
-                else -> toast("Token saved")
+                is AccountAuth.AccountState.Authorized -> toast(str.authorizedAs.format("TorBox", s.account, s.detail))
+                is AccountAuth.AccountState.Rejected -> toast(str.rejectedToken.format("TorBox", s.reason))
+                is AccountAuth.AccountState.Unverified -> toast(str.tokenSavedUnverified.format(s.reason))
+                else -> toast(str.tokenSaved)
             }
         }
     }
@@ -561,14 +567,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             locator.settings.setRealDebridToken(token)
             if (token.isBlank()) {
                 locator.accounts.refresh()
-                toast("Real-Debrid token cleared")
+                toast(str.rdTokenCleared)
                 return@launch
             }
             when (val s = locator.accounts.validateRealDebrid()) {
-                is AccountAuth.AccountState.Authorized -> toast("Real-Debrid authorized: ${s.account} (${s.detail})")
-                is AccountAuth.AccountState.Rejected -> toast("Real-Debrid rejected that token: ${s.reason}")
-                is AccountAuth.AccountState.Unverified -> toast("Token saved — not verified (${s.reason})")
-                else -> toast("Token saved")
+                is AccountAuth.AccountState.Authorized -> toast(str.authorizedAs.format("Real-Debrid", s.account, s.detail))
+                is AccountAuth.AccountState.Rejected -> toast(str.rejectedToken.format("Real-Debrid", s.reason))
+                is AccountAuth.AccountState.Unverified -> toast(str.tokenSavedUnverified.format(s.reason))
+                else -> toast(str.tokenSaved)
             }
         }
     }
@@ -600,15 +606,15 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             val cfg = locator.settings.current()
             if (!cfg.hasAnyDebrid) {
-                toast("Link at least one debrid account to continue")
+                toast(str.needDebridToContinue)
                 return@launch
             }
             if (!cfg.hasTmdb) {
-                toast("Enter a valid TMDB API key to continue")
+                toast(str.needTmdbToContinue)
                 return@launch
             }
             locator.settings.setOnboardingCompleted(true)
-            toast("Setup complete")
+            toast(str.setupComplete)
         }
     }
 
@@ -628,7 +634,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             if (key.isBlank()) {
                 locator.settings.setTmdbApiKey("")
                 _tmdbKeyState.value = TmdbUi.Idle
-                toast("TMDB key cleared")
+                toast(str.tmdbKeyCleared)
                 return@launch
             }
             _tmdbKeyState.value = TmdbUi.Checking
@@ -636,10 +642,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             if (valid) {
                 locator.settings.setTmdbApiKey(key)
                 _tmdbKeyState.value = TmdbUi.Valid
-                toast("TMDB key validated and saved")
+                toast(str.tmdbKeySaved)
             } else {
                 _tmdbKeyState.value = TmdbUi.Invalid("TMDB did not accept that key (check it at themoviedb.org → Settings → API)")
-                toast("TMDB rejected that key")
+                toast(str.tmdbKeyRejected)
             }
         }
     }
@@ -660,7 +666,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             locator.settings.setMoviesSubfolder(movies)
             locator.settings.setSeriesSubfolder(series)
-            toast("Folders saved")
+            toast(str.foldersSaved)
         }
     }
 

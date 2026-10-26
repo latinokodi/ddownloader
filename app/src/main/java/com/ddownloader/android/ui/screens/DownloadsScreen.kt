@@ -51,6 +51,7 @@ import com.ddownloader.android.ui.theme.TdColor
  */
 @Composable
 fun DownloadsScreen(vm: AppViewModel) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val records by vm.records.collectAsStateWithLifecycle()
     val live by vm.live.collectAsStateWithLifecycle()
     val active by vm.activeCount.collectAsStateWithLifecycle()
@@ -59,9 +60,8 @@ fun DownloadsScreen(vm: AppViewModel) {
         Column(Modifier.fillMaxSize().padding(16.dp)) {
             EmptyState(
                 icon = AppIcons.CloudDownload,
-                title = "No transfers yet",
-                body = "Queue a direct link or a magnet from Search, or pick a title in Discover and " +
-                    "download a stream through TorBox or Real-Debrid.",
+                title = str.noTransfersTitle,
+                body = str.noTransfersBody,
             )
         }
         return
@@ -79,11 +79,11 @@ fun DownloadsScreen(vm: AppViewModel) {
         item {
             Column {
                 SectionHeader(
-                    title = "Transfers",
-                    subtitle = "${records.size} total · $active running",
+                    title = str.transfersTitle,
+                    subtitle = str.transferSummary.format(records.size, active),
                     action = {
                         GhostButton(
-                            text = "Clear finished",
+                            text = str.clearFinished,
                             icon = AppIcons.Delete,
                             enabled = records.any { it.state.isTerminal },
                             onClick = { vm.clearCompleted() },
@@ -92,12 +92,12 @@ fun DownloadsScreen(vm: AppViewModel) {
                 )
                 Spacer(Modifier.height(14.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
-                    StatTile("$active", "ACTIVE", TdColor.Cyan, Modifier.weight(1f))
-                    StatTile("$queued", "QUEUED", TdColor.Violet, Modifier.weight(1f))
-                    StatTile("$done", "DONE", TdColor.Mint, Modifier.weight(1f))
+                    StatTile("$active", str.statActive, TdColor.Cyan, Modifier.weight(1f))
+                    StatTile("$queued", str.statQueued, TdColor.Violet, Modifier.weight(1f))
+                    StatTile("$done", str.statDoneTile, TdColor.Mint, Modifier.weight(1f))
                     StatTile(
                         "$failed",
-                        "FAILED",
+                        str.statFailed,
                         if (failed > 0) TdColor.Rose else TdColor.TextLow,
                         Modifier.weight(1f),
                     )
@@ -120,6 +120,7 @@ private fun TransferCard(
     live: DownloadManager.Live?,
     vm: AppViewModel,
 ) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val state = live?.state ?: record.state
     val bytes = live?.bytes ?: record.bytesDone
     val total = (live?.total ?: record.expectedSize).coerceAtLeast(0)
@@ -149,8 +150,8 @@ private fun TransferCard(
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Pill(providerLabel(record.service), providerColor(record.service))
-                        Pill(stateLabel(state), accent)
+                        Pill(providerLabel(record.service, str), providerColor(record.service))
+                        Pill(stateLabel(state, str), accent)
                     }
                 }
             }
@@ -183,10 +184,10 @@ private fun TransferCard(
                     )
                     val detail = when {
                         state == TransferState.DOWNLOADING && live != null ->
-                            "${Fmt.speed(live.bytesPerSecond)} · ${live.eta} left"
-                        state == TransferState.FAILED -> record.error ?: live?.error ?: "Transfer failed"
-                        state == TransferState.COMPLETED -> record.destDisplay.ifBlank { "Saved" }
-                        else -> stateHint(state)
+                            "${Fmt.speed(live.bytesPerSecond)} · ${live.eta} ${str.leftSuffix}"
+                        state == TransferState.FAILED -> record.error ?: live?.error ?: str.transferFailed
+                        state == TransferState.COMPLETED -> record.destDisplay.ifBlank { str.savedLabel }
+                        else -> stateHint(state, str)
                     }
                     Text(
                         detail,
@@ -198,11 +199,11 @@ private fun TransferCard(
                 }
                 when {
                     state == TransferState.FAILED -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        GhostButton("Retry", icon = AppIcons.Refresh) { vm.retry(record.id) }
-                        GhostButton("Remove", icon = AppIcons.Delete) { vm.remove(record.id) }
+                        GhostButton(str.retryLabel, icon = AppIcons.Refresh) { vm.retry(record.id) }
+                        GhostButton(str.removeLabel, icon = AppIcons.Delete) { vm.remove(record.id) }
                     }
-                    state.isActive -> GhostButton("Stop", icon = AppIcons.Close) { vm.cancel(record.id) }
-                    else -> GhostButton("Remove", icon = AppIcons.Delete) { vm.remove(record.id) }
+                    state.isActive -> GhostButton(str.stopLabel, icon = AppIcons.Close) { vm.cancel(record.id) }
+                    else -> GhostButton(str.removeLabel, icon = AppIcons.Delete) { vm.remove(record.id) }
                 }
             }
         }
@@ -218,27 +219,27 @@ private fun stateColor(state: TransferState) = when (state) {
     TransferState.QUEUED -> TdColor.Violet
 }
 
-private fun stateLabel(state: TransferState) = when (state) {
-    TransferState.QUEUED -> "queued"
-    TransferState.RESOLVING -> "resolving"
-    TransferState.DOWNLOADING -> "downloading"
-    TransferState.PAUSED -> "paused"
-    TransferState.COMPLETED -> "completed"
-    TransferState.FAILED -> "failed"
-    TransferState.CANCELLED -> "cancelled"
+private fun stateLabel(state: TransferState, str: com.ddownloader.android.ui.i18n.Strings) = when (state) {
+    TransferState.QUEUED -> str.stQueued
+    TransferState.RESOLVING -> str.stResolving
+    TransferState.DOWNLOADING -> str.stDownloading
+    TransferState.PAUSED -> str.stPaused
+    TransferState.COMPLETED -> str.stCompleted
+    TransferState.FAILED -> str.stFailed
+    TransferState.CANCELLED -> str.stCancelled
 }
 
-private fun stateHint(state: TransferState) = when (state) {
-    TransferState.QUEUED -> "Waiting for a free slot"
-    TransferState.RESOLVING -> "Resolving the debrid link"
-    TransferState.PAUSED -> "Paused — resumes automatically"
+private fun stateHint(state: TransferState, str: com.ddownloader.android.ui.i18n.Strings) = when (state) {
+    TransferState.QUEUED -> str.hintQueued
+    TransferState.RESOLVING -> str.hintResolving
+    TransferState.PAUSED -> str.hintPaused
     else -> ""
 }
 
-private fun providerLabel(service: String) = when (service) {
+private fun providerLabel(service: String, str: com.ddownloader.android.ui.i18n.Strings) = when (service) {
     "torbox" -> "TorBox"
     "realdebrid" -> "Real-Debrid"
-    else -> "Direct"
+    else -> str.providerDirect
 }
 
 private fun providerColor(service: String) = when (service) {

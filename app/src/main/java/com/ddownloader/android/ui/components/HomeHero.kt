@@ -56,13 +56,14 @@ fun HomeHero(
     onOpenDiscover: () -> Unit,
     onPaste: () -> Unit,
 ) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
         Spacer(Modifier.height(10.dp))
 
         Spacer(Modifier.height(22.dp))
 
         Text(
-            "DOWNLOAD",
+            str.heroLine1,
             style = MaterialTheme.typography.displayMedium.copy(
                 brush = Brush.linearGradient(listOf(TdColor.TextHi, TdColor.TextHi.copy(alpha = 0.72f))),
             ),
@@ -70,7 +71,7 @@ fun HomeHero(
             letterSpacing = (-1).sp,
         )
         Text(
-            "ANYTHING",
+            str.heroLine2,
             style = MaterialTheme.typography.displayMedium.copy(
                 brush = Brush.linearGradient(listOf(TdColor.Cyan, TdColor.Violet)),
             ),
@@ -79,7 +80,7 @@ fun HomeHero(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            "Search a title, paste a magnet, or pull a cached file through your debrid account.",
+            str.heroSub,
             style = MaterialTheme.typography.bodyMedium,
             color = TdColor.TextMid,
         )
@@ -89,8 +90,8 @@ fun HomeHero(
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             ActionTile(
                 icon = AppIcons.CloudDownload,
-                label = "Paste",
-                hint = "link or magnet",
+                label = str.tilePaste,
+                hint = str.tilePasteHint,
                 accent = TdColor.Cyan,
                 value = null,
                 modifier = Modifier.weight(1f),
@@ -98,8 +99,8 @@ fun HomeHero(
             )
             ActionTile(
                 icon = AppIcons.Download,
-                label = "Transfers",
-                hint = if (active > 0) "$active running" else "queue",
+                label = str.tileTransfers,
+                hint = if (active > 0) "$active ${str.tileRunning}" else str.tileQueue,
                 accent = TdColor.Violet,
                 value = if (queued + active > 0) "${queued + active}" else null,
                 modifier = Modifier.weight(1f),
@@ -107,8 +108,8 @@ fun HomeHero(
             )
             ActionTile(
                 icon = AppIcons.Explore,
-                label = "Discover",
-                hint = if (hasTmdb) "categories" else "needs TMDB",
+                label = str.discover,
+                hint = if (hasTmdb) str.tileDiscoverHint else str.needsTmdbShort,
                 accent = if (hasTmdb) TdColor.Mint else TdColor.Amber,
                 value = null,
                 modifier = Modifier.weight(1f),
@@ -119,10 +120,10 @@ fun HomeHero(
         Spacer(Modifier.height(12.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            MiniStat("$completed", "done", TdColor.Mint)
-            MiniStat(if (hasDebrid) "linked" else "none", "debrid", if (hasDebrid) TdColor.Mint else TdColor.Amber)
-            MiniStat(if (hasTmdb) "set" else "missing", "tmdb", if (hasTmdb) TdColor.Mint else TdColor.Amber)
-            MiniStat("keystore", "tokens", TdColor.TextMid)
+            MiniStat("$completed", str.statDone, TdColor.Mint)
+            MiniStat(if (hasDebrid) str.statLinked else str.statNone, str.statDebrid, if (hasDebrid) TdColor.Mint else TdColor.Amber)
+            MiniStat(if (hasTmdb) str.statSet else str.statMissing, str.statTmdb, if (hasTmdb) TdColor.Mint else TdColor.Amber)
+            MiniStat(str.statKeystore, "tokens", TdColor.TextMid)
         }
     }
 }

@@ -48,6 +48,7 @@ import com.ddownloader.android.ui.theme.TdColor
  */
 @Composable
 fun LogsScreen(vm: AppViewModel) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val entries by vm.logs.collectAsStateWithLifecycle()
     val errors by vm.logErrors.collectAsStateWithLifecycle()
     val filters = listOf("ALL", "INFO", "WARN", "ERROR")
@@ -63,17 +64,17 @@ fun LogsScreen(vm: AppViewModel) {
     ) {
         item {
             SectionHeader(
-                title = "Logs",
-                subtitle = "${entries.size} events · $errors errors · secrets redacted",
+                title = str.logs,
+                subtitle = str.logsSummary.format(entries.size, errors),
                 action = {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        GhostButton("Copy", icon = AppIcons.Link) {
+                        GhostButton(str.copyLabel, icon = AppIcons.Link) {
                             val text = filtered.joinToString("\n") {
                                 "${it.time()} ${it.level.name.first()}/${it.tag}: ${it.text}"
                             }
                             clipboard.setText(AnnotatedString(text))
                         }
-                        GhostButton("Clear", icon = AppIcons.Delete) { vm.clearLogs() }
+                        GhostButton(str.clear, icon = AppIcons.Delete) { vm.clearLogs() }
                     }
                 },
             )
@@ -121,7 +122,7 @@ fun LogsScreen(vm: AppViewModel) {
         if (filtered.isEmpty()) {
             item {
                 Text(
-                    "Nothing logged yet — actions you take appear here.",
+                    str.logsEmpty,
                     style = MaterialTheme.typography.bodySmall,
                     color = TdColor.TextLow,
                     modifier = Modifier.padding(vertical = 24.dp),

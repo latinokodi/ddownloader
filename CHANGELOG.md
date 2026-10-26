@@ -7,6 +7,24 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-10-26
+
+### Changed — the whole UI now follows the language setting
+- Every screen reads its copy from the `Strings` table: home hero, search card, results, stream
+  sheet, Transfers, Logs, Discover (including shelf and genre names via `ShelfNames`), the update
+  dialog/banner and the top bar. Previously only Settings, onboarding and navigation were translated.
+- Every ViewModel toast (validation errors, queue results, account state, update failures) is
+  localized too, using the persisted language rather than the activity's locale.
+- 97 new keys added to both locales (EN + ES), including formatted ones (`transferSummary`,
+  `logsSummary`, `updateAvailable`, `resumeInterrupted`).
+
+### Fixed
+- The stream sheet said "Asking Comet through Tor…" — a leftover from the original project that
+  contradicted the product (no Tor network involved). Now "Asking Comet for streams…".
+- English leaked into the Spanish UI in the top bar (SECURE SESSION / TRANSFERRING), Settings
+  update row (Status) and the update dialog.
+
+
 ## [1.3.1] - 2026-10-26
 
 ### Changed

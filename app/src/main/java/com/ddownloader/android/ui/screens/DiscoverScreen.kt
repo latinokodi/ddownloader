@@ -59,6 +59,8 @@ import com.ddownloader.android.ui.theme.pressEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DiscoverScreen(vm: AppViewModel) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
+    val language = com.ddownloader.android.ui.i18n.Language.fromTag(vm.settings.value.language)
     val settings by vm.settings.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -70,7 +72,7 @@ fun DiscoverScreen(vm: AppViewModel) {
         Column(Modifier.fillMaxSize().padding(16.dp)) {
             EmptyState(
                 icon = AppIcons.Explore,
-                title = "Discover needs a TMDB key",
+                title = str.tmdbNeeded,
                 body = "Add a free TMDB API key in Settings to browse curated rows here. " +
                     "Search and direct links keep working without it.",
             )
@@ -90,13 +92,13 @@ fun DiscoverScreen(vm: AppViewModel) {
             ) {
                 Column(Modifier.weight(1f)) {
                     Text(
-                        "Discover",
+                        str.discover,
                         style = MaterialTheme.typography.headlineMedium,
                         color = TdColor.TextHi,
                     )
                     Spacer(Modifier.height(2.dp))
                     Text(
-                        "TMDB catalogue · Comet streams",
+                        str.discoverSubtitle,
                         style = MaterialTheme.typography.labelSmall,
                         color = TdColor.TextLow,
                     )
@@ -139,7 +141,7 @@ fun DiscoverScreen(vm: AppViewModel) {
             }
             else -> {
                 items(vm.shelves, key = { it.title }) { shelf ->
-                    ShelfRow(shelf) { item -> vm.openItem(item) }
+                    ShelfRow(shelf, language) { item -> vm.openItem(item) }
                 }
             }
         }
@@ -161,6 +163,7 @@ fun DiscoverScreen(vm: AppViewModel) {
 /** Movies / Series switch, drawn as a small segmented control. */
 @Composable
 private fun SegmentedType(isMovie: Boolean, onSelect: (String) -> Unit) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     Row(
         Modifier
             .clip(RoundedCornerShape(14.dp))
@@ -168,8 +171,8 @@ private fun SegmentedType(isMovie: Boolean, onSelect: (String) -> Unit) {
             .padding(3.dp),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        SegmentButton("Movies", isMovie) { onSelect("movie") }
-        SegmentButton("Series", !isMovie) { onSelect("tv") }
+        SegmentButton(str.moviesLabel, isMovie) { onSelect("movie") }
+        SegmentButton(str.seriesLabel, !isMovie) { onSelect("tv") }
     }
 }
 
@@ -190,14 +193,18 @@ private fun SegmentButton(label: String, active: Boolean, onClick: () -> Unit) {
 
 /** One category: header plus a horizontally scrolling row of posters. */
 @Composable
-private fun ShelfRow(shelf: AppViewModel.Shelf, onOpen: (TmdbApi.Item) -> Unit) {
+private fun ShelfRow(
+    shelf: AppViewModel.Shelf,
+    language: com.ddownloader.android.ui.i18n.Language,
+    onOpen: (TmdbApi.Item) -> Unit,
+) {
     Column(Modifier.fillMaxWidth()) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                shelf.title,
+                com.ddownloader.android.ui.i18n.ShelfNames.shelfTitle(language, shelf.title),
                 style = MaterialTheme.typography.titleMedium,
                 color = TdColor.TextHi,
                 fontWeight = FontWeight.SemiBold,

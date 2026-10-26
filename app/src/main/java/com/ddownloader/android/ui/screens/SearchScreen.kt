@@ -68,6 +68,7 @@ import com.ddownloader.android.ui.theme.pressEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val active by vm.activeCount.collectAsStateWithLifecycle()
     val records by vm.records.collectAsStateWithLifecycle()
     val settings by vm.settings.collectAsStateWithLifecycle()
@@ -103,25 +104,25 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
 
         item(span = { GridItemSpan(maxLineSpan) }) {
             AuroraCard {
-                SectionLabel("Find something")
+                SectionLabel(str.findSomething)
                 Spacer(Modifier.height(10.dp))
                 TdTextField(
                     value = vm.searchQuery,
                     onValueChange = { vm.searchQuery = it },
-                    label = "Movie or series",
-                    placeholder = "Dune, Severance, Cien años de soledad…",
+                    label = str.movieOrSeries,
+                    placeholder = str.searchPlaceholder,
                 )
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     GradientButton(
-                        text = if (vm.searching) "Searching…" else "Search",
+                        text = if (vm.searching) str.searchingAction else str.searchAction,
                         modifier = Modifier.weight(1f),
                         icon = AppIcons.Search,
                         enabled = !vm.searching && vm.searchQuery.isNotBlank(),
                         onClick = { vm.search() },
                     )
                     if (!settings.hasTmdb) {
-                        StatusPill("TMDB key needed", TdColor.Amber, AppIcons.Key)
+                        StatusPill(str.tmdbNeeded, TdColor.Amber, AppIcons.Key)
                     }
                 }
                 vm.searchError?.let {
@@ -144,7 +145,7 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
         }
 
         if (vm.searchResults.isNotEmpty()) {
-            item(span = { GridItemSpan(maxLineSpan) }) { SectionLabel("Results", Modifier.padding(start = 4.dp)) }
+            item(span = { GridItemSpan(maxLineSpan) }) { SectionLabel(str.resultsLabel, Modifier.padding(start = 4.dp)) }
             items(vm.searchResults, key = { "${it.mediaType}-${it.id}" }) { item ->
                 ResultCard(item) { vm.openItem(item) }
             }
@@ -152,17 +153,17 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
 
         item(span = { GridItemSpan(maxLineSpan) }) {
             AuroraCard {
-                SectionLabel("Paste a link")
+                SectionLabel(str.pasteLink)
                 Spacer(Modifier.height(10.dp))
                 TdTextField(
                     value = vm.pastedLink,
                     onValueChange = { vm.pastedLink = it },
-                    label = "Direct URL",
+                    label = str.directUrl,
                     placeholder = "https://… link or magnet:…",
                 )
                 Spacer(Modifier.height(10.dp))
                 GhostButton(
-                    text = "Queue download",
+                    text = str.queueDownload,
                     icon = AppIcons.CloudDownload,
                     enabled = vm.pastedLink.isNotBlank(),
                     onClick = {
@@ -172,7 +173,7 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "Transfers run in a foreground service and survive process death. API tokens are stored encrypted in the Android Keystore.",
+                    str.pasteNote,
                     style = MaterialTheme.typography.bodySmall,
                     color = TdColor.TextLow,
                 )
@@ -195,8 +196,9 @@ fun SearchScreen(vm: AppViewModel, onOpenDownloads: () -> Unit = {}) {
 
 @Composable
 internal fun StreamSheetContent(vm: AppViewModel, item: TmdbApi.Item) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     Column(Modifier.padding(horizontal = 18.dp).padding(bottom = 28.dp)) {
-        SectionLabel("Comet streams")
+        SectionLabel(str.streamSheetTitle)
         Spacer(Modifier.height(6.dp))
         Text(
             item.title + (item.year?.let { " ($it)" } ?: ""),
@@ -205,7 +207,7 @@ internal fun StreamSheetContent(vm: AppViewModel, item: TmdbApi.Item) {
         )
         Spacer(Modifier.height(2.dp))
         Text(
-            "Embedded add-on • stremio.comet.fast",
+            str.embeddedAddon,
             style = MaterialTheme.typography.labelSmall,
             color = TdColor.TextLow,
         )
@@ -214,7 +216,7 @@ internal fun StreamSheetContent(vm: AppViewModel, item: TmdbApi.Item) {
             vm.streamsLoading -> Row(verticalAlignment = Alignment.CenterVertically) {
                 CircularProgressIndicator(Modifier.size(20.dp), color = TdColor.Cyan, strokeWidth = 2.dp)
                 Spacer(Modifier.width(10.dp))
-                Text("Asking Comet through Tor…", color = TdColor.TextMid, style = MaterialTheme.typography.bodySmall)
+                Text(str.askingStreams, color = TdColor.TextMid, style = MaterialTheme.typography.bodySmall)
             }
             vm.streamsError != null -> Text(
                 vm.streamsError!!,
@@ -318,6 +320,7 @@ private fun TitleRow(item: TmdbApi.Item, onClick: () -> Unit) {
  */
 @Composable
 private fun ResultCard(item: TmdbApi.Item, onClick: () -> Unit) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
     val interaction = androidx.compose.runtime.remember { MutableInteractionSource() }
     Column(
         Modifier
@@ -368,7 +371,7 @@ private fun ResultCard(item: TmdbApi.Item, onClick: () -> Unit) {
             overflow = TextOverflow.Ellipsis,
         )
         Text(
-            listOfNotNull(item.year?.toString(), item.mediaType.replaceFirstChar { it.uppercase() })
+            listOfNotNull(item.year?.toString(), if (item.mediaType == "tv" || item.mediaType == "series") str.typeSeries else str.typeMovie)
                 .joinToString(" · "),
             style = MaterialTheme.typography.labelSmall,
             color = TdColor.TextLow,
