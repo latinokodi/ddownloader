@@ -19,7 +19,7 @@ testCore = "1.6.1"
 testRunner = "1.6.2"
 testRules = "1.6.1"
 uiautomator = "2.3.0"
-detekt = "1.23.7"
+detekt = "1.23.8"
 coil = "2.7.0"
 
 [libraries]
