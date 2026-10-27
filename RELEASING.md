@@ -82,3 +82,22 @@ the running `versionName`. Prereleases are simply “newer but not preferred”.
 | Bad build installed by users | publish `x.y.(z+1)` with the fix — never attempt a downgrade |
 | Signing key lost | no recovery: every install has to be uninstalled/reinstalled by the user. Back the keystore up |
 | Release feed broken (rate limit / API change) | the updater degrades to “update check failed”, downloads still work; fix and publish |
+
+
+## Signing
+
+- Keystore: `keystore/release.jks`, alias `tordownloader`, RSA 4096, **v2 + v3 schemes** enabled in
+  `app/build.gradle.kts` (`enableV1Signing` is deliberately irrelevant on minSdk 26).
+- Credentials live in `keystore.properties` (git-ignored). Never commit either file.
+- Off-repo backup: `F:\PyApps\ddandroid-keys-backup` — **keep it encrypted**; losing it means every
+  future update is rejected and users must uninstall.
+- Two APKs signed by this key share an identity: the app's own updater enforces signer equality
+  (`UpdateInstaller`) before handing a downloaded APK to the system installer.
+- Verify a build:
+
+```
+apksigner verify --verbose --print-certs app/build/outputs/apk/release/DDownloader-<ver>-<code>-release.apk
+```
+
+- Sideloaded APKs trigger Google Play Protect's "unknown app" warning; this is about distribution,
+  not about the signature. Install via `adb install` or the in-app updater to avoid the dialog.

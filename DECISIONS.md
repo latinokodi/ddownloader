@@ -214,3 +214,24 @@ deliverable. No dependency needs a Kotlin-stdlib pin any more (the Tor AAR was r
 | D1 (64-bit only) | A meaningful share of the target audience ran 32-bit-only devices |
 | D2 (fail-closed) | A product requirement allowed direct fallback, which the brief explicitly forbids |
 | D6 (Comet) | Comet's endpoint changed/closed and TMDB alone could not resolve streams |
+
+
+## Signing key: keep the existing certificate
+
+**Decision (2026-10-26):** keep the current release keystore (`keystore/release.jks`, alias
+`tordownloader`, RSA 4096) even though its certificate DN still reads `CN=TorDownloader Android` from
+before the app was renamed.
+
+**Why:** Android refuses an APK signed with a different key over an existing install. Generating a
+"DDownloader"-named key would force every current install to uninstall first and lose its settings,
+linked debrid accounts and queue. The DN is cosmetic (it appears only when someone inspects the
+signature); an update that just works is worth more than a tidy name.
+
+**Consequences:**
+- Updates stay seamless for every existing install (verified: the in-app updater installs over the
+  previous version and data survives).
+- If the key is ever lost, recovery is *uninstall + reinstall*: no future update will be accepted.
+  A backup therefore exists outside the repo at `F:\PyApps\ddandroid-keys-backup`
+  (`release.jks` + `keystore.properties` + `release.jks.sha256`). It must be stored encrypted or in a
+  password manager — `keystore.properties` contains the passwords.
+- Keystore material stays git-ignored (`keystore/`, `keystore.properties`, `*.jks`).
