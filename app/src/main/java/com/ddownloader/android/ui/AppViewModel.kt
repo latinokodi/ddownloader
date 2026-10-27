@@ -214,6 +214,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
             val apk: java.io.File,
             val sha256: String,
         ) : UpdateUi
+        /** Verified APK sitting in the public Download folder, waiting for the user to tap it. */
+        data class Saved(val path: String) : UpdateUi
         data class Error(val message: String) : UpdateUi
     }
 
@@ -275,10 +277,24 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun installUpdate() {
+    /**
+     * Saves the verified APK to the public Download folder. Installing is the user's next step, done
+     * from their file manager — the app no longer asks for the install-packages permission, which is
+     * what made the system's scanner treat the whole app as fake software.
+     */
+    fun saveUpdateToDownloads() {
         val ready = _updateState.value as? UpdateUi.Ready ?: return
-        locator.updateInstaller.install(ready.apk)
-            .onFailure { toast(str.installerFailed.format(it.message ?: "")) }
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                locator.updateInstaller.saveToDownloads(ready.apk, ready.release.version)
+            }
+            result
+                .onSuccess {
+                    _updateState.value = UpdateUi.Saved(it)
+                    toast(str.updateSaved.format(it))
+                }
+                .onFailure { toast(str.updateFailed.format(it.message ?: "")) }
+        }
     }
 
     /** "Later": remember this version so the prompt does not reappear every launch. */

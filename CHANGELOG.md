@@ -5,6 +5,20 @@ Cambios notables del proyecto. Formato inspirado en Keep a Changelog y versionad
 
 ## [Unreleased]
 
+## [1.8.4] — 2026-10-27
+
+### Cambiado
+- **La app ya no pide permiso para instalar aplicaciones.** Ese permiso, junto con una firma no
+  distribuida por una tienda, es lo que hacía que el escáner de seguridad del sistema clasificara la
+  app como falsa y **bloqueara la instalación**.
+- La actualización ahora **guarda el APK verificado en `Descargas/DDownloader`** y avisa con la ruta;
+  instalar es un paso del usuario desde su explorador de archivos. Se mantienen las dos
+  comprobaciones: suma SHA-256 publicada y firma idéntica a la de la app instalada.
+
+### Verificado
+- En dispositivo: buscar actualización → descargar → «Guardar en Descargas» deja
+  `DDownloader-1.8.4.apk` (3 044 188 bytes) en la carpeta pública, y el APK ya no declara el permiso.
+
 ## [1.8.2] — 2026-10-27
 
 ### Cambiado

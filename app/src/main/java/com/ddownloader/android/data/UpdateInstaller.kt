@@ -168,26 +168,65 @@ class UpdateInstaller(private val context: Context) {
     private fun signers(sigs: Array<Signature>?): List<ByteArray> =
         sigs?.map { it.toByteArray() } ?: emptyList()
 
-    /** Hands the verified APK to the system installer. The user confirms. */
-    fun install(apk: File): Result<Unit> {
-        return try {
-            val uri = FileProvider.getUriForFile(context, "${context.packageName}.updates", apk)
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(uri, "application/vnd.android.package-archive")
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+    /**
+     * Saves the verified APK into the phone's public Download folder and returns its display path.
+     *
+     * The app deliberately does **not** install it: requesting `REQUEST_INSTALL_PACKAGES` is what made
+     * the system's security scanner block the whole app as "fake software". The user taps the file in
+     * Downloads instead, so the install is an explicit action of theirs, not a privilege of ours.
+     */
+    fun saveToDownloads(apk: File, version: String): Result<String> = runCatching {
+        val fileName = "DDownloader-$version.apk"
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            val resolver = context.contentResolver
+            val values = android.content.ContentValues().apply {
+                put(android.provider.MediaStore.Downloads.DISPLAY_NAME, fileName)
+                put(android.provider.MediaStore.Downloads.MIME_TYPE, "application/vnd.android.package-archive")
+                put(
+                    android.provider.MediaStore.Downloads.RELATIVE_PATH,
+                    android.os.Environment.DIRECTORY_DOWNLOADS + "/DDownloader/",
+                )
+                put(android.provider.MediaStore.Downloads.IS_PENDING, 1)
             }
-            if (intent.resolveActivity(context.packageManager) == null) {
-                return Result.failure(IllegalStateException("no package installer available on this device"))
+            val uri = resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
+                ?: error("the system refused the Downloads entry")
+            try {
+                resolver.openOutputStream(uri)?.use { os ->
+                    apk.inputStream().use { ins -> ins.copyTo(os, 256 * 1024) }
+                    os.flush()
+                } ?: error("cannot open the Downloads stream")
+                resolver.update(
+                    uri,
+                    android.content.ContentValues().apply {
+                        put(android.provider.MediaStore.Downloads.IS_PENDING, 0)
+                    },
+                    null,
+                    null,
+                )
+            } catch (t: Throwable) {
+                runCatching { resolver.delete(uri, null, null) }
+                throw t
             }
-            context.startActivity(intent)
-            AppLog.i(TAG, "handed ${apk.name} to the system installer")
-            Result.success(Unit)
-        } catch (t: Throwable) {
-            AppLog.e(TAG, "could not start the installer: ${t.message}", t)
-            Result.failure(t)
+            val display = "Download/DDownloader/$fileName"
+            AppLog.i(TAG, "saved update to $display")
+            return@runCatching display
         }
+        // Android 8-9: direct write into the public folder, app-scoped fallback if not permitted.
+        val publicDir = java.io.File(
+            android.os.Environment.getExternalStoragePublicDirectory(
+                android.os.Environment.DIRECTORY_DOWNLOADS,
+            ),
+            "DDownloader",
+        )
+        val dir = if (publicDir.apply { mkdirs() }.canWrite()) {
+            publicDir
+        } else {
+            File(context.getExternalFilesDir(null) ?: context.filesDir, "updates").apply { mkdirs() }
+        }
+        val out = File(dir, fileName)
+        apk.copyTo(out, overwrite = true)
+        AppLog.i(TAG, "saved update to ${out.absolutePath}")
+        out.absolutePath
     }
 
     fun sha256(file: File): String {

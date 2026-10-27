@@ -48,6 +48,7 @@ fun UpdateDialog(vm: AppViewModel) {
                     is AppViewModel.UpdateUi.Available -> str.updateAvailable.format(state.release.version)
                     is AppViewModel.UpdateUi.Downloading -> str.downloadingUpdate
                     is AppViewModel.UpdateUi.Ready -> str.readyToInstall.format(state.release.version)
+                    is AppViewModel.UpdateUi.Saved -> str.updateSavedTitle
                     is AppViewModel.UpdateUi.Checking -> "Checking for updates…"
                     is AppViewModel.UpdateUi.Error -> str.updateCheckFailed.format("")
                     AppViewModel.UpdateUi.Idle -> ""
@@ -100,7 +101,26 @@ fun UpdateDialog(vm: AppViewModel) {
                             trackColor = TdColor.Ink3,
                         )
                     }
+                    is AppViewModel.UpdateUi.Saved -> {
+                        Text(
+                            str.updateSavedBody,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TdColor.TextMid,
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            state.path,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = TdColor.Primary,
+                        )
+                    }
                     is AppViewModel.UpdateUi.Ready -> {
+                        Text(
+                            str.updateManualNote,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = TdColor.TextMid,
+                        )
+                        Spacer(Modifier.height(6.dp))
                         Text(
                             str.verifiedNote,
                             style = MaterialTheme.typography.bodySmall,
@@ -127,8 +147,11 @@ fun UpdateDialog(vm: AppViewModel) {
                 is AppViewModel.UpdateUi.Available -> GradientButton(str.updateNow, icon = null) {
                     vm.downloadUpdate()
                 }
-                is AppViewModel.UpdateUi.Ready -> GradientButton(str.installLabel, icon = null) {
-                    vm.installUpdate()
+                is AppViewModel.UpdateUi.Ready -> GradientButton(str.saveToDownloads, icon = null) {
+                    vm.saveUpdateToDownloads()
+                }
+                is AppViewModel.UpdateUi.Saved -> GradientButton(str.doneBtn, icon = null) {
+                    vm.laterUpdate()
                 }
                 is AppViewModel.UpdateUi.Error -> GradientButton(str.retryLabel, icon = null) {
                     vm.checkForUpdate(manual = true)

@@ -19,7 +19,6 @@
     <!-- Self-update: the app downloads a release APK from its GitHub Releases and
          hands it to the system installer. The user still confirms the install;
          the APK is checksum- and signer-verified first. -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".App"

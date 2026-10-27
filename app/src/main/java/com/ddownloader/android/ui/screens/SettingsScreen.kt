@@ -353,6 +353,7 @@ fun SettingsScreen(vm: AppViewModel) {
                     is AppViewModel.UpdateUi.Available -> "v${upd.release.version} available"
                     is AppViewModel.UpdateUi.Downloading -> "downloading…"
                     is AppViewModel.UpdateUi.Ready -> "v${upd.release.version} ready"
+                    is AppViewModel.UpdateUi.Saved -> "guardada en Descargas"
                     is AppViewModel.UpdateUi.Checking -> t.checking
                     is AppViewModel.UpdateUi.Error -> upd.message
                     AppViewModel.UpdateUi.Idle -> t.upToDate
@@ -369,7 +370,7 @@ fun SettingsScreen(vm: AppViewModel) {
                         is AppViewModel.UpdateUi.Available ->
                             GhostButton(t.updateLabel, icon = AppIcons.CloudDownload) { vm.downloadUpdate() }
                         is AppViewModel.UpdateUi.Ready ->
-                            GhostButton(t.installLabel, icon = AppIcons.Download) { vm.installUpdate() }
+                            GhostButton(t.saveToDownloads, icon = AppIcons.Download) { vm.saveUpdateToDownloads() }
                         else -> Unit
                     }
                 }
