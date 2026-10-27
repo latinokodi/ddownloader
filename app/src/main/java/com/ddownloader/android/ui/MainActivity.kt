@@ -99,6 +99,13 @@ class MainActivity : ComponentActivity() {
 
     private val vm: AppViewModel by viewModels()
 
+    // Android 8-9 only: MediaStore.Downloads needs API 29, so the legacy permission is required
+    // to write into the public Download folder there. Modern versions need nothing.
+    private val storagePermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            AppLog.i("Main", "WRITE_EXTERNAL_STORAGE granted=$granted")
+        }
+
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             AppLog.i("Main", LogL10n.of("POST_NOTIFICATIONS granted=$granted", "POST_NOTIFICATIONS concedido=$granted"))
@@ -118,6 +125,7 @@ class MainActivity : ComponentActivity() {
             }
         }
         askNotificationPermission()
+        askStoragePermission()
         vm.onUiVisible()
     }
 
@@ -129,6 +137,14 @@ class MainActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         vm.onUiVisible()
+    }
+
+    private fun askStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) return
+        val granted = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!granted) storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 
     private fun askNotificationPermission() {

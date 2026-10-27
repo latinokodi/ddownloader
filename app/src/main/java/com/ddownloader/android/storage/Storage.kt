@@ -1,7 +1,12 @@
 package com.ddownloader.android.storage
 
+import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import android.webkit.MimeTypeMap
 import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,12 +21,14 @@ import java.io.IOException
  * that is the only place we can seek/append reliably and keep across process
  * death without any permission. When a transfer completes it is *published*:
  *
- *  • no SAF tree chosen  → `<external-files>/Download/<subfolder>/<name>`
- *                          (app-scoped, zero permissions, visible to the user
- *                          through the Files app and to `adb pull`)
+ *  • no SAF tree chosen  → the phone's public **Download** folder, under `DDownloader/`
+ *                          (Android 10+: MediaStore, no permission needed;
+ *                           Android 8-9: direct file write with WRITE_EXTERNAL_STORAGE,
+ *                           falling back to app storage if that permission is denied)
  *  • SAF tree chosen     → `DocumentFile` inside the user-picked folder
  *
- * No `WRITE_EXTERNAL_STORAGE` / `MANAGE_EXTERNAL_STORAGE` is ever requested.
+ * `WRITE_EXTERNAL_STORAGE` is declared with `maxSdkVersion="28"` and only requested on
+ * Android 8-9, where the public Download folder cannot be written through MediaStore.
  */
 object Storage {
 
@@ -72,12 +79,34 @@ object Storage {
         }
 
         if (treeUri.isNullOrBlank()) {
-            val dir = defaultOutputRoot(context).resolve(safeSub).apply { mkdirs() }
-            val out = uniqueFile(dir, safeName)
+            // Public Download folder: the one the user already knows, not an app-scoped copy.
+            val relative = buildString {
+                append(Environment.DIRECTORY_DOWNLOADS)
+                append("/DDownloader")
+                if (safeSub.isNotBlank()) { append('/'); append(safeSub) }
+                append('/')
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                return@withContext publishToMediaStore(context, partial, relative, safeName)
+            }
+            // Android 8-9: scoped storage does not apply, write the file directly. If the legacy
+            // permission was denied, keep working by falling back to app storage.
+            val publicRoot = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val dir = publicRoot.resolve("DDownloader").resolve(safeSub).apply { mkdirs() }
+            if (dir.canWrite()) {
+                val out = uniqueFile(dir, safeName)
+                partial.copyTo(out, overwrite = true)
+                val size = out.length()
+                partial.delete()
+                AppLog.i(TAG, "published to ${out.absolutePath} ($size bytes)")
+                return@withContext PublishResult(out.absolutePath, Uri.fromFile(out).toString(), size)
+            }
+            AppLog.w(TAG, "public Download not writable — falling back to app storage")
+            val dir2 = defaultOutputRoot(context).resolve(safeSub).apply { mkdirs() }
+            val out = uniqueFile(dir2, safeName)
             partial.copyTo(out, overwrite = true)
             val size = out.length()
             partial.delete()
-            AppLog.i(TAG, "published to ${out.absolutePath} ($size bytes)")
             return@withContext PublishResult(out.absolutePath, Uri.fromFile(out).toString(), size)
         }
 
@@ -145,5 +174,46 @@ object Storage {
         }
         if (removed > 0) AppLog.i(TAG, "pruned $removed orphaned partial file(s)")
         return removed
+    }
+
+    /**
+     * Writes [partial] into `Download/DDownloader/<sub>` through MediaStore. No permission is
+     * required on Android 10+, and IS_PENDING keeps the file hidden from other apps until the copy
+     * is complete, so a half-written video never shows up in the gallery or Files.
+     */
+    private fun publishToMediaStore(
+        context: Context,
+        partial: File,
+        relativePath: String,
+        fileName: String,
+    ): PublishResult {
+        val resolver = context.contentResolver
+        val ext = fileName.substringAfterLast('.', "")
+        val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext.lowercase())
+            ?: "application/octet-stream"
+        val values = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, fileName)
+            put(MediaStore.Downloads.MIME_TYPE, mime)
+            put(MediaStore.Downloads.RELATIVE_PATH, relativePath)
+            put(MediaStore.Downloads.IS_PENDING, 1)
+        }
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
+            ?: throw IOException("MediaStore refused the Download entry")
+        try {
+            resolver.openOutputStream(uri)?.use { os ->
+                partial.inputStream().use { ins -> ins.copyTo(os, 256 * 1024) }
+                os.flush()
+            } ?: throw IOException("Cannot open MediaStore output stream")
+            val done = ContentValues().apply { put(MediaStore.Downloads.IS_PENDING, 0) }
+            resolver.update(uri, done, null, null)
+        } catch (t: Throwable) {
+            runCatching { resolver.delete(uri, null, null) }
+            throw t
+        }
+        val size = partial.length()
+        partial.delete()
+        val display = relativePath + fileName
+        AppLog.i(TAG, "published to $display ($size bytes)")
+        return PublishResult(display, uri.toString(), size)
     }
 }

@@ -383,7 +383,7 @@ private fun FolderPage(outputTreeUri: String, onChoose: () -> Unit, onReset: () 
                 Icon(AppIcons.FolderOpen, contentDescription = null, tint = TdColor.Cyan, modifier = Modifier.size(20.dp))
                 Spacer(Modifier.width(10.dp))
                 Text(
-                    if (outputTreeUri.isBlank()) "App storage \u2192 Download/" else "Custom folder selected",
+                    if (outputTreeUri.isBlank()) com.ddownloader.android.ui.i18n.LocalStrings.current.destinationApp else com.ddownloader.android.ui.i18n.LocalStrings.current.destinationCustom,
                     style = MaterialTheme.typography.titleSmall,
                     color = TdColor.TextHi,
                 )

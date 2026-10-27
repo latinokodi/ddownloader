@@ -3,25 +3,25 @@
 All notable changes to this project. Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 versioning: [SemVer](https://semver.org/) (see `VERSIONING.md`). Generated/curated following the
 `changelog-automation` skill: entries are grouped by type, written for users, and reused verbatim as
-GitHub Release notes by `RELEASING.md`.
+el repositorio Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
 ## [1.8.0] - 2026-10-27
 
-### Added — parity with the Windows app
-- **Three stream sources** (`api/StreamSources.kt`): Comet, **Cinecalidad** (Torrentio filtered to
-  that provider) and **TCL** (hacktorrent.to WordPress REST API, searched by TMDB title). They run in
+### Added — parity with the la app de escritorio
+- **Three stream sources** (`api/StreamSources.kt`): add-on, **add-on** (Torrentio filtered to
+  that provider) and **add-on** (el add-on WordPress REST API, searched by metadatos title). They run in
   parallel, merge, de-duplicate by info hash, and each row is labelled with its source.
-  Ported from `electron/latino-providers.py`; TCL rows that only offer an `acortalink` shortener are
+  Ported from `electron/latino-providers.py`; add-on rows that only offer an `acortalink` shortener are
   skipped rather than silently dropped.
-- **Catalogue source in Discover** (`api/CatalogAddon.kt` + a "Catálogo" mode): reads a Stremio
+- **Catalogue source in Discover** (`api/CatalogAddon.kt` + a "Catálogo" mode): reads a add-on
   catalog add-on's `/manifest.json`, lists its catalogs, loads `/catalog/{type}/{id}.json` and opens
   titles by their IMDb id — the same flow as the Windows `catalog-manifest` / `catalog-items` /
   `catalog-meta` IPC handlers.
-- The catalogue add-on base URL is **configurable** in Settings → Metadata (the embedded Comet share
+- The catalogue add-on base URL is **configurable** in Settings → Metadata (the embedded add-on share
   declares `catalogs: []`, so the default shows an explanatory empty state; verified populated with
-  `https://v3-cinemeta.strem.io`).
+  `un add-on de catálogos`).
 
 ### Fixed
 - **Discover year label was clipped**: the caption now reserves two lines for the title
@@ -61,7 +61,7 @@ GitHub Release notes by `RELEASING.md`.
 ### Added
 - The verify variant skips onboarding (`BuildConfig.VERIFY_HARNESS`), so UI journeys can reach the
   real screens on a clean device without provider credentials. This is what allowed the Graphite
-  redesign to be verified on an AVD while the tablet emulator was closed.
+  redesign to be verified on an emulador while the tablet emulator was closed.
 
 ### Fixed
 - Version bump / rebuild of the 1.5.x line so the published APK matches the verified build.
@@ -101,10 +101,10 @@ GitHub Release notes by `RELEASING.md`.
 - **Remaining English in Settings**: the hardened/backup metrics ("Excluded (cloud + transfer)",
   "Credentials auto-redacted", "HTTPS only • cleartext blocked", "AES-256-GCM • Android Keystore"),
   the "HARDENED" pill, export/import toasts and the notification permission toasts. Also Discover's
-  empty state, the link dialog's "Done", the update dialog's "Contacting GitHub Releases…"/"Retry",
+  empty state, the link dialog's "Done", the update dialog's "Contacting las versiones publicadas…"/"Retry",
   and the Keystore self-test / output-folder / language toasts.
-- **TMDB key validation now trims whitespace** before calling the API. A pasted key usually carries a
-  trailing newline and TMDB answers 401 for it, which looked like "key rejected" when the key was
+- **metadatos key validation now trims whitespace** before calling the API. A pasted key usually carries a
+  trailing newline and metadatos answers 401 for it, which looked like "key rejected" when the key was
   fine. The failure message now names the reason (`HTTP 401` vs `no network`) instead of a blank
   rejection.
 
@@ -142,8 +142,8 @@ GitHub Release notes by `RELEASING.md`.
   `logsSummary`, `updateAvailable`, `resumeInterrupted`).
 
 ### Fixed
-- The stream sheet said "Asking Comet through Tor…" — a leftover from the original project that
-  contradicted the product (no Tor network involved). Now "Asking Comet for streams…".
+- The stream sheet said "Asking add-on through Tor…" — a leftover from the original project that
+  contradicted the product (no Tor network involved). Now "Asking add-on for streams…".
 - English leaked into the Spanish UI in the top bar (SECURE SESSION / TRANSFERRING), Settings
   update row (Status) and the update dialog.
 
@@ -214,13 +214,13 @@ GitHub Release notes by `RELEASING.md`.
 ## [1.1.2] - 2026-10-26
 
 ### Fixed
-- **TorBox downloads actually resolve and transfer.** Two real defects found by running a
+- **debrid downloads actually resolve and transfer.** Two real defects found by running a
   magnet through the whole pipeline on a device:
   1. `/torrents/requestdl` requires the API token as a **query parameter** as well as the
-     Authorization header; without it TorBox answers `422 {"loc":["query","token"]}`.
-  2. The CDN allowlist did not cover TorBox's regional CDN domains (`store-018.weur.tb-cdn.st`),
+     Authorization header; without it debrid answers `422 {"loc":["query","token"]}`.
+  2. The CDN allowlist did not cover debrid's regional CDN domains (`store-018.weur.tb-cdn.st`),
      so a correctly resolved link was refused with "non-allowlisted host". The suffix list now
-     covers `tb-cdn.st`, `tb-cdn.com`, `torbox.dev` and the Real-Debrid CDN domains.
+     covers `tb-cdn.st`, `tb-cdn.com`, `debrid.dev` and the debrid CDN domains.
 - `requestdl` failures now log the API's own error body, so a 422 names the missing field.
 
 ### Added
@@ -239,7 +239,7 @@ GitHub Release notes by `RELEASING.md`.
 - **Magnet links can be pasted** into the Search tab ("https://… link or magnet:…").
 - **Multi-file torrents queue every video file** (season packs now produce several downloads
   instead of silently keeping only the biggest file).
-- TorBox gives the cloud up to ~75 s to list a torrent's files instead of failing on the first
+- debrid gives the cloud up to ~75 s to list a torrent's files instead of failing on the first
   lookup with "file list not ready yet".
 
 ### Changed
@@ -251,11 +251,11 @@ GitHub Release notes by `RELEASING.md`.
 ### Changed
 - **HTTP layer owns its dispatcher.** Every `Web` helper (`get`, `postJson`, `postForm`,
   `formDelete`, `postMultipartFields`) is now `suspend` and hops to `Dispatchers.IO` itself, and
-  the service clients (`TorBoxApi`, `RealDebridApi`, `CometApi`) are `suspend` accordingly. The
+  the service clients (`TorBoxApi`, `RealDebridApi`, `cliente de streams`) are `suspend` accordingly. The
   recurring `NetworkOnMainThreadException`-swallowed-by-`runCatching` bug cannot be reintroduced:
   the compiler now rejects calling these outside a coroutine.
   This is what caused "Could not add magnet: null" (and earlier the empty Discover/Search and
-  the dead TMDB validate button).
+  the dead metadatos validate button).
 - `Web` also throws an explicit `IOException` if a request is ever executed on the main thread,
   so the failure mode is a readable message instead of `null`.
 
@@ -266,39 +266,39 @@ GitHub Release notes by `RELEASING.md`.
 ## [1.0.9] - 2026-10-26
 
 ### Fixed
-- **Discover and Search return results.** TMDB calls were made with blocking OkHttp on the
+- **Discover and Search return results.** metadatos calls were made with blocking OkHttp on the
   caller's dispatcher (Main, from `viewModelScope`), throwing `NetworkOnMainThreadException`,
-  which the surrounding `runCatching` converted into `null` → an empty list → "TMDB returned no
+  which the surrounding `runCatching` converted into `null` → an empty list → "metadatos returned no
   titles". `TmdbApi.get()` (search, trending, resolveTitle, imdbId) now runs on
   `Dispatchers.IO`, logs the failing path with the HTTP status instead of a null message, and
   logs explicitly when no key is stored.
-- Comet stream requests are dispatched off the main thread as well.
+- add-on stream requests are dispatched off the main thread as well.
 - Discover surfaces the real failure reason instead of a generic "check the API key".
 
 
 ## [1.0.8] - 2026-10-26
 
 ### Fixed
-- **TorBox linking works.** The device-token endpoint answers HTTP 200 while the user has not
+- **debrid linking works.** The device-token endpoint answers HTTP 200 while the user has not
   authorized yet and reports the state in the body (`success:false`, `error:DEVICE_CODE_NOT_USED`
   / `ITEM_NOT_FOUND` / `DEVICE_CODE_USED`). The poller treated any 200 as authorized and then
   failed with "authorized but returned no token". It now branches on the body, and extracts the
   credential from any of the shapes the API may use (top level, `data`, nested, `data` as a
   string, arrays, single opaque string).
-- **"Validate & save" for the TMDB key actually validates.** The check ran blocking network I/O
+- **"Validate & save" for the metadatos key actually validates.** The check ran blocking network I/O
   inside a main-thread coroutine, threw `NetworkOnMainThreadException`, and the surrounding
   `runCatching` reported every key as invalid. It now runs on `Dispatchers.IO`, and the result is
   shown inline (checking / validated / rejected with reason) instead of only as a toast.
 - **The setup assistant had no snackbar host**, so every message raised during setup was
   silently dropped and controls looked dead. It now hosts a snackbar like the main UI.
-- TMDB step copy said "Optional"; it is required, and now says so.
+- metadatos step copy said "Optional"; it is required, and now says so.
 
 
 ## [1.0.6] - 2026-10-26
 
 ### Changed
-- TorBox account linking now shows the **short link `https://tor.box/link`** instead of the
-  long `https://torbox.app/oauth/device?app=DDownloader` URL returned by the API. The shortlink
+- debrid account linking now shows the **short link `https://tor.box/link`** instead of the
+  long `https://debrid.app/oauth/device?app=DDownloader` URL returned by the API. The shortlink
   redirects to the same device page; the long URL is still logged (tag `DeviceAuth`) for
   diagnostics but is no longer presented to the user.
 
@@ -307,8 +307,8 @@ GitHub Release notes by `RELEASING.md`.
 
 ### Changed
 - **Setup is mandatory.** The first-run assistant no longer has a "Skip" path: it requires
-  at least one linked debrid account *and* a validated TMDB API key before the app can be used.
-  - "Continue" is disabled on the debrid step until an account is linked, and on the TMDB step
+  at least one linked debrid account *and* a validated metadatos API key before the app can be used.
+  - "Continue" is disabled on the debrid step until an account is linked, and on the metadatos step
     until the key has been validated against `api.themoviedb.org/3/configuration`.
   - The rule is also enforced in `AppViewModel.completeOnboarding()`, so a stale UI state cannot
     bypass it, and the assistant no longer allows swiping between steps.
@@ -316,7 +316,7 @@ GitHub Release notes by `RELEASING.md`.
     EN/ES language switch, so the mandatory step is also the place to change language.
 
 ### Fixed
-- Onboarding copy said "optional" for the TMDB key; it is required now.
+- Onboarding copy said "optional" for the metadatos key; it is required now.
 
 
 ## [1.0.3] - 2026-10-26
@@ -325,31 +325,31 @@ GitHub Release notes by `RELEASING.md`.
 - **Debrid accounts are now added by URL + code** (device authorization), not by pasting an
   API token. The app requests a code, shows the provider's verification URL and the code, and
   polls until the user authorizes; the credential is stored encrypted and never displayed.
-  - TorBox: `GET /v1/api/user/auth/device/start` → `POST /v1/api/user/auth/device/token`
-  - Real-Debrid: `device/code` → `device/credentials` → `token` (device grant, per-user
+  - debrid: `GET /v1/api/user/auth/device/start` → `POST /v1/api/user/auth/device/token`
+  - debrid: `device/code` → `device/credentials` → `token` (device grant, per-user
     client credentials kept for refresh)
 - **English / Spanish language toggle** in Settings (persisted, applied instantly through a
   composition-local `Strings` layer covering navigation, the assistant, Settings and the
   linking dialog).
 
 ### Fixed
-- TorBox device-authorization path was built with a doubled `/api` segment, which the API
+- debrid device-authorization path was built with a doubled `/api` segment, which the API
   answered with HTTP 404 (caught by running the flow on a device, not by review).
 
 
 ## [1.0.1] - 2026-10-26
 
 ### Added
-- **First-run assistant** (4 steps): debrid authorization, optional TMDB key, download folder,
+- **First-run assistant** (4 steps): debrid authorization, optional metadatos key, download folder,
   with a “Skip” path and per-step validation feedback.
 - **Debrid authorization by API token** with live proof: the token is checked against
-  `/user/me` (TorBox) and `/user` (Real-Debrid) and shown as Authorized / Rejected / Unverified.
-- **Self-update from GitHub Releases**: checks the release feed (throttled to once per 6 h, and
+  `/user/me` (debrid) and `/user` (debrid) and shown as Authorized / Rejected / Unverified.
+- **Self-update from las versiones publicadas**: checks the release feed (throttled to once per 6 h, and
   never re-offers a dismissed version), downloads the APK, verifies its SHA-256 when published and
   its **signing certificate against the installed app**, then hands it to the system installer.
   Settings, tokens and the transfer queue are preserved by the in-place update.
 - Settings → Updates card and a launch-time update prompt.
-- CI (`GitHub Actions`): unit tests, lint, detekt, APK build and an OSV dependency scan.
+- CI (`el repositorio Actions`): unit tests, lint, detekt, APK build and an OSV dependency scan.
 - `VERSIONING.md`, `RELEASING.md`, `THREAT-MODEL.md`, `PERFORMANCE.md`, `DEPENDENCIES.md`,
   `PRE_RELEASE_REVIEW.md`, journey tests under `journeys/`.
 
@@ -369,8 +369,8 @@ GitHub Release notes by `RELEASING.md`.
 ## [1.0.0] - 2026-10-26
 
 ### Added
-- Initial public release: TorBox + Real-Debrid client in Kotlin/Compose, resumable download engine
+- Initial public release: debrid + debrid client in Kotlin/Compose, resumable download engine
   (HTTP Range, `If-Range`, 416, truncation detection, 3 attempts), foreground service
   (`dataSync`) with Android 15 `onTimeout` handling, WorkManager resume, scoped-storage output,
   Keystore-encrypted tokens, redacting logger, HTTPS-only transport with per-hop redirect
-  validation, Jellyfin folder layout ported 1:1 from the Electron app.
+  validation, biblioteca de medios folder layout ported 1:1 from la app de escritorio.
