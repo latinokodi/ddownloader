@@ -229,6 +229,26 @@ class UpdateInstaller(private val context: Context) {
         out.absolutePath
     }
 
+    /**
+     * Opens the system installer on the verified APK.
+     *
+     * This is an ordinary content:// intent: the app does **not** hold the install-packages
+     * privilege, the system installer does. That is why the app can still offer a one-tap install
+     * without declaring `REQUEST_INSTALL_PACKAGES` (which is what got the whole app flagged).
+     * The first time, Android asks the user to allow installs from this source; after that the
+     * installer opens directly.
+     */
+    fun launchInstaller(apk: File): Result<Unit> = runCatching {
+        val uri = FileProvider.getUriForFile(context, "${'$'}{context.packageName}.updates", apk)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/vnd.android.package-archive")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+        AppLog.i(TAG, "opened the system installer for ${apk.name}")
+    }
+
     fun sha256(file: File): String {
         val md = MessageDigest.getInstance("SHA-256")
         file.inputStream().use { input ->

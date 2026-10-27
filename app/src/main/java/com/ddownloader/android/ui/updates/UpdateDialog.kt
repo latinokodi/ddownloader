@@ -161,7 +161,11 @@ fun UpdateDialog(vm: AppViewModel) {
         },
         dismissButton = {
             if (state !is AppViewModel.UpdateUi.Downloading) {
-                GhostButton(str.later) { vm.laterUpdate() }
+                GhostButton(
+                    if (state is AppViewModel.UpdateUi.Ready) str.saveToDownloads else str.later,
+                ) {
+                    if (state is AppViewModel.UpdateUi.Ready) vm.saveUpdateToDownloads() else vm.laterUpdate()
+                }
             }
         },
     )
