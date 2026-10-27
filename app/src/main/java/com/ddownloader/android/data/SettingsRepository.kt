@@ -35,6 +35,8 @@ class SettingsRepository(private val context: Context) {
         val realdebridClientSecret: String = "",
         val realdebridRefreshToken: String = "",
         val tmdbApiKey: String = "",
+    /** Base URL of a Stremio catalog add-on; blank means the embedded Comet share (no catalogs). */
+    val catalogAddonUrl: String = "",
         // Destination: a persisted SAF tree URI (scoped storage). Empty → app-private dir.
         val outputTreeUri: String = "",
         val moviesSubfolder: String = "Movies",
@@ -61,6 +63,7 @@ class SettingsRepository(private val context: Context) {
         val rdClientId = stringPreferencesKey("rd_client_id_enc")
         val rdClientSecret = stringPreferencesKey("rd_client_secret_enc")
         val tmdb = stringPreferencesKey("tmdb_key_enc")
+        val catalogUrl = stringPreferencesKey("catalog_addon_url")
         val treeUri = stringPreferencesKey("output_tree_uri")
         val moviesDir = stringPreferencesKey("movies_subfolder")
         val seriesDir = stringPreferencesKey("series_subfolder")
@@ -82,6 +85,7 @@ class SettingsRepository(private val context: Context) {
                 realdebridClientSecret = CryptoBox.decrypt(p[K.rdClientSecret]).orEmpty(),
                 realdebridRefreshToken = CryptoBox.decrypt(p[K.rdRefresh]).orEmpty(),
                 tmdbApiKey = CryptoBox.decrypt(p[K.tmdb]).orEmpty(),
+        catalogAddonUrl = p[K.catalogUrl].orEmpty(),
                 outputTreeUri = p[K.treeUri].orEmpty(),
                 moviesSubfolder = p[K.moviesDir] ?: "Movies",
                 seriesSubfolder = p[K.seriesDir] ?: "Series",
@@ -115,6 +119,7 @@ class SettingsRepository(private val context: Context) {
         it[K.rdRefresh] = CryptoBox.encrypt(refresh)
     }
     suspend fun setTmdbApiKey(key: String) = put { it[K.tmdb] = CryptoBox.encrypt(key.trim()) }
+    suspend fun setCatalogAddonUrl(url: String) = put { it[K.catalogUrl] = url.trim() }
     suspend fun setOutputTreeUri(uri: String) = put { it[K.treeUri] = uri }
     suspend fun setMoviesSubfolder(v: String) = put { it[K.moviesDir] = v.ifBlank { "Movies" } }
     suspend fun setSeriesSubfolder(v: String) = put { it[K.seriesDir] = v.ifBlank { "Series" } }

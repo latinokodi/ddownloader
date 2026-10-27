@@ -22,6 +22,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import com.ddownloader.android.api.CatalogAddon
+import com.ddownloader.android.ui.components.CardAction
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -64,6 +67,24 @@ fun DiscoverScreen(vm: AppViewModel) {
     val settings by vm.settings.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
+    // Catalogue source: mirrors the Windows app's "catalog" mode.
+    if (vm.discoverSource == "catalog") {
+        CataloguePane(vm)
+        val sheetItem = vm.streamSheetItem
+        if (sheetItem != null) {
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            ModalBottomSheet(
+                onDismissRequest = { vm.closeStreamSheet() },
+                sheetState = sheetState,
+                containerColor = TdColor.Ink1,
+                contentColor = TdColor.TextHi,
+            ) {
+                StreamSheetContent(vm, sheetItem)
+            }
+        }
+        return
+    }
+
     LaunchedEffect(settings.hasTmdb, vm.discoverKind) {
         if (settings.hasTmdb) vm.loadShelves(vm.discoverKind)
     }
@@ -103,7 +124,12 @@ fun DiscoverScreen(vm: AppViewModel) {
                         color = TdColor.TextLow,
                     )
                 }
-                Spacer(Modifier.width(10.dp))
+                Spacer(Modifier.width(8.dp))
+                CardAction(str.catalogueSource, AppIcons.Explore) {
+                    vm.discoverSource = "catalog"
+                    vm.loadCatalogues()
+                }
+                Spacer(Modifier.width(8.dp))
                 SegmentedType(
                     isMovie = vm.discoverKind == "movie",
                     onSelect = { kind ->
@@ -284,12 +310,15 @@ private fun PosterCard(item: TmdbApi.Item, onClick: () -> Unit) {
             }
         }
         Spacer(Modifier.height(7.dp))
+        // Reserve two lines for the title so the year sits on the same baseline in every card and
+        // can never be pushed out of the caption (it was getting clipped).
         Text(
             item.title,
             style = MaterialTheme.typography.bodySmall,
             color = TdColor.TextHi,
             fontWeight = FontWeight.Medium,
             maxLines = 2,
+            minLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(horizontal = 2.dp),
         )
@@ -298,6 +327,7 @@ private fun PosterCard(item: TmdbApi.Item, onClick: () -> Unit) {
                 "$it",
                 style = MaterialTheme.typography.labelSmall,
                 color = TdColor.TextLow,
+                maxLines = 1,
                 modifier = Modifier.padding(horizontal = 2.dp),
             )
         }
@@ -327,6 +357,145 @@ private fun SkeletonShelf() {
                     radius = 16.dp,
                 )
             }
+        }
+    }
+}
+
+
+/**
+ * Catalogue source pane: a Stremio catalog add-on's rows, mirroring the Windows app's "catalog"
+ * mode. Rendered instead of the TMDB shelves; the stream sheet is the same one.
+ */
+@Composable
+private fun CataloguePane(vm: AppViewModel) {
+    val str = com.ddownloader.android.ui.i18n.LocalStrings.current
+    LaunchedEffect(Unit) { if (vm.catalogues.isEmpty() && !vm.catalogLoading) vm.loadCatalogues() }
+
+    Column(Modifier.fillMaxSize()) {
+        Row(
+            Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(str.discover, style = MaterialTheme.typography.headlineMedium, color = TdColor.TextHi)
+                Text(
+                    vm.selectedCatalogue?.name ?: str.catalogueSource,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TdColor.TextLow,
+                )
+            }
+            CardAction(str.tmdbSource, AppIcons.Movie) { vm.discoverSource = "tmdb" }
+        }
+        Spacer(Modifier.height(12.dp))
+
+        if (vm.catalogues.size > 1) {
+            androidx.compose.foundation.lazy.LazyRow(
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(vm.catalogues.size) { i ->
+                    val c = vm.catalogues[i]
+                    val active = vm.selectedCatalogue?.id == c.id && vm.selectedCatalogue?.type == c.type
+                    Text(
+                        c.name,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = if (active) TdColor.Ink0 else TdColor.TextMid,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(if (active) TdColor.Primary else TdColor.Ink2)
+                            .clickable { vm.selectCatalogue(c) }
+                            .padding(horizontal = 12.dp, vertical = 7.dp),
+                    )
+                }
+            }
+            Spacer(Modifier.height(14.dp))
+        }
+
+        when {
+            vm.catalogLoading && vm.catalogueItems.isEmpty() -> {
+                Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = TdColor.Primary, strokeWidth = 2.dp)
+                }
+            }
+            vm.catalogues.isEmpty() && !vm.catalogLoading -> {
+                Text(
+                    str.noCatalogues,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = TdColor.TextLow,
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                )
+            }
+            else -> {
+                androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
+                    columns = androidx.compose.foundation.lazy.grid.GridCells.Adaptive(minSize = 132.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        start = 20.dp, end = 20.dp, bottom = 120.dp,
+                    ),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    items(vm.catalogueItems.size, key = { vm.catalogueItems[it].id }) { i ->
+                        CatalogueCard(vm.catalogueItems[i]) { vm.openCatalogueItem(vm.catalogueItems[i]) }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CatalogueCard(item: CatalogAddon.Item, onClick: () -> Unit) {
+    val interaction = androidx.compose.runtime.remember { MutableInteractionSource() }
+    Column(
+        Modifier
+            .pressEffect(interaction)
+            .clip(RoundedCornerShape(10.dp))
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
+    ) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(2f / 3f)
+                .clip(RoundedCornerShape(10.dp))
+                .background(TdColor.Ink2),
+        ) {
+            AsyncImage(
+                model = item.poster,
+                contentDescription = item.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+            item.rating?.takeIf { it > 0 }?.let { rating ->
+                Text(
+                    String.format(java.util.Locale.US, "%.1f", rating),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TdColor.TextHi,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(6.dp)
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(TdColor.Ink0.copy(alpha = 0.78f))
+                        .padding(horizontal = 5.dp, vertical = 2.dp),
+                )
+            }
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            item.name,
+            style = MaterialTheme.typography.bodySmall,
+            color = TdColor.TextHi,
+            fontWeight = FontWeight.Medium,
+            maxLines = 2,
+            minLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        item.year?.let {
+            Text(
+                "$it",
+                style = MaterialTheme.typography.labelSmall,
+                color = TdColor.TextLow,
+                maxLines = 1,
+            )
         }
     }
 }

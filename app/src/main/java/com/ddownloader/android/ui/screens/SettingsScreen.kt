@@ -62,6 +62,7 @@ import kotlinx.coroutines.launch
 fun SettingsScreen(vm: AppViewModel) {
     val t = LocalStrings.current
     val settings by vm.settings.collectAsStateWithLifecycle()
+    var catalogUrl by remember { mutableStateOf(settings.catalogAddonUrl) }
     val tmdbState by vm.tmdbKeyState.collectAsStateWithLifecycle()
     val torboxState by vm.torboxAccount.collectAsStateWithLifecycle()
     val rdState by vm.realDebridAccount.collectAsStateWithLifecycle()
@@ -220,6 +221,17 @@ fun SettingsScreen(vm: AppViewModel) {
                         }
                     }
                 }
+                Spacer(Modifier.height(8.dp))
+                // Catalogue add-on: same idea as the Windows app's CATALOG_BASE, but configurable.
+                TdTextField(
+                    value = catalogUrl,
+                    onValueChange = { catalogUrl = it },
+                    label = t.catalogueAddonLabel,
+                    placeholder = "https://v3-cinemeta.strem.io",
+                )
+                Text(t.catalogueAddonHint, style = MaterialTheme.typography.labelSmall, color = TdColor.TextLow)
+                Spacer(Modifier.height(6.dp))
+                GhostButton(t.save, icon = AppIcons.CheckCircle) { vm.setCatalogueAddon(catalogUrl) }
                 Spacer(Modifier.height(10.dp))
                 // Field-level result: green when accepted, red with the reason when not.
                 when (val st = tmdbState) {

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.ddownloader.android.api.CatalogAddon
 import com.ddownloader.android.api.CometApi
 import com.ddownloader.android.api.TmdbApi
 import com.ddownloader.android.api.TorBoxApi
@@ -91,6 +92,13 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     var discoverLoading by mutableStateOf(false)
     var discoverError by mutableStateOf<String?>(null)
     var discoverKind by mutableStateOf("movie")
+    /** "tmdb" (list shelves) or "catalog" (a Stremio catalog add-on) — same split as the Windows app. */
+    var discoverSource by mutableStateOf("tmdb")
+    var catalogues by mutableStateOf<List<CatalogAddon.Catalog>>(emptyList())
+    var catalogLoading by mutableStateOf(false)
+    var catalogError by mutableStateOf<String?>(null)
+    var selectedCatalogue by mutableStateOf<CatalogAddon.Catalog?>(null)
+    var catalogueItems by mutableStateOf<List<CatalogAddon.Item>>(emptyList())
 
     // Shelf-based Discover (many categories, loaded in parallel)
     data class Shelf(val title: String, val items: List<TmdbApi.Item>)
@@ -370,6 +378,62 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /** Reads the add-on manifest and lists its catalogs (empty for the embedded Comet share). */
+    fun loadCatalogues() {
+        viewModelScope.launch {
+            catalogLoading = true
+            catalogError = null
+            // Resolve the add-on base here: the locator's init cannot read settings (suspend).
+            locator.catalog.setBase(
+                settings.value.catalogAddonUrl.ifBlank { BuildConfig.COMET_BASE },
+            )
+            locator.catalog.catalogs()
+                .onSuccess { list ->
+                    catalogues = list
+                    selectedCatalogue = list.firstOrNull()
+                    list.firstOrNull()?.let { selectCatalogue(it) }
+                }
+                .onFailure { catalogError = it.message }
+            catalogLoading = false
+        }
+    }
+
+    fun selectCatalogue(catalog: CatalogAddon.Catalog) {
+        selectedCatalogue = catalog
+        viewModelScope.launch {
+            catalogLoading = true
+            catalogError = null
+            locator.catalog.items(catalog.type, catalog.id)
+                .onSuccess { catalogueItems = it }
+                .onFailure { catalogError = it.message }
+            catalogLoading = false
+        }
+    }
+
+    /** Catalog items already carry an IMDb id, so the stream search needs no TMDB lookup. */
+    fun openCatalogueItem(item: CatalogAddon.Item) {
+        openItem(
+            TmdbApi.Item(
+                id = 0,
+                title = item.name,
+                year = item.year,
+                overview = item.description.orEmpty(),
+                posterPath = null,
+                imdbId = item.id,
+                mediaType = if (item.type == "series") "tv" else "movie",
+                voteAverage = item.rating ?: 0.0,
+            ),
+        )
+    }
+
+    fun setCatalogueAddon(url: String) {
+        viewModelScope.launch {
+            locator.settings.setCatalogAddonUrl(url)
+            locator.catalog.setBase(url.ifBlank { BuildConfig.COMET_BASE })
+            loadCatalogues()
+        }
+    }
+
     fun openItem(item: TmdbApi.Item) {
         streamSheetItem = item
         streams = emptyList()
@@ -387,7 +451,16 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 // no episode context (the Downloads flow re-resolves per episode).
                 // Web.get() blocks; keep it off the main thread like the TMDB calls.
                 val result = withContext(Dispatchers.IO) {
-                    locator.comet.streams(type, imdb, if (type == "series") 1 else null, if (type == "series") 1 else null)
+                    Result.success(
+                            locator.sources.resolve(
+                                type = type,
+                                imdbId = imdb,
+                                season = if (type == "series") 1 else null,
+                                episode = if (type == "series") 1 else null,
+                                title = item.title,
+                                year = item.year,
+                            )
+                        )
                 }
                 result.onSuccess { streams = it }
                     .onFailure { streamsError = it.message ?: "Comet request failed" }

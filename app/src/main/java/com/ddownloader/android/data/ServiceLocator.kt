@@ -2,7 +2,9 @@ package com.ddownloader.android.data
 
 import com.ddownloader.android.core.LogL10n
 import android.app.Application
+import com.ddownloader.android.api.CatalogAddon
 import com.ddownloader.android.api.CometApi
+import com.ddownloader.android.api.StreamSources
 import com.ddownloader.android.api.RealDebridApi
 import com.ddownloader.android.api.TmdbApi
 import com.ddownloader.android.api.TorBoxApi
@@ -38,6 +40,8 @@ object ServiceLocator {
         private set
 
     lateinit var comet: CometApi
+    lateinit var sources: StreamSources
+    lateinit var catalog: CatalogAddon
         private set
 
     lateinit var tmdb: TmdbApi
@@ -63,6 +67,8 @@ object ServiceLocator {
         torbox = TorBoxApi(settings)
         realdebrid = RealDebridApi(settings)
         comet = CometApi()
+        sources = StreamSources(comet)
+        catalog = CatalogAddon()
         tmdb = TmdbApi(settings)
         accounts = AccountAuth(settings, torbox, realdebrid)
         deviceAuth = DeviceAuth(settings)

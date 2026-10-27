@@ -7,6 +7,28 @@ GitHub Release notes by `RELEASING.md`.
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-10-27
+
+### Added — parity with the Windows app
+- **Three stream sources** (`api/StreamSources.kt`): Comet, **Cinecalidad** (Torrentio filtered to
+  that provider) and **TCL** (hacktorrent.to WordPress REST API, searched by TMDB title). They run in
+  parallel, merge, de-duplicate by info hash, and each row is labelled with its source.
+  Ported from `electron/latino-providers.py`; TCL rows that only offer an `acortalink` shortener are
+  skipped rather than silently dropped.
+- **Catalogue source in Discover** (`api/CatalogAddon.kt` + a "Catálogo" mode): reads a Stremio
+  catalog add-on's `/manifest.json`, lists its catalogs, loads `/catalog/{type}/{id}.json` and opens
+  titles by their IMDb id — the same flow as the Windows `catalog-manifest` / `catalog-items` /
+  `catalog-meta` IPC handlers.
+- The catalogue add-on base URL is **configurable** in Settings → Metadata (the embedded Comet share
+  declares `catalogs: []`, so the default shows an explanatory empty state; verified populated with
+  `https://v3-cinemeta.strem.io`).
+
+### Fixed
+- **Discover year label was clipped**: the caption now reserves two lines for the title
+  (`minLines = 2`) and caps the year at one line, so every card in a row shares the same baseline and
+  the year can no longer be pushed out of the caption. Same treatment in the catalogue grid.
+
+
 ## [1.7.0] - 2026-10-26
 
 ### Changed — mobile-first, adaptive layout
