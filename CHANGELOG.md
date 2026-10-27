@@ -10,10 +10,10 @@ el repositorio Release notes by `RELEASING.md`.
 ## [1.8.0] - 2026-10-27
 
 ### Added — parity with the la app de escritorio
-- **Three stream sources** (`api/StreamSources.kt`): add-on, **add-on** (Torrentio filtered to
+- **Three stream sources** (`api/StreamSources.kt`): add-on, **add-on** (add-on filtered to
   that provider) and **add-on** (el add-on WordPress REST API, searched by metadatos title). They run in
   parallel, merge, de-duplicate by info hash, and each row is labelled with its source.
-  Ported from `electron/latino-providers.py`; add-on rows that only offer an `acortalink` shortener are
+  Ported from `el add-on`; add-on rows that only offer an `acortalink` shortener are
   skipped rather than silently dropped.
 - **Catalogue source in Discover** (`api/CatalogAddon.kt` + a "Catálogo" mode): reads a add-on
   catalog add-on's `/manifest.json`, lists its catalogs, loads `/catalog/{type}/{id}.json` and opens
@@ -251,7 +251,7 @@ el repositorio Release notes by `RELEASING.md`.
 ### Changed
 - **HTTP layer owns its dispatcher.** Every `Web` helper (`get`, `postJson`, `postForm`,
   `formDelete`, `postMultipartFields`) is now `suspend` and hops to `Dispatchers.IO` itself, and
-  the service clients (`TorBoxApi`, `RealDebridApi`, `cliente de streams`) are `suspend` accordingly. The
+  the service clients (`debrid`, `RealDebridApi`, `cliente de streams`) are `suspend` accordingly. The
   recurring `NetworkOnMainThreadException`-swallowed-by-`runCatching` bug cannot be reintroduced:
   the compiler now rejects calling these outside a coroutine.
   This is what caused "Could not add magnet: null" (and earlier the empty Discover/Search and
@@ -269,7 +269,7 @@ el repositorio Release notes by `RELEASING.md`.
 - **Discover and Search return results.** metadatos calls were made with blocking OkHttp on the
   caller's dispatcher (Main, from `viewModelScope`), throwing `NetworkOnMainThreadException`,
   which the surrounding `runCatching` converted into `null` → an empty list → "metadatos returned no
-  titles". `TmdbApi.get()` (search, trending, resolveTitle, imdbId) now runs on
+  titles". `metadatos.get()` (search, trending, resolveTitle, imdbId) now runs on
   `Dispatchers.IO`, logs the failing path with the HTTP status instead of a null message, and
   logs explicitly when no key is stored.
 - add-on stream requests are dispatched off the main thread as well.
