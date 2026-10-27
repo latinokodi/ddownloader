@@ -17,8 +17,8 @@ val keystoreProps = Properties().apply {
 }
 
 // Version and artifact naming live in one place.
-val appVersionCode = 35
-val appVersionName = "1.7.1"
+val appVersionCode = 36
+val appVersionName = "1.7.2"
 
 android {
     namespace = "com.ddownloader.android"
@@ -53,6 +53,12 @@ android {
                 storePassword = keystoreProps.getProperty("storePassword")
                 keyAlias = keystoreProps.getProperty("keyAlias")
                 keyPassword = keystoreProps.getProperty("keyPassword")
+                // Sign with every scheme Android understands: v1 (JAR, legacy verifiers),
+                // v2 (whole-file) and v3 (per-signer, enables key rotation). A v2-only APK is
+                // reported as "unverified" by some installers and security scanners.
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
             }
         }
     }
