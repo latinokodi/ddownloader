@@ -42,9 +42,31 @@ class DeviceAuth(private val settings: SettingsRepository) {
         val intervalSeconds: Int,
     )
 
+    /** Why a pairing attempt ended. The UI owns the copy; this is never shown raw. */
+    enum class Failure {
+        /** The device code reached its server-side lifetime before being collected. */
+        EXPIRED,
+        /** The code was already exchanged — a new one is required. */
+        ALREADY_USED,
+        /** The device could not reach the provider (DNS, timeout, no route, TLS). */
+        NETWORK,
+        /** The provider answered, but with an unexpected status or a malformed body. */
+        SERVER,
+        UNKNOWN,
+    }
+
     sealed interface Outcome {
         /** The user has not authorized in the browser yet. */
         data object Pending : Outcome
+
+        /**
+         * A transport hiccup while polling (DNS blip, dropped wifi, timeout). The device code is
+         * still valid, so the caller must **keep polling** instead of aborting the flow: a single
+         * `UnknownHostException` in the middle of a 10-minute pairing used to kill it, leaving the
+         * user staring at "Could not link TorBox — Unable to resolve host" while the browser tab
+         * waited for an app that had already given up.
+         */
+        data class Transient(val reason: String) : Outcome
 
         /**
          * Authorization finished. [token] is the credential to store (encrypted) and is
@@ -60,7 +82,10 @@ class DeviceAuth(private val settings: SettingsRepository) {
             val clientSecret: String? = null,
         ) : Outcome
 
-        data class Failed(val reason: String) : Outcome
+        data class Failed(
+            val reason: String,
+            val kind: Failure = Failure.UNKNOWN,
+        ) : Outcome
     }
 
     suspend fun start(provider: Provider): Result<Prompt> = withContext(Dispatchers.IO) {
@@ -104,14 +129,19 @@ class DeviceAuth(private val settings: SettingsRepository) {
             expiresInSeconds = d.str("expires_in")?.toIntOrNull() ?: 600,
             intervalSeconds = d.str("interval")?.toIntOrNull()?.coerceIn(2, 30) ?: 5,
         )
-    }.onFailure { AppLog.e(TAG, "torbox device start failed: ${it.message}", it) }
+    }.asPairingFailure()
+        .onFailure { AppLog.e(TAG, "torbox device start failed: ${it.message}", it) }
 
     private suspend fun pollTorBox(prompt: Prompt): Outcome {
         val body = """{"device_code":"${prompt.deviceCode}"}"""
         val res = try {
             Web.postJson("$TORBOX/api/user/auth/device/token", body, mapOf("User-Agent" to "DDownloader"))
         } catch (t: Throwable) {
-            return Outcome.Failed(t.message ?: "network error")
+            // A resolver/timeout failure says nothing about the code's validity. Report it as
+            // transient so the caller keeps polling until the real deadline.
+            val why = t.message ?: t.javaClass.simpleName
+            AppLog.w(TAG, "torbox device token: unreachable ($why) — will retry")
+            return Outcome.Transient(why)
         }
         val root = runCatching { Web.json.parseToJsonElement(res.body).jsonObject }.getOrNull()
         val success = root?.str("success")?.toBooleanStrictOrNull() ?: (res.code in 200..299)
@@ -133,15 +163,28 @@ class DeviceAuth(private val settings: SettingsRepository) {
             return Outcome.Failed(
                 "TorBox authorized the device but the response had no token " +
                     "(keys: ${dataKeys ?: "none"}). Send the Logs screen output and this gets fixed.",
+                Failure.SERVER,
             )
         }
 
         return when (errorCode.uppercase()) {
             "DEVICE_CODE_NOT_USED" -> Outcome.Pending
-            "ITEM_NOT_FOUND" -> Outcome.Failed("The code expired before it was authorized — start again.")
-            "DEVICE_CODE_USED" -> Outcome.Failed("That code was already collected — start again to get a new one.")
-            "" -> if (res.code in 400..499) Outcome.Failed("TorBox returned HTTP ${res.code}") else Outcome.Pending
-            else -> Outcome.Failed("TorBox returned $errorCode")
+            "ITEM_NOT_FOUND" -> Outcome.Failed(
+                "The code expired before it was authorized — start again.",
+                Failure.EXPIRED,
+            )
+            "DEVICE_CODE_USED" -> Outcome.Failed(
+                "That code was already collected — start again to get a new one.",
+                Failure.ALREADY_USED,
+            )
+            // 5xx and 429 mean the provider is unavailable or throttling us — never a verdict
+            // on this device code, so keep polling rather than ending the flow.
+            "" -> when {
+                res.code >= 500 || res.code == 429 -> Outcome.Transient("HTTP ${res.code}")
+                res.code in 400..499 -> Outcome.Failed("TorBox returned HTTP ${res.code}", Failure.SERVER)
+                else -> Outcome.Pending
+            }
+            else -> Outcome.Failed("TorBox returned $errorCode", Failure.SERVER)
         }
     }
 
@@ -197,6 +240,30 @@ class DeviceAuth(private val settings: SettingsRepository) {
 
     private fun String.blank(): String = if (isEmpty()) "-" else this
 
+    /**
+     * Maps a transport/parse throwable onto a user-meaningful [Failure]. The message a raw
+     * `UnknownHostException` carries ("Unable to resolve host \"api.torbox.app\": No address
+     * associated with hostname") is true, correct and useless to a person holding a phone:
+     * it does not say what to do next. Classification lets the UI say "no internet" instead.
+     */
+    private fun classify(t: Throwable): Failure =
+        if (Reachability.isUnreachable(t)) Failure.NETWORK else Failure.SERVER
+
+    /**
+     * Tags a failed `start` call with its [Failure] so the ViewModel can pick the right copy.
+     * `Result.fold` cannot preserve the original exception type, so the classification is
+     * attached here, at the only place that knows whether the failure was transport or server.
+     */
+    private fun <T> Result<T>.asPairingFailure(): Result<T> = recoverCatching { t ->
+        throw if (t is PairingException) t else PairingException(classify(t), t.message ?: t.javaClass.simpleName)
+    }
+
+    /** Thrown by the `start` helpers so the ViewModel can render actionable copy. */
+    class PairingException(
+        val failure: Failure,
+        override val message: String,
+    ) : Exception(message)
+
     // ── Real-Debrid ────────────────────────────────────────────────────────
     private fun startRealDebrid(): Result<Prompt> = runCatching {
         val res = Net.get(
@@ -215,7 +282,8 @@ class DeviceAuth(private val settings: SettingsRepository) {
             expiresInSeconds = o.str("expires_in")?.toIntOrNull() ?: 900,
             intervalSeconds = o.str("interval")?.toIntOrNull()?.coerceIn(2, 30) ?: 5,
         )
-    }.onFailure { AppLog.e(TAG, "real-debrid device start failed: ${it.message}", it) }
+    }.asPairingFailure()
+        .onFailure { AppLog.e(TAG, "real-debrid device start failed: ${it.message}", it) }
 
     private suspend fun pollRealDebrid(prompt: Prompt): Outcome {
         // Step 2: the user authorized? Then we get per-user client credentials.
@@ -227,12 +295,17 @@ class DeviceAuth(private val settings: SettingsRepository) {
                 allowedHost = { it == "api.real-debrid.com" },
             )
         } catch (t: Throwable) {
-            return Outcome.Failed(t.message ?: "network error")
+            val why = t.message ?: t.javaClass.simpleName
+            AppLog.w(TAG, "real-debrid device credentials unreachable ($why) — will retry")
+            return Outcome.Transient(why)
         }
         if (credRes.code == 403 || credRes.code == 400) return Outcome.Pending
-        if (credRes.code !in 200..299) return Outcome.Failed("credentials HTTP ${credRes.code}")
+        if (credRes.code == 429 || credRes.code >= 500) return Outcome.Transient("credentials HTTP ${credRes.code}")
+        if (credRes.code !in 200..299) {
+            return Outcome.Failed("credentials HTTP ${credRes.code}", Failure.SERVER)
+        }
         val cred = runCatching { Web.json.parseToJsonElement(credRes.body).jsonObject }.getOrNull()
-            ?: return Outcome.Failed("unreadable credentials")
+            ?: return Outcome.Failed("unreadable credentials", Failure.SERVER)
         val clientId = cred.str("client_id") ?: return Outcome.Pending
         val clientSecret = cred.str("client_secret") ?: return Outcome.Pending
 
@@ -249,12 +322,14 @@ class DeviceAuth(private val settings: SettingsRepository) {
                 mapOf("User-Agent" to "DDownloader"),
             )
         } catch (t: Throwable) {
-            return Outcome.Failed(t.message ?: "token exchange failed")
+            val why = t.message ?: t.javaClass.simpleName
+            AppLog.w(TAG, "real-debrid token exchange unreachable ($why) — will retry")
+            return Outcome.Transient(why)
         }
-        if (tokenRes.code !in 200..299) return Outcome.Failed("token HTTP ${tokenRes.code}")
+        if (tokenRes.code !in 200..299) return Outcome.Failed("token HTTP ${tokenRes.code}", Failure.SERVER)
         val tok = runCatching { Web.json.parseToJsonElement(tokenRes.body).jsonObject }.getOrNull()
-            ?: return Outcome.Failed("unreadable token response")
-        val access = tok.str("access_token") ?: return Outcome.Failed("no access_token")
+            ?: return Outcome.Failed("unreadable token response", Failure.SERVER)
+        val access = tok.str("access_token") ?: return Outcome.Failed("no access_token", Failure.SERVER)
         AppLog.i(TAG, "real-debrid device authorized")
         return Outcome.Linked(
             provider = Provider.REALDEBRID,

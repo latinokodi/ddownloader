@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,6 +34,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ddownloader.android.ui.AppViewModel
+import com.ddownloader.android.data.DeviceAuth
 import com.ddownloader.android.ui.components.GhostButton
 import com.ddownloader.android.ui.i18n.LocalStrings
 import com.ddownloader.android.ui.components.GradientButton
@@ -62,7 +65,10 @@ fun LinkAccountDialog(vm: AppViewModel) {
                 .clip(RoundedCornerShape(28.dp))
                 .background(TdColor.Ink2)
                 .padding(24.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                // The failure copy is deliberately explicit (what went wrong AND what to do), so
+                // on a small screen it needs to scroll rather than push the retry button offscreen.
+                .verticalScroll(rememberScrollState()),
         ) {
             when (state) {
                 is AppViewModel.LinkUi.Starting -> {
@@ -138,18 +144,36 @@ fun LinkAccountDialog(vm: AppViewModel) {
                         }
                     }
                     Spacer(Modifier.height(16.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        CircularProgressIndicator(
-                            color = TdColor.Cyan,
-                            strokeWidth = 2.dp,
-                            modifier = Modifier.width(16.dp).height(16.dp),
-                        )
-                        Spacer(Modifier.width(10.dp))
-                        Text(
-                            "${t.linkWaiting} (${state.secondsLeft}s)",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = TdColor.TextMid,
-                        )
+                    if (state.retrying) {
+                        // The code is still valid; only the phone's link to the provider is
+                        // wobbling. Say so instead of silently stalling the counter.
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(
+                                color = TdColor.Amber,
+                                strokeWidth = 2.dp,
+                                modifier = Modifier.width(16.dp).height(16.dp),
+                            )
+                            Spacer(Modifier.width(10.dp))
+                            Text(
+                                t.linkRetrying,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = TdColor.Amber,
+                            )
+                        }
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(
+                                color = TdColor.Cyan,
+                                strokeWidth = 2.dp,
+                                modifier = Modifier.width(16.dp).height(16.dp),
+                            )
+                            Spacer(Modifier.width(10.dp))
+                            Text(
+                                "${t.linkWaiting} (${state.secondsLeft}s)",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = TdColor.TextMid,
+                            )
+                        }
                     }
                 }
 
@@ -179,16 +203,46 @@ fun LinkAccountDialog(vm: AppViewModel) {
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        state.message,
+                        linkFailureCopy(state, t),
                         style = MaterialTheme.typography.bodySmall,
                         color = TdColor.TextMid,
                     )
                     Spacer(Modifier.height(18.dp))
-                    GradientButton(t.close, Modifier.fillMaxWidth()) { vm.cancelLink() }
+                    // A dropped connection or an expired code is retryable; closing the dialog
+                    // would force the user to hunt for the Link button again.
+                    GradientButton(t.retryLabel, Modifier.fillMaxWidth()) {
+                        vm.linkAccount(state.provider)
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                        GhostButton(t.close) { vm.cancelLink() }
+                    }
                 }
 
                 AppViewModel.LinkUi.Idle -> Unit
             }
         }
     }
+}
+
+/**
+ * Turns a pairing failure into instructions.
+ *
+ * The old dialog printed the exception verbatim, so a resolver failure looked like
+ * "Unable to resolve host \"api.torbox.app\": No address associated with hostname" — accurate,
+ * alarming and unactionable. Each [DeviceAuth.Failure] now gets copy that says what to do.
+ */
+private fun linkFailureCopy(
+    state: AppViewModel.LinkUi.Failed,
+    t: com.ddownloader.android.ui.i18n.Strings,
+): String = when (state.kind) {
+    // Most often the phone is on a network that blocks or cannot resolve the provider, or
+    // Private DNS is pointed at a resolver that is itself unreachable.
+    DeviceAuth.Failure.NETWORK -> t.linkFailedNetwork
+    DeviceAuth.Failure.EXPIRED -> t.linkFailedExpired
+    DeviceAuth.Failure.ALREADY_USED -> t.linkFailedUsed
+    // The provider answered but not with what we expected: its message is the only useful part.
+    DeviceAuth.Failure.SERVER,
+    DeviceAuth.Failure.UNKNOWN,
+    -> state.message.ifBlank { t.linkFailedServer }
 }

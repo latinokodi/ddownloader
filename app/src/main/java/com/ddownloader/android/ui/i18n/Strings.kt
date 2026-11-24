@@ -99,9 +99,19 @@ data class Strings(
     val linkOpen: String,
     val linkCopy: String,
     val linkWaiting: String,
+    /** Shown while the poll temporarily cannot reach the provider; the code is still valid. */
+    val linkRetrying: String,
     val linkDone: String,
     val linkDoneBody: String,
     val linkFailed: String,
+    /** No usable connection: DNS failed, timed out, or refused. */
+    val linkFailedNetwork: String,
+    /** The device code hit its server-side lifetime. */
+    val linkFailedExpired: String,
+    /** The code had already been exchanged. */
+    val linkFailedUsed: String,
+    /** The provider answered with an unexpected status or body. */
+    val linkFailedServer: String,
     val close: String,
     // search / downloads basics
     val findSomething: String,
@@ -306,9 +316,18 @@ private val EN = Strings(
         "its own once the account is authorized.",
     linkCode = "CODE", linkOpen = "Open link", linkCopy = "Copy",
     linkWaiting = "Waiting for you to authorize…",
+    linkRetrying = "No connection to the provider — retrying…",
     linkDone = "linked", linkDoneBody = "Credential received and stored encrypted on this device. " +
         "It is never displayed.",
     linkFailed = "Could not link", close = "Close",
+    linkFailedNetwork = "The app could not reach the provider's API. Check that this device has " +
+        "internet, then try again. If other apps are online too, the network is probably blocking " +
+        "TorBox: turn off Private DNS (Settings → Network → Private DNS → Off) or switch to " +
+        "mobile data / another Wi-Fi.",
+    linkFailedExpired = "The code expired before it was authorized. Enter a new one — it stays " +
+        "valid for about ten minutes.",
+    linkFailedUsed = "That code was already used to sign a device in. Request a new one.",
+    linkFailedServer = "The provider answered with an unexpected response. Try again in a moment.",
     findSomething = "FIND SOMETHING", movieOrSeries = "Movie or series", tmdbNeeded = "TMDB key needed",
     pasteLink = "PASTE A LINK", directUrl = "Direct URL", queueDownload = "Queue download",
     readyToSetup = "READY TO SET UP", linkAccountHint = "Link a debrid account in Settings",
@@ -504,9 +523,18 @@ private val ES = Strings(
         "sola cuando la cuenta esté autorizada.",
     linkCode = "CÓDIGO", linkOpen = "Abrir enlace", linkCopy = "Copiar",
     linkWaiting = "Esperando tu autorización…",
+    linkRetrying = "Sin conexión con el proveedor — reintentando…",
     linkDone = "vinculada", linkDoneBody = "Credencial recibida y guardada cifrada en este dispositivo. " +
         "Nunca se muestra.",
     linkFailed = "No se pudo vincular", close = "Cerrar",
+    linkFailedNetwork = "La app no pudo llegar a la API del proveedor. Comprueba que este " +
+        "dispositivo tenga internet y vuelve a intentarlo. Si otras apps sí navegan, es probable " +
+        "que la red esté bloqueando TorBox: desactiva el DNS privado (Ajustes → Red → DNS privado " +
+        "→ Desactivado) o cambia a datos móviles u otra Wi-Fi.",
+    linkFailedExpired = "El código caducó antes de autorizarse. Pide uno nuevo — vale unos diez " +
+        "minutos.",
+    linkFailedUsed = "Ese código ya se usó para vincular un dispositivo. Pide uno nuevo.",
+    linkFailedServer = "El proveedor respondió algo inesperado. Vuelve a intentarlo en un momento.",
     findSomething = "BUSCAR ALGO", movieOrSeries = "Película o serie", tmdbNeeded = "Falta la clave TMDB",
     pasteLink = "PEGAR UN ENLACE", directUrl = "URL directa", queueDownload = "Añadir descarga",
     readyToSetup = "LISTO PARA CONFIGURAR", linkAccountHint = "Vincula una cuenta debrid en Ajustes",

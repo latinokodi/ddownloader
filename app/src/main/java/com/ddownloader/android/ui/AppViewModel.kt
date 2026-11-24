@@ -38,6 +38,19 @@ import com.ddownloader.android.storage.MediaLayout
 
 private const val MAX_FILES_PER_TORRENT = 40
 
+/**
+ * How many polls in a row may fail to reach the provider before the pairing is abandoned.
+ * At the normal 5 s interval this is ~30 s — long enough to ride out a wifi handover or a
+ * resolver hiccup, short enough that a genuinely offline phone gets a clear answer.
+ */
+private const val MAX_TRANSIENT_POLLS = 6
+
+/** Attempts to obtain a device code before showing an error (the first call races network setup). */
+private const val START_ATTEMPTS = 3
+
+/** Base backoff between those attempts; grows linearly (1 s, 2 s). */
+private const val START_RETRY_MS = 1000L
+
 class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     private val locator = ServiceLocator
@@ -122,9 +135,15 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         data class Waiting(
             val prompt: DeviceAuth.Prompt,
             val secondsLeft: Int,
+            /** Set when the last poll could not reach the provider; the loop keeps going. */
+            val retrying: Boolean = false,
         ) : LinkUi
         data class Linked(val provider: DeviceAuth.Provider, val account: String) : LinkUi
-        data class Failed(val provider: DeviceAuth.Provider, val message: String) : LinkUi
+        data class Failed(
+            val provider: DeviceAuth.Provider,
+            val message: String,
+            val kind: DeviceAuth.Failure = DeviceAuth.Failure.UNKNOWN,
+        ) : LinkUi
     }
 
     private val _linkState = MutableStateFlow<LinkUi>(LinkUi.Idle)
@@ -140,19 +159,76 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         linkJob?.cancel()
         linkJob = viewModelScope.launch {
             _linkState.value = LinkUi.Starting(provider)
-            val prompt = locator.deviceAuth.start(provider).getOrElse { e ->
-                _linkState.value = LinkUi.Failed(provider, e.message ?: "could not start pairing")
+            // The very first call is the most likely to race a network that is still coming up
+            // (just left airplane mode, wifi associating). Three short attempts turn that into a
+            // non-event instead of "Could not link" before the user has done anything wrong.
+            var prompt: DeviceAuth.Prompt? = null
+            var startError: Throwable? = null
+            for (attempt in 1..START_ATTEMPTS) {
+                val result = locator.deviceAuth.start(provider)
+                prompt = result.getOrNull()
+                if (prompt != null) break
+                startError = result.exceptionOrNull()
+                val kind = (startError as? DeviceAuth.PairingException)?.failure
+                if (kind != DeviceAuth.Failure.NETWORK || attempt == START_ATTEMPTS) break
+                AppLog.w(
+                    "Link",
+                    LogL10n.of(
+                        "${provider.label} unreachable while requesting a code; attempt $attempt",
+                        "${provider.label} inaccesible al pedir el código; intento $attempt",
+                    ),
+                )
+                delay(START_RETRY_MS * attempt)
+            }
+            val paired = prompt ?: run {
+                val kind = (startError as? DeviceAuth.PairingException)?.failure ?: DeviceAuth.Failure.UNKNOWN
+                _linkState.value = LinkUi.Failed(
+                    provider,
+                    startError?.message ?: "could not start pairing",
+                    kind,
+                )
                 return@launch
             }
             val started = System.currentTimeMillis()
-            _linkState.value = LinkUi.Waiting(prompt, prompt.expiresInSeconds)
-            val deadline = started + prompt.expiresInSeconds * 1000L
+            _linkState.value = LinkUi.Waiting(paired, paired.expiresInSeconds)
+            val deadline = started + paired.expiresInSeconds * 1000L
+            // A reachability blip is not a verdict on the pairing. Only give up after this many
+            // consecutive failed polls (≈30 s at the normal 5 s interval), so a phone that
+            // dropped off wifi for a second does not lose a code that is still valid server-side.
+            var consecutiveTransient = 0
+            var lastTransient: String? = null
+            // True once the provider has answered at all. Only meaningful for the final verdict:
+            // if it never answered, "expired" would be a lie.
+            var everReached = false
             while (System.currentTimeMillis() < deadline) {
-                delay(prompt.intervalSeconds * 1000L)
-                when (val outcome = locator.deviceAuth.poll(prompt)) {
+                delay(paired.intervalSeconds * 1000L)
+                val left = ((deadline - System.currentTimeMillis()) / 1000).coerceAtLeast(0).toInt()
+                when (val outcome = locator.deviceAuth.poll(paired)) {
                     is DeviceAuth.Outcome.Pending -> {
-                        val left = ((deadline - System.currentTimeMillis()) / 1000).coerceAtLeast(0).toInt()
-                        _linkState.value = LinkUi.Waiting(prompt, left)
+                        everReached = true
+                        consecutiveTransient = 0
+                        lastTransient = null
+                        _linkState.value = LinkUi.Waiting(paired, left)
+                    }
+                    is DeviceAuth.Outcome.Transient -> {
+                        consecutiveTransient++
+                        lastTransient = outcome.reason
+                        AppLog.w(
+                            "Link",
+                            LogL10n.of(
+                                "${provider.label} unreachable (${outcome.reason}); retry $consecutiveTransient",
+                                "${provider.label} inaccesible (${outcome.reason}); reintento $consecutiveTransient",
+                            ),
+                        )
+                        if (consecutiveTransient >= MAX_TRANSIENT_POLLS) {
+                            _linkState.value = LinkUi.Failed(
+                                provider,
+                                outcome.reason,
+                                DeviceAuth.Failure.NETWORK,
+                            )
+                            return@launch
+                        }
+                        _linkState.value = LinkUi.Waiting(paired, left, retrying = true)
                     }
                     is DeviceAuth.Outcome.Linked -> {
                         // Persist the credential (encrypted) and the refresh material.
@@ -177,12 +253,19 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                         return@launch
                     }
                     is DeviceAuth.Outcome.Failed -> {
-                        _linkState.value = LinkUi.Failed(provider, outcome.reason)
+                        _linkState.value = LinkUi.Failed(provider, outcome.reason, outcome.kind)
                         return@launch
                     }
                 }
             }
-            _linkState.value = LinkUi.Failed(provider, "The code expired before the account was authorized.")
+            // Ran out of time. If the phone never managed a clean poll, the honest answer is
+            // "no connection", not "the code expired" — the code may well still be valid.
+            val neverReached = !everReached && lastTransient != null
+            _linkState.value = LinkUi.Failed(
+                provider,
+                lastTransient ?: "The code expired before the account was authorized.",
+                if (neverReached) DeviceAuth.Failure.NETWORK else DeviceAuth.Failure.EXPIRED,
+            )
         }
     }
 

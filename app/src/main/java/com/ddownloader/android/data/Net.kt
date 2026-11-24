@@ -56,6 +56,10 @@ object Net {
     val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(HttpsOnly)
+            // System DNS first; a DoH fallback only if the system resolver cannot answer.
+            // See DohDns — this is the fix for "Unable to resolve host \"api.torbox.app\"" while
+            // the browser on the same phone loaded the page fine.
+            .dns(DohDns)
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)

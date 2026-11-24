@@ -67,6 +67,13 @@ With no anonymity layer, the requirement is applied to the data that can actuall
   `JSON.stringify(AxiosError)` — verified in the source.
 - **Transport**: HTTPS-only (manifest policy **and** a code-level interceptor that refuses
   cleartext), plus per-redirect-hop allowlist validation for debrid CDNs (`data/Net.kt`).
+- **Name resolution**: the system resolver is used first and normally always wins. If it *fails*
+  for one of this app's own API hosts, `data/DohDns.kt` retries that lookup over DNS-over-HTTPS
+  addressed by IP literal. This is not a privacy bypass: the fallback is scoped to an allowlist
+  of the app's own provider domains, fires only after the system resolver has already failed, and
+  cannot recurse (the DoH client is pinned to `Dns.SYSTEM`). It exists because a broken system
+  resolver made account linking impossible while the browser on the same phone worked fine — see
+  `docs/ACCOUNTS.md`, "When the phone's resolver is the problem".
 
 ### Falsifiers
 

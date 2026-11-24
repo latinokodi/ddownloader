@@ -29,6 +29,38 @@ places; they end up in clipboards, screenshots and chat logs. A device code is s
 (10–15 min), single-use, and binds the authorization to this installation. The app also never
 has to render a credential.
 
+## When the phone's resolver is the problem
+
+The pairing screen used to fail with:
+
+```
+Could not link TorBox
+Unable to resolve host "api.torbox.app": No address associated with hostname
+```
+
+while the browser on the **same phone** was happily showing "Code accepted" for that account.
+Both were true. The browser resolves names through its own DNS-over-HTTPS; a broken **system**
+resolver only breaks the app. Common causes: Private DNS pointed at an unreachable DoT host,
+a DNS-filtering VPN/app, or a router handing out a dead resolver.
+
+Three changes make that recoverable (`data/DohDns.kt`, `data/Reachability.kt`,
+`DeviceAuth.Outcome.Transient`):
+
+1. **A DNS fallback.** `Net.client` uses `DohDns`, which tries the system resolver first and,
+   only for the API hosts this app must reach, falls back to DNS-over-HTTPS addressed by IP
+   literal (`https://1.1.1.1/dns-query`, `https://8.8.8.8/resolve`). No cleartext, no pinning
+   exception; ordinary certificate validation applies. Other destinations keep the user's own
+   DNS, so network-level filtering is not silently bypassed everywhere.
+2. **A failed poll is not a failed pairing.** A resolver/timeout/5xx answer during polling is
+   `Outcome.Transient`: the loop keeps polling (up to `MAX_TRANSIENT_POLLS` consecutive failures,
+   ≈30 s) instead of abandoning a code that is still valid server-side.
+3. **Copy that says what to do.** Failures are typed (`NETWORK`, `EXPIRED`, `ALREADY_USED`,
+   `SERVER`) and the dialog shows actionable text plus a **Retry** button, instead of the raw
+   exception.
+
+If linking still fails with the network message, the network is blocking TorBox at a level
+the app cannot route around — switching to mobile data or disabling Private DNS is the fix.
+
 ## Language
 
 Settings → Language switches between **English** and **Español**. The choice is persisted and

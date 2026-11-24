@@ -5,6 +5,15 @@ Cambios notables del proyecto. Formato inspirado en Keep a Changelog y versionad
 
 ## [Unreleased]
 
+### Corregido
+- **Vincular TorBox ya no falla con «Unable to resolve host "api.torbox.app"».** Ese error
+  aparecía aunque la web de TorBox sí cargara y dijera «Code accepted» en el mismo móvil: el
+  navegador resuelve los dominios por su cuenta (DNS sobre HTTPS) y la app dependía solo del
+  resolutor del sistema. Ahora la app intenta el resolutor normal y, si falla para sus propios
+  servidores, resuelve por DNS sobre HTTPS. Además, un corte de red durante la espera ya no
+  cancela la vinculación: se reintenta, y si de verdad no hay conexión se avisa con
+  instrucciones claras y un botón **Reintentar** en lugar del mensaje técnico.
+
 ## [1.8.4] — 2026-10-27
 
 ### Cambiado
