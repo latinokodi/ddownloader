@@ -49,6 +49,7 @@ class RealDebridApi(private val settings: SettingsRepository) {
                 "code" to code,
                 "grant_type" to "http://oauth.net/grant_type/device/1.0",
             ),
+            allowedHosts = listOf("api.real-debrid.com"),
         )
         if (res.code !in 200..299) error("HTTP ${res.code}: ${res.body.take(160)}")
         Web.json.parseToJsonElement(res.body).jsonObject
@@ -68,7 +69,12 @@ class RealDebridApi(private val settings: SettingsRepository) {
     }
 
     suspend fun addMagnet(magnet: String): Result<String> = runCatching {
-        val res = Web.postForm("$REST/torrents/addMagnet", mapOf("magnet" to magnet), auth())
+        val res = Web.postForm(
+            "$REST/torrents/addMagnet",
+            mapOf("magnet" to magnet),
+            auth(),
+            allowedHosts = listOf("api.real-debrid.com"),
+        )
         if (res.code !in 200..299) error("HTTP ${res.code}")
         Web.json.parseToJsonElement(res.body).jsonObject.str("id") ?: error("no id")
     }
@@ -98,17 +104,27 @@ class RealDebridApi(private val settings: SettingsRepository) {
     }
 
     suspend fun selectAllFiles(id: String, fileIds: List<String>): Result<Unit> = runCatching {
-        val res = Web.postForm("$REST/torrents/selectFiles/$id", mapOf("files" to fileIds.joinToString(",")), auth())
+        val res = Web.postForm(
+            "$REST/torrents/selectFiles/$id",
+            mapOf("files" to fileIds.joinToString(",")),
+            auth(),
+            allowedHosts = listOf("api.real-debrid.com"),
+        )
         if (res.code !in 200..299 && res.code != 204) error("HTTP ${res.code}")
     }
 
     suspend fun deleteTorrent(id: String): Result<Unit> = runCatching {
-        val res = Web.formDelete("$REST/torrents/delete/$id", auth())
+        val res = Web.formDelete("$REST/torrents/delete/$id", auth(), listOf("api.real-debrid.com"))
         if (res.code !in 200..299 && res.code != 204) error("HTTP ${res.code}")
     }
 
     suspend fun unrestrict(link: String): Result<Unrestricted> = runCatching {
-        val res = Web.postForm("$REST/unrestrict/link", mapOf("link" to link), auth())
+        val res = Web.postForm(
+            "$REST/unrestrict/link",
+            mapOf("link" to link),
+            auth(),
+            allowedHosts = listOf("api.real-debrid.com"),
+        )
         if (res.code !in 200..299) error("HTTP ${res.code}: ${res.body.take(160)}")
         val o = Web.json.parseToJsonElement(res.body).jsonObject
         Unrestricted(

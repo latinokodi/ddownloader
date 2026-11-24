@@ -86,9 +86,14 @@ class SettingsBackup(private val context: Context, private val settings: Setting
             int("maxConcurrentDownloads")?.let { settings.setMaxConcurrent(it); applied += "concurrency" }
             bool("unmeteredOnly")?.let { settings.setUnmeteredOnly(it); applied += "unmetered only" }
             str("outputTreeUri")?.takeIf { it.isNotBlank() }?.let { uriString ->
+                val treeUri = Uri.parse(uriString)
+                // Probe *read* access on the tree, not write: opening the tree URI with mode "w"
+                // used to truncate whichever file the provider resolved it to, and a URI from
+                // another device grants nothing anyway. DocumentFile reports existence only when
+                // the persisted permission actually survived, which is exactly the question.
                 val reachable = runCatching {
-                    context.contentResolver.openOutputStream(Uri.parse(uriString), "w")?.use { }
-                    true
+                    val tree = androidx.documentfile.provider.DocumentFile.fromTreeUri(context, treeUri)
+                    tree != null && tree.exists() && tree.canRead()
                 }.getOrDefault(false)
                 if (reachable) {
                     settings.setOutputTreeUri(uriString)

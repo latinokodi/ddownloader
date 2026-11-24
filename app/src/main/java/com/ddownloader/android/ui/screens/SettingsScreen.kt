@@ -100,8 +100,8 @@ fun SettingsScreen(vm: AppViewModel) {
             backup.importFrom(uri)
                 .onSuccess { r ->
                     vm.toast(
-                        "Restored: ${r.applied.joinToString().ifBlank { "nothing" }}" +
-                            if (r.ignoredSecrets) " — re-link your accounts" else "",
+                        t.restoreDone.format(r.applied.joinToString().ifBlank { "—" }) +
+                            if (r.ignoredSecrets) t.restoreRelink else "",
                     )
                 }
                 .onFailure { vm.toast(t.importFailed.format(it.message ?: "")) }
@@ -285,7 +285,7 @@ fun SettingsScreen(vm: AppViewModel) {
                 }
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    "Series go to <series> (year)/Season NN, movies to <title> (year).",
+                    t.folderLayoutHint,
                     style = MaterialTheme.typography.bodySmall,
                     color = TdColor.TextLow,
                 )

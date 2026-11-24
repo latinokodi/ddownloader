@@ -94,8 +94,7 @@ fun DiscoverScreen(vm: AppViewModel) {
             EmptyState(
                 icon = AppIcons.Explore,
                 title = str.tmdbNeeded,
-                body = str.discoverNeedsTmdbBody + "" +
-                    "Search and direct links keep working without it.",
+                body = str.discoverNeedsTmdbBody,
             )
         }
         return

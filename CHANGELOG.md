@@ -5,6 +5,20 @@ Cambios notables del proyecto. Formato inspirado en Keep a Changelog y versionad
 
 ## [Unreleased]
 
+## [1.8.9] — 2026-11-24
+
+### Corregido
+- **Los reintentos de peticiones con credencial ya no pueden enviar tu token a otro servidor.**
+  Los envíos (POST/DELETE) seguían redirecciones a cualquier destino, así que una redirección
+  maliciosa podía reenviar la cabecera de autorización fuera del proveedor. Ahora cada salto se
+  valida contra el dominio del proveedor, igual que ya se hacía en las lecturas.
+- **Restaurar una copia de seguridad ya no puede vaciar un archivo tuyo.** La comprobación de la
+  carpeta de descargas abría la carpeta en modo escritura para ver si servía, lo que podía truncar
+  un archivo del usuario. Ahora se comprueba el permiso de lectura sin escribir nada.
+- Varios textos de la app seguían en inglés aunque el idioma estuviera en español: la pantalla de
+  vincular cuenta, los pasos de carpeta del asistente inicial, los estados de cuenta
+  (vinculada / rechazada / sin verificar) y el aviso al restaurar una copia.
+
 ## [1.8.8] — 2026-11-24
 
 ### Corregido

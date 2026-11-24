@@ -135,7 +135,12 @@ class DeviceAuth(private val settings: SettingsRepository) {
     private suspend fun pollTorBox(prompt: Prompt): Outcome {
         val body = """{"device_code":"${prompt.deviceCode}"}"""
         val res = try {
-            Web.postJson("$TORBOX/api/user/auth/device/token", body, mapOf("User-Agent" to "DDownloader"))
+            Web.postJson(
+                "$TORBOX/api/user/auth/device/token",
+                body,
+                mapOf("User-Agent" to "DDownloader"),
+                allowedHosts = listOf("api.torbox.app"),
+            )
         } catch (t: Throwable) {
             // A resolver/timeout failure says nothing about the code's validity. Report it as
             // transient so the caller keeps polling until the real deadline.

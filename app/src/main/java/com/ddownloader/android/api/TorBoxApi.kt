@@ -47,6 +47,7 @@ class TorBoxApi(private val settings: SettingsRepository) {
         val res = Web.postJson(
             api("/user/auth/device/token"),
             """{"device_code":"$deviceCode"}""",
+            allowedHosts = listOf("api.torbox.app"),
         )
         if (res.code !in 200..299) error("HTTP ${res.code}")
         val root = Web.json.parseToJsonElement(res.body).jsonObject
@@ -97,6 +98,7 @@ class TorBoxApi(private val settings: SettingsRepository) {
             api("/torrents/createtorrent"),
             linkedMapOf("magnet" to magnet, "seed" to "0", "allow_zip" to "false"),
             auth(),
+            allowedHosts = listOf("api.torbox.app"),
         )
         if (res.code !in 200..299) error("HTTP ${res.code}: ${res.body.take(200)}")
         val root = Web.json.parseToJsonElement(res.body).jsonObject
@@ -137,7 +139,12 @@ class TorBoxApi(private val settings: SettingsRepository) {
     }.map { (it as kotlinx.serialization.json.JsonPrimitive).content }
 
     suspend fun deleteTorrent(torrentId: String): Result<Unit> = runCatching {
-        val res = Web.postJson(api("/torrents/controltorrent"), """{"torrent_id":"$torrentId","operation":"Delete"}""", auth())
+        val res = Web.postJson(
+            api("/torrents/controltorrent"),
+            """{"torrent_id":"$torrentId","operation":"Delete"}""",
+            auth(),
+            allowedHosts = listOf("api.torbox.app"),
+        )
         if (res.code !in 200..299) error("HTTP ${res.code}")
     }
 

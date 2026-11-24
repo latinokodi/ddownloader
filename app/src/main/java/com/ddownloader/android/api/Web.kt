@@ -48,9 +48,7 @@ internal object Web {
         Net.get(
             url = url,
             headers = headers,
-            allowedHost = { host ->
-                allowedHosts.isEmpty() || allowedHosts.any { host.equals(it, true) || host.endsWith(".$it", true) }
-            },
+            allowedHost = hostMatcher(allowedHosts),
         )
     }
 
@@ -58,19 +56,21 @@ internal object Web {
         url: String,
         body: String,
         headers: Map<String, String> = emptyMap(),
+        allowedHosts: List<String> = emptyList(),
     ): Net.HttpResult = withContext(Dispatchers.IO) {
         val req = Request.Builder()
             .url(url)
             .post(body.toRequestBody(JSON_MEDIA.toMediaType()))
             .apply { headers.forEach { (k, v) -> header(k, v) } }
             .build()
-        execute(req)
+        execute(req, allowedHosts)
     }
 
     suspend fun postForm(
         url: String,
         form: Map<String, String>,
         headers: Map<String, String> = emptyMap(),
+        allowedHosts: List<String> = emptyList(),
     ): Net.HttpResult = withContext(Dispatchers.IO) {
         val fb = FormBody.Builder()
         form.forEach { (k, v) -> fb.add(k, v) }
@@ -79,19 +79,20 @@ internal object Web {
             .post(fb.build())
             .apply { headers.forEach { (k, v) -> header(k, v) } }
             .build()
-        execute(req)
+        execute(req, allowedHosts)
     }
 
     suspend fun formDelete(
         url: String,
         headers: Map<String, String> = emptyMap(),
+        allowedHosts: List<String> = emptyList(),
     ): Net.HttpResult = withContext(Dispatchers.IO) {
         val req = Request.Builder()
             .url(url)
             .delete()
             .apply { headers.forEach { (k, v) -> header(k, v) } }
             .build()
-        execute(req)
+        execute(req, allowedHosts)
     }
 
     /**
@@ -103,6 +104,7 @@ internal object Web {
         url: String,
         fields: Map<String, String>,
         headers: Map<String, String>,
+        allowedHosts: List<String> = emptyList(),
     ): Net.HttpResult = withContext(Dispatchers.IO) {
         val boundary = "----TD${System.currentTimeMillis()}"
         val body = buildString {
@@ -119,12 +121,12 @@ internal object Web {
             .post(body.toRequestBody("multipart/form-data; boundary=$boundary".toMediaType()))
             .apply { headers.forEach { (k, v) -> header(k, v) } }
             .build()
-        execute(req)
+        execute(req, allowedHosts)
     }
 
     /** Runs one request through the redirect-validating client and reads the body. */
-    private fun execute(req: Request): Net.HttpResult {
-        Net.follow(req, allowedHost = { true }).use { resp ->
+    private fun execute(req: Request, allowedHosts: List<String> = emptyList()): Net.HttpResult {
+        Net.follow(req, allowedHost = hostMatcher(allowedHosts)).use { resp ->
             // A null-message NetworkOnMainThreadException used to be indistinguishable from a
             // real failure; an explicit check makes that impossible from here on.
             if (android.os.Looper.myLooper() == android.os.Looper.getMainLooper()) {
@@ -137,6 +139,19 @@ internal object Web {
                 resp.headers.toMultimap().mapValues { it.value.firstOrNull().orEmpty() },
             )
         }
+    }
+
+    /**
+     * Builds the per-hop allowlist used by [Net.follow].
+     *
+     * An empty list means "no restriction", which is what the debrid API calls want when they
+     * carry no credential. It must **not** be reached by accident: `execute` used to pass
+     * `allowedHost = { true }` unconditionally, so a 302 from any credential-bearing POST could
+     * have carried the bearer token to an arbitrary host. Callers that hold a credential pass a
+     * list; the matcher then applies exact-or-subdomain matching on every hop.
+     */
+    internal fun hostMatcher(allowedHosts: List<String>): (String) -> Boolean = { host ->
+        allowedHosts.isEmpty() || allowedHosts.any { it.equals(host, true) || host.endsWith(".$it", true) }
     }
 }
 

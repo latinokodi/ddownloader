@@ -73,7 +73,7 @@ fun LinkAccountDialog(vm: AppViewModel) {
             when (state) {
                 is AppViewModel.LinkUi.Starting -> {
                     Text(
-                        "Requesting a code…",
+                        t.linkStarting,
                         style = MaterialTheme.typography.headlineSmall,
                         color = TdColor.TextHi,
                         fontWeight = FontWeight.SemiBold,
@@ -179,14 +179,14 @@ fun LinkAccountDialog(vm: AppViewModel) {
 
                 is AppViewModel.LinkUi.Linked -> {
                     Text(
-                        "${state.provider.label} linked",
+                        "${state.provider.label} ${t.linkDone}",
                         style = MaterialTheme.typography.headlineSmall,
                         color = TdColor.Mint,
                         fontWeight = FontWeight.SemiBold,
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        "Credential received and stored encrypted on this device. It is never displayed.",
+                        t.linkDoneBody,
                         style = MaterialTheme.typography.bodySmall,
                         color = TdColor.TextMid,
                     )

@@ -11,15 +11,13 @@ import com.ddownloader.android.api.str
 import com.ddownloader.android.core.AppLog
 
 /**
- * Debrid authorization by **API token** (there is no OAuth device flow).
+ * Validates the stored debrid credentials.
  *
- * The user pastes the token from the provider's own web UI:
- *  • TorBox      → Settings → API → token
- *  • Real-Debrid → https://real-debrid.com/devices → private API token
- *
- * The token authorizes every call, so storing it is not the same as being authorized:
- * each token is *proved* against the provider's authenticated endpoint (`/user/me`
- * for TorBox, `/user` for Real-Debrid) and the outcome is surfaced as [AccountState].
+ * These used to be pasted API tokens; authorization now goes through the provider's device
+ * flow (see [DeviceAuth]), so what this class sees is whatever credential that flow stored.
+ * The distinction still matters: **storing a credential is not the same as being authorized**,
+ * so each one is *proved* against the provider's authenticated endpoint (`/user/me` for
+ * TorBox, `/user` for Real-Debrid) and the outcome is surfaced as [AccountState].
  * 401/403 = rejected; a transport failure = saved but not verifiable right now.
  *
  * Network work runs on [Dispatchers.IO]; calling it directly from a ViewModel scope

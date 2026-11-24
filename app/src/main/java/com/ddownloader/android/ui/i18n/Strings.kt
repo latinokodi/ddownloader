@@ -91,6 +91,10 @@ data class Strings(
     val folderTitle: String,
     val folderBody: String,
     val folderReady: String,
+    /** Explains that downloads go through SAF, so no storage permission is requested. */
+    val folderNoPermission: String,
+    /** How episodes and movies are laid out on disk (Jellyfin naming). */
+    val folderLayoutHint: String,
     val startUsing: String,
     // linking dialog
     val linkTitle: String,
@@ -99,6 +103,8 @@ data class Strings(
     val linkOpen: String,
     val linkCopy: String,
     val linkWaiting: String,
+    /** Shown while the device code is being requested, before the code is known. */
+    val linkStarting: String,
     /** Shown while the poll temporarily cannot reach the provider; the code is still valid. */
     val linkRetrying: String,
     val linkDone: String,
@@ -237,6 +243,10 @@ data class Strings(
     val exportOk: String,
     val exportFailed: String,
     val importFailed: String,
+    /** Toast after importing a backup; %1$s = list of applied settings. */
+    val restoreDone: String,
+    /** Appended to [restoreDone] when the backup still expects credentials to be re-linked. */
+    val restoreRelink: String,
     val hardenedPill: String,
     val statusLabel: String,
     val metricHttps: String,
@@ -311,11 +321,15 @@ private val EN = Strings(
     folderTitle = "Where should\nfiles go?", folderBody = "Pick a folder once and Android remembers the " +
         "permission. Without a choice, files land in this app's own Download folder.",
     folderReady = "Ready. You can change everything later in Settings.",
+    folderNoPermission = "No storage permission is requested: downloads are written through the " +
+        "system folder picker (SAF).",
+    folderLayoutHint = "Series go to <series> (year)/Season NN, movies to <title> (year).",
     startUsing = "Start using DDownloader",
     linkTitle = "Link", linkHint = "Open the link below and enter this code. This screen finishes on " +
         "its own once the account is authorized.",
     linkCode = "CODE", linkOpen = "Open link", linkCopy = "Copy",
     linkWaiting = "Waiting for you to authorize…",
+    linkStarting = "Requesting a code…",
     linkRetrying = "No connection to the provider — retrying…",
     linkDone = "linked", linkDoneBody = "Credential received and stored encrypted on this device. " +
         "It is never displayed.",
@@ -444,6 +458,8 @@ private val EN = Strings(
     exportOk = "Settings exported (credentials excluded)",
     exportFailed = "Export failed: %1\$s",
     importFailed = "Import failed: %1\$s",
+    restoreDone = "Restored: %1\$s",
+    restoreRelink = " — re-link your accounts",
     hardenedPill = "HARDENED",
     statusLabel = "Status",
     metricHttps = "HTTPS only • cleartext blocked",
@@ -518,11 +534,15 @@ private val ES = Strings(
     folderTitle = "¿Dónde van\nlos archivos?", folderBody = "Elige una carpeta una vez y Android recordará el " +
         "permiso. Sin elección, los archivos van a la carpeta Download de la propia app.",
     folderReady = "Listo. Puedes cambiar todo más tarde en Ajustes.",
+    folderNoPermission = "No se pide permiso de almacenamiento: las descargas se escriben mediante " +
+        "el selector de carpetas del sistema (SAF).",
+    folderLayoutHint = "Las series van a <serie> (año)/Season NN y las películas a <título> (año).",
     startUsing = "Empezar a usar DDownloader",
     linkTitle = "Vincular", linkHint = "Abre el enlace de abajo y escribe este código. Esta pantalla termina " +
         "sola cuando la cuenta esté autorizada.",
     linkCode = "CÓDIGO", linkOpen = "Abrir enlace", linkCopy = "Copiar",
     linkWaiting = "Esperando tu autorización…",
+    linkStarting = "Pidiendo un código…",
     linkRetrying = "Sin conexión con el proveedor — reintentando…",
     linkDone = "vinculada", linkDoneBody = "Credencial recibida y guardada cifrada en este dispositivo. " +
         "Nunca se muestra.",
@@ -651,6 +671,8 @@ private val ES = Strings(
     exportOk = "Ajustes exportados (credenciales excluidas)",
     exportFailed = "La exportación falló: %1\$s",
     importFailed = "La importación falló: %1\$s",
+    restoreDone = "Restaurado: %1\$s",
+    restoreRelink = " — vuelve a vincular tus cuentas",
     hardenedPill = "REFORZADO",
     statusLabel = "Estado",
     metricHttps = "Solo HTTPS • texto claro bloqueado",

@@ -370,14 +370,14 @@ private fun StatusLine(text: String, color: androidx.compose.ui.graphics.Color) 
 
 @Composable
 private fun FolderPage(outputTreeUri: String, onChoose: () -> Unit, onReset: () -> Unit) {
+    val t = com.ddownloader.android.ui.i18n.LocalStrings.current
     Column(Modifier.fillMaxWidth().padding(top = 20.dp)) {
         PageHeader(
-            "Where should\nfiles go?",
-            "Pick a folder once and Android remembers the permission. Without a choice, files land " +
-                "in this app's own Download folder.",
+            t.folderTitle,
+            t.folderBody,
         )
         AuroraCard {
-            SectionLabel("Destination")
+            SectionLabel(t.destination)
             Spacer(Modifier.height(10.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(AppIcons.FolderOpen, contentDescription = null, tint = TdColor.Cyan, modifier = Modifier.size(20.dp))
@@ -390,13 +390,12 @@ private fun FolderPage(outputTreeUri: String, onChoose: () -> Unit, onReset: () 
             }
             Spacer(Modifier.height(14.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                GhostButton("Choose folder", icon = AppIcons.FolderOpen, onClick = onChoose)
-                if (outputTreeUri.isNotBlank()) GhostButton("Use app storage", icon = AppIcons.Delete, onClick = onReset)
+                GhostButton(t.chooseFolder, icon = AppIcons.FolderOpen, onClick = onChoose)
+                if (outputTreeUri.isNotBlank()) GhostButton(t.useAppStorage, icon = AppIcons.Delete, onClick = onReset)
             }
             Spacer(Modifier.height(14.dp))
             Text(
-                "No storage permission is requested: downloads are written through the system " +
-                    "folder picker (SAF).",
+                t.folderNoPermission,
                 style = MaterialTheme.typography.bodySmall,
                 color = TdColor.TextLow,
             )
@@ -407,7 +406,7 @@ private fun FolderPage(outputTreeUri: String, onChoose: () -> Unit, onReset: () 
         }
         Spacer(Modifier.height(10.dp))
         Text(
-            "Ready. You can change everything later in Settings.",
+            t.folderReady,
             style = MaterialTheme.typography.bodyMedium,
             color = TdColor.TextMid,
             textAlign = TextAlign.Start,
@@ -418,6 +417,7 @@ private fun FolderPage(outputTreeUri: String, onChoose: () -> Unit, onReset: () 
 /** Inline proof that the token works. */
 @Composable
 private fun TokenState(state: AccountAuth.AccountState, hint: String) {
+    val t = com.ddownloader.android.ui.i18n.LocalStrings.current
     val tint = when (state) {
         is AccountAuth.AccountState.Authorized -> TdColor.Mint
         is AccountAuth.AccountState.Rejected -> TdColor.Rose
@@ -426,11 +426,11 @@ private fun TokenState(state: AccountAuth.AccountState, hint: String) {
         AccountAuth.AccountState.NotConfigured -> TdColor.TextLow
     }
     val label = when (state) {
-        is AccountAuth.AccountState.Authorized -> "AUTHORIZED"
-        is AccountAuth.AccountState.Rejected -> "TOKEN REJECTED"
-        is AccountAuth.AccountState.Unverified -> "SAVED \u2022 NOT VERIFIED"
-        AccountAuth.AccountState.Checking -> "CHECKING\u2026"
-        AccountAuth.AccountState.NotConfigured -> "NOT SET"
+        is AccountAuth.AccountState.Authorized -> t.linked
+        is AccountAuth.AccountState.Rejected -> t.rejected
+        is AccountAuth.AccountState.Unverified -> t.notVerified
+        AccountAuth.AccountState.Checking -> t.checking
+        AccountAuth.AccountState.NotConfigured -> t.notLinked
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
         StatusPill(label, tint, AppIcons.Key)
