@@ -129,6 +129,7 @@ jobs:
         id: apk
         env:
           EXPECTED_SIGNER: ${{ secrets.RELEASE_SIGNER_SHA256 }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
         run: |
           set -euo pipefail
           shopt -s nullglob
@@ -140,8 +141,13 @@ jobs:
           apk="${apks[0]}"
           echo "apk=$apk" >> "$GITHUB_OUTPUT"
 
-          signer=$(apksigner verify --print-certs "$apk" \
-            | grep -oP 'SHA-256 digest: \K[0-9a-f]+' | head -1)
+          # setup-android does not put the build-tools binaries on PATH in later steps;
+          # resolve the newest installed build-tools explicitly.
+          bt=$(ls -d "${ANDROID_SDK_ROOT:-$ANDROID_HOME}"/build-tools/* | sort -V | tail -1)
+          echo "build-tools: $bt"
+
+          signer=$("$bt/apksigner" verify --print-certs "$apk" \
+            | grep -oP 'SHA-256 digest: \K[0-9a-fA-F]+' | head -1 | tr 'A-Z' 'a-z')
           echo "signer sha256: $signer"
           if [ -z "$EXPECTED_SIGNER" ]; then
             echo "::error::RELEASE_SIGNER_SHA256 is not set, so the signing key cannot be confirmed"
@@ -155,7 +161,7 @@ jobs:
           echo "::notice::signed with the expected release key"
 
           # 16 KB page-size compliance is a distribution requirement; fail before publishing.
-          zipalign -c -P 16 -v 4 "$apk" > /dev/null
+          "$bt/zipalign" -c -P 16 -v 4 "$apk" > /dev/null
 
           sha=$(sha256sum "$apk" | cut -d' ' -f1)
           echo "$sha" > "$apk.sha256"
