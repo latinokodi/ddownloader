@@ -1,7 +1,61 @@
 # Releasing
 
-Runbook for publishing a build. Derived from the `deployment-procedures` skill (safe sequence,
-explicit rollback, verification after the fact) and used for releases v1.0.0 and v1.0.1.
+Two paths exist. Both publish the same thing (a release-signed APK + its `.sha256`), and both
+must use the **same signing key** — see the asymmetry below.
+
+| path | when | command |
+|---|---|---|
+| **Automatic** (preferred) | every push to `main` | bump the version, push |
+| Manual | break-glass, or a build from a branch | steps 1–5 here |
+
+## Automatic: push to main
+
+`.github/workflows/release.yml` builds, signs and publishes on every push to `main`.
+
+1. Bump `appVersionCode` / `appVersionName` in `app/build.gradle.kts`.
+2. Commit and push to `main`.
+3. The workflow runs the tests and lint, assembles the release APK, **verifies the APK is
+   signed by the release key**, writes the `.sha256`, and creates the GitHub Release.
+
+The version is read from the commit's own `app/build.gradle.kts`, so the tag, the APK filename
+and the in-app update comparison all agree by construction.
+
+**Pushing without a version bump fails on purpose.** `UpdateChecker` only offers tags newer than
+the running `VERSION_NAME`, so a release at an already-published version would appear on GitHub
+and reach nobody. The workflow refuses before it publishes.
+
+### Required repository secrets
+
+Signing material is not in the repo, so it travels as secrets. One-time setup:
+
+```powershell
+pwsh -NoProfile -File scripts\configure-release-secrets.ps1 -DryRun   # preview
+pwsh -NoProfile -File scripts\configure-release-secrets.ps1            # upload
+```
+
+| secret | content |
+|---|---|
+| `KEYSTORE_B64` | base64 of `keystore/release.jks` |
+| `KEYSTORE_STORE_PASSWORD` | `storePassword` from `keystore.properties` |
+| `KEYSTORE_KEY_ALIAS` | `keyAlias` (currently `tordownloader`) |
+| `KEYSTORE_KEY_PASSWORD` | `keyPassword` |
+| `RELEASE_SIGNER_SHA256` | expected signer digest, read from the keystore by the script |
+
+The script derives `RELEASE_SIGNER_SHA256` with `keytool` instead of trusting a pasted value, so
+the workflow's signature gate cannot be satisfied by an unrelated key.
+
+> **Trade-off, stated plainly:** this puts the release key on GitHub. `THREAT-MODEL.md` used to
+> claim "the keystore never leaves the local machine"; automation makes that impossible. The key
+> is now protected by repository admin rights instead of physical custody. If the account is
+> compromised, an attacker can sign an update — mitigated only by the fact that they would also
+> need to publish it. Rotate by re-running `configure-release-secrets.ps1`; revoke by deleting the
+> secrets and reverting to the manual path.
+
+## Manual
+
+Runbook for publishing a build by hand. Derived from the `deployment-procedures` skill (safe
+sequence, explicit rollback, verification after the fact) and used for releases up to v1.8.7.
+
 
 **Key asymmetry to design around:** an APK that has been installed by users cannot be “rolled
 back”; a device only accepts a build with a **higher** `versionCode` signed by the **same key**.

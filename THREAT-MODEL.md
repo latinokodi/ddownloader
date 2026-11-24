@@ -12,7 +12,7 @@ highest-value trust boundary in the app.
 | TMDB API key | low value, billing/quota only |
 | Download queue + partial files | user activity; content may be sensitive |
 | Update channel (release feed + APK) | code execution on the device |
-| Signing key (`keystore/release.jks`) | authority to sign updates — **not in the repo** |
+| Signing key (`keystore/release.jks`) | authority to sign updates — **not in the repo; held in repository secrets for the automated release** |
 
 ## Trust boundaries
 
@@ -20,13 +20,18 @@ highest-value trust boundary in the app.
 2. **App ↔ system installer** — via FileProvider + `ACTION_VIEW`, user confirms.
 3. **App ↔ SAF tree** (user-picked folder) — persisted per-URI grant, no broad storage permission.
 4. **App ↔ Android Keystore** — non-exportable AES-256-GCM key.
-5. **CI / build machine ↔ release** — the keystore never leaves the local machine.
+5. **CI / build machine ↔ release** — the release workflow materialises the keystore from
+   repository secrets, publishes, then deletes it. It verifies the produced APK carries the
+   expected signer digest before publishing, so a misconfigured key fails the build instead of
+   shipping an APK nobody can install over the current one.
 
 ## STRIDE
 
 | threat | concrete scenario | control (where) | residual risk |
 |---|---|---|---|
 | **S**poofing | Malicious release published in the repo or a MITM serves a fake APK | Signer-equality check against the installed app's certificate before invoking the installer (`UpdateInstaller.verifierCheck`); Android also refuses mismatched signers | A compromised repo **and** stolen signing key would pass — out of scope |
+| **S**poofing | The automated release ships an APK signed by the wrong key (e.g. the debug fallback after a missing secret) | `release.yml` greps `apksigner --print-certs` for `RELEASE_SIGNER_SHA256` and fails the job before publishing; the secret is derived from the keystore by `configure-release-secrets.ps1`, not typed by hand | — |
+| **E**levation of privilege | Repository secrets (signing key) exfiltrated by a malicious workflow/PR | Secrets are unavailable to `pull_request` runs from forks; `release.yml` only triggers on `push` to `main` and `workflow_dispatch`, both requiring write access; the checkout runs no untrusted code before signing | Anyone with repo admin can read/use the secrets — inherent to automating a release |
 | **T**ampering | Truncated/corrupted update download | `Content-Length` check + optional `app-release.apk.sha256` asset + full-file SHA-256 computed and shown | If no `.sha256` asset is published, only transport + signer protect it (documented in `RELEASING.md`) |
 | **T**ampering | Redirect to an attacker host during download | Per-hop host allowlist in `Net.follow` (github.com / *.githubusercontent.com only) | — |
 | **R**epudiation | User claims an update was forced | Installer always requires explicit user confirmation; no silent install path | — |
