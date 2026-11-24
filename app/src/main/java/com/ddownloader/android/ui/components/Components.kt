@@ -235,6 +235,9 @@ fun SessionHero(
     )
 
     GlassCard(borderColor = accent.copy(alpha = 0.35f)) {
+        // Hoisted: the pills and the button below the Row need it too, and a `val` declared
+        // inside the Column was invisible to them (caught by CI, not by a subset compile).
+        val t = com.ddownloader.android.ui.i18n.LocalStrings.current
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(86.dp), contentAlignment = Alignment.Center) {
                 Canvas(
@@ -269,7 +272,6 @@ fun SessionHero(
             }
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
-                val t = com.ddownloader.android.ui.i18n.LocalStrings.current
                 Text(
                     text = when {
                         running -> t.stDownloading.uppercase()
