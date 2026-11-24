@@ -269,11 +269,12 @@ fun SessionHero(
             }
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
+                val t = com.ddownloader.android.ui.i18n.LocalStrings.current
                 Text(
                     text = when {
-                        running -> "TRANSFERRING"
-                        hasDebrid -> "SECURE SESSION"
-                        else -> "READY TO SET UP"
+                        running -> t.stDownloading.uppercase()
+                        hasDebrid -> t.secureSession
+                        else -> t.readyToSetup
                     },
                     style = androidx.compose.material3.MaterialTheme.typography.labelMedium,
                     color = accent,
@@ -283,9 +284,10 @@ fun SessionHero(
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text = when {
-                        running -> "$activeTransfers running" + if (queuedTransfers > 0) " • $queuedTransfers queued" else ""
-                        hasDebrid -> "TorBox / Real-Debrid linked"
-                        else -> "Link a debrid account in Settings"
+                        running -> "$activeTransfers ${t.tileRunning}" +
+                            if (queuedTransfers > 0) " • $queuedTransfers ${t.tileQueue}" else ""
+                        hasDebrid -> "TorBox / Real-Debrid ${t.statLinked}"
+                        else -> t.linkAccountHint
                     },
                     style = androidx.compose.material3.MaterialTheme.typography.titleMedium,
                     color = TdColor.TextHi,
@@ -294,20 +296,20 @@ fun SessionHero(
                 )
                 Spacer(Modifier.height(6.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    StatusPill("HTTPS only", TdColor.Cyan, AppIcons.Shield)
-                    StatusPill("$completedTransfers done", TdColor.TextMid, AppIcons.CheckCircle)
+                    StatusPill(t.httpsOnly, TdColor.Cyan, AppIcons.Shield)
+                    StatusPill("$completedTransfers ${t.statDone}", TdColor.TextMid, AppIcons.CheckCircle)
                 }
             }
         }
         Spacer(Modifier.height(14.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             GhostButton(
-                text = "Downloads",
+                text = t.downloads,
                 icon = AppIcons.Download,
                 onClick = onOpenDownloads,
             )
             Spacer(Modifier.weight(1f))
-            StatusPill("tokens in Keystore", TdColor.Mint, AppIcons.VerifiedUser, filled = true)
+            StatusPill(t.tokensInKeystore, TdColor.Mint, AppIcons.VerifiedUser, filled = true)
         }
     }
 }

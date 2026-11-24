@@ -52,8 +52,8 @@ cited source file is pinned in `docs/source-analysis.md` §0.
 
 | ID | feature | original | Android | status | test |
 |---|---|---|---|---|---|
-| P03 | TorBox device-code OAuth | `torbox.ts:67-81` | `api/TorBoxApi.kt` `deviceStart()`/`deviceToken()` | Partial | client implemented; UI uses token paste instead of the device-code dance |
-| P04 | Real-Debrid 3-step device flow | `realdebrid.ts:29-87` | `api/RealDebridApi.kt` deviceCode/credentials/token | Partial | same: client only |
+| P03 | TorBox device-code OAuth | `torbox.ts:67-81` | `data/DeviceAuth.kt` + `ui/auth/LinkAccountDialog.kt` | Supported | full URL+code flow: shows the code, polls, stores the token encrypted. A failed poll is retried instead of ending the pairing |
+| P04 | Real-Debrid 3-step device flow | `realdebrid.ts:29-87` | `data/DeviceAuth.kt` (`pollRealDebrid`) | Supported | credentials → token exchange; client_id/secret/refresh stored encrypted |
 | P05 | RD access-token refresh | defined but **never called** | — | Not ported | Deliberate gap, documented in `DECISIONS.md` |
 | P13 | Add magnet (dedupe existing transfer) | `main.ts:278-464` | `AppViewModel.addMagnet` → TorBox/RD → queue | Supported | needs a real account to exercise |
 | P14 | Cloud status polling (10 s) | `worker.ts:145-298` | — | Not ported | background polling is battery-hostile; the port downloads on demand |

@@ -5,6 +5,17 @@ Cambios notables del proyecto. Formato inspirado en Keep a Changelog y versionad
 
 ## [Unreleased]
 
+## [1.9.0] — 2026-11-24
+
+Versión de cierre: la app queda completa y publicada automáticamente.
+
+### Corregido
+- **La pantalla de inicio y el asistente inicial respetan el idioma.** Quedaban textos fijos en
+  inglés (el estado de la tarjeta principal, sus botones y etiquetas, y los de vincular/desvincular
+  cuenta del asistente) que se mostraban en inglés aunque eligieras español.
+- La especificación interna seguía describiendo la vinculación de cuentas como «solo cliente, la
+  interfaz pide pegar el token», cuando ya se hace con enlace y código. Corregido.
+
 ## [1.8.9] — 2026-11-24
 
 ### Corregido

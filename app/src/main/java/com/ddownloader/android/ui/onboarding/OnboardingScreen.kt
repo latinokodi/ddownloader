@@ -251,8 +251,8 @@ private fun WelcomePage() {
         }
         Spacer(Modifier.height(14.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            StatusPill("HTTPS only", TdColor.Cyan, AppIcons.Shield)
-            StatusPill("tokens in Keystore", TdColor.Mint, AppIcons.Key)
+            StatusPill(t.httpsOnly, TdColor.Cyan, AppIcons.Shield)
+            StatusPill(t.tokensInKeystore, TdColor.Mint, AppIcons.Key)
         }
     }
 }
@@ -309,8 +309,9 @@ private fun ProviderLinkRow(
             TokenState(state = state, hint = provider.accountHint)
         }
         Spacer(Modifier.width(8.dp))
-        if (linked) GhostButton("Unlink", icon = AppIcons.Delete, onClick = onUnlink)
-        else GhostButton("Link", icon = AppIcons.Link, onClick = onLink)
+        val t = com.ddownloader.android.ui.i18n.LocalStrings.current
+        if (linked) GhostButton(t.unlink, icon = AppIcons.Delete, onClick = onUnlink)
+        else GhostButton(t.link, icon = AppIcons.Link, onClick = onLink)
     }
 }
 
@@ -402,7 +403,7 @@ private fun FolderPage(outputTreeUri: String, onChoose: () -> Unit, onReset: () 
         }
         Spacer(Modifier.height(14.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            StatusPill("no MANAGE_EXTERNAL_STORAGE", TdColor.Mint, AppIcons.VerifiedUser)
+            StatusPill(t.noManageStorage, TdColor.Mint, AppIcons.VerifiedUser)
         }
         Spacer(Modifier.height(10.dp))
         Text(
